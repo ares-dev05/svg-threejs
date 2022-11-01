@@ -2,22 +2,22 @@
     "floorplan": {
         "version": "2.0.1a",
         "corners": {
-            "71d4f128-ae80-3d58-9bd2-711c6ce6cdf2": {
+            "11": {
                 "x": 0,
                 "y": 0,
                 "elevation": 2.5
             },
-            "f90da5e3-9e0e-eba7-173d-eb0b071e838e": {
+            "12": {
                 "x": 0,
                 "y": 5,
                 "elevation": 2.5
             },
-            "da026c08-d76a-a944-8e7b-096b752da9ed": {
+            "21": {
                 "x": 5,
                 "y": 5,
                 "elevation": 2.5
             },
-            "4e3d65cb-54c0-0681-28bf-bddcc7bdb571": {
+            "22": {
                 "x": 5,
                 "y": 0,
                 "elevation": 2.5
@@ -25,8 +25,8 @@
         },
         "walls": [
             {
-                "corner1": "71d4f128-ae80-3d58-9bd2-711c6ce6cdf2",
-                "corner2": "f90da5e3-9e0e-eba7-173d-eb0b071e838e",
+                "corner1": "11",
+                "corner2": "12",
                 "frontTexture": {
                     "color": "#FFFFFF",
                     "repeat": 300,
@@ -47,18 +47,18 @@
                 },
                 "wallType": "STRAIGHT",
                 "a": {
-                    "x": -176.77669529663686,
-                    "y": 176.7766952966369
+                    "x": 0,
+                    "y": 0
                 },
                 "b": {
-                    "x": -176.7766952966369,
-                    "y": 323.22330470336317
+                    "x": 0,
+                    "y": 0
                 },
                 "thickness": 0.2
             },
             {
-                "corner1": "f90da5e3-9e0e-eba7-173d-eb0b071e838e",
-                "corner2": "da026c08-d76a-a944-8e7b-096b752da9ed",
+                "corner1": "12",
+                "corner2": "21",
                 "frontTexture": {
                     "color": "#FFFFFF",
                     "repeat": 300,
@@ -79,18 +79,18 @@
                 },
                 "wallType": "STRAIGHT",
                 "a": {
-                    "x": 176.7766952966369,
-                    "y": 676.7766952966368
+                    "x": 0,
+                    "y": 0
                 },
                 "b": {
-                    "x": 323.22330470336317,
-                    "y": 676.776695296637
+                    "x": 0,
+                    "y": 0
                 },
                 "thickness": 0.2
             },
             {
-                "corner1": "da026c08-d76a-a944-8e7b-096b752da9ed",
-                "corner2": "4e3d65cb-54c0-0681-28bf-bddcc7bdb571",
+                "corner1": "21",
+                "corner2": "22",
                 "frontTexture": {
                     "color": "#FFFFFF",
                     "repeat": 300,
@@ -111,18 +111,18 @@
                 },
                 "wallType": "STRAIGHT",
                 "a": {
-                    "x": 676.7766952966368,
-                    "y": 323.2233047033631
+                    "x": 0,
+                    "y": 0
                 },
                 "b": {
-                    "x": 676.776695296637,
-                    "y": 176.77669529663686
+                    "x": 0,
+                    "y": 0
                 },
                 "thickness": 0.2
             },
             {
-                "corner1": "4e3d65cb-54c0-0681-28bf-bddcc7bdb571",
-                "corner2": "71d4f128-ae80-3d58-9bd2-711c6ce6cdf2",
+                "corner1": "22",
+                "corner2": "11",
                 "frontTexture": {
                     "color": "#FFFFFF",
                     "repeat": 300,
@@ -143,25 +143,25 @@
                 },
                 "wallType": "STRAIGHT",
                 "a": {
-                    "x": 323.2233047033631,
-                    "y": -176.77669529663686
+                    "x": 0,
+                    "y": 0
                 },
                 "b": {
-                    "x": 176.77669529663686,
-                    "y": -176.7766952966369
+                    "x": 0,
+                    "y": 0
                 },
                 "thickness": 0.2
             }
         ],
         "rooms": {
-            "71d4f128-ae80-3d58-9bd2-711c6ce6cdf2,4e3d65cb-54c0-0681-28bf-bddcc7bdb571,da026c08-d76a-a944-8e7b-096b752da9ed,f90da5e3-9e0e-eba7-173d-eb0b071e838e": {
+            "newFloorTextures": {
                 "name": "A Room"
             }
         },
         "wallTextures": [],
         "floorTextures": {},
         "newFloorTextures": {
-            "4e3d65cb-54c0-0681-28bf-bddcc7bdb571,71d4f128-ae80-3d58-9bd2-711c6ce6cdf2,da026c08-d76a-a944-8e7b-096b752da9ed,f90da5e3-9e0e-eba7-173d-eb0b071e838e": {
+            "newFloorTextures": {
                 "repeat": 100,
                 "roughnessmap": "textures/Floor/Terrazzo_Tiles_001/Terrazzo_Tiles_001_roughness.jpg",
                 "ambientmap": "textures/Floor/Terrazzo_Tiles_001/Terrazzo_Tiles_001_ambientOcclusion.jpg",
@@ -170,7 +170,7 @@
                 "color": "#FFFFFF",
                 "emissive": "#000000",
                 "reflective": 0.5,
-                "shininess": 0.5,
+                "shininess": 0.5
             }
         },
         "carbonSheet": {},

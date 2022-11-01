@@ -231,6 +231,150 @@ function loadBlueprint3DDesign(filedata) {
   reader.readAsText(filedata);
 }
 
+function loadSVGDesign(filedata) {
+  let reader = new FileReader();
+  reader.onload = function (event) {
+    let dataSvg = event.target.result;
+
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(dataSvg, "image/svg+xml");
+
+    var rulerObj = doc.querySelectorAll("#ruler line")[0];
+
+    var rulerVal =
+      10 /
+      Math.sqrt(
+        Math.pow(rulerObj.getAttribute("x1") - rulerObj.getAttribute("x2"), 2) +
+          Math.pow(rulerObj.getAttribute("y1") - rulerObj.getAttribute("y2"), 2)
+      );
+
+    var internObj = Array.prototype.slice.call(
+      doc.querySelectorAll("#internals_x5F_sagamore line.st1")
+    );
+
+    var walls = [];
+    var corners = {};
+    // var room = "";
+
+    console.log("internObj", internObj.length);
+
+    for (var i = 0; i < internObj.length; i++) {
+      walls.push({
+        corner1: i + "1",
+        corner2: i + "2",
+        frontTexture: {
+          color: "#FFFFFF",
+          repeat: 300,
+          normalmap:
+            "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_normal.jpg",
+          roughnessmap:
+            "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_roughness.jpg",
+          colormap:
+            "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_basecolor.jpg",
+          ambientmap:
+            "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_ambientOcclusion.jpg",
+          bumpmap: "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_height.png",
+          emissive: "#000000",
+          reflective: 0.5,
+          shininess: 0.5,
+        },
+        backTexture: {
+          color: "#FFFFFF",
+          repeat: 300,
+          normalmap:
+            "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_normal.jpg",
+          roughnessmap:
+            "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_roughness.jpg",
+          colormap:
+            "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_basecolor.jpg",
+          ambientmap:
+            "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_ambientOcclusion.jpg",
+          bumpmap: "textures/Wall/Brick_Wall_017_SD/Brick_Wall_017_height.png",
+          emissive: "#000000",
+          reflective: 0.5,
+          shininess: 0.5,
+        },
+        wallType: "STRAIGHT",
+        a: {
+          x: 0,
+          y: 0,
+        },
+        b: { x: 0, y: 0 },
+        thickness: 0.2,
+      });
+
+      corners[i + "1"] = {
+        x: internObj[i].getAttribute("x1") * rulerVal,
+        y: internObj[i].getAttribute("y1") * rulerVal,
+        elevation: 2.59,
+      };
+
+      corners[i + "2"] = {
+        x: internObj[i].getAttribute("x2") * rulerVal,
+        y: internObj[i].getAttribute("y2") * rulerVal,
+        elevation: 2.59,
+      };
+
+      // if (i != internObj.length - 1) {
+      //   room += i + "1" + "," + i + "2" + ",";
+      // } else {
+      //   room += i + "1" + "," + i + "2";
+      // }
+    }
+    console.log("internObj len", internObj.length);
+
+    // room = room.toString();
+
+    var planData = {
+      floorplan: {
+        version: "2.0.1a",
+        corners: corners,
+        walls: walls,
+        rooms: {
+          room: { name: "A New Room" },
+        },
+        wallTextures: [],
+        floorTextures: {},
+        newFloorTextures: {
+          room: {
+            color: "#FFFFFF",
+            emissive: "#181818",
+            repeat: 300,
+            ambientmap:
+              "textures/Floor/Marble_Tiles_001/Marble_Tiles_001_ambientOcclusion.jpg",
+            colormap:
+              "textures/Floor/Marble_Tiles_001/Marble_Tiles_001_basecolor.jpg",
+            roughnessmap:
+              "textures/Floor/Marble_Tiles_001/Marble_Tiles_001_roughness.jpg",
+            normalmap:
+              "textures/Floor/Marble_Tiles_001/Marble_Tiles_001_normal.jpg",
+            reflective: 0.5,
+            shininess: 0.5,
+          },
+        },
+        carbonSheet: {},
+        boundary: {
+          points: [],
+          style: {
+            type: "color",
+            color: "#00FF00",
+            repeat: 50,
+            colormap: null,
+          },
+        },
+        units: "m",
+      },
+      items: [],
+    };
+
+    console.log("planData", planData);
+
+    blueprint3d.model.loadSerialized(JSON.stringify(planData));
+  };
+
+  reader.readAsText(filedata);
+}
+
 function loadLockedBlueprint3DDesign(filedata) {
   let reader = new FileReader();
   reader.onload = function (event) {
@@ -504,6 +648,9 @@ if (!opts.widget) {
     ".blueprint3d",
     loadBlueprint3DDesign
   );
+
+  uxInterface.addFileChooser("Load SVG", "Load SVG", ".svg", loadSVGDesign);
+
   uxInterface.addButton("Save Design", saveBlueprint3DDesign);
   uxInterface.addButton("Export as GLTF", saveBlueprint3D);
   uxInterface.addButton("Export Project (blueprint-py)", exportDesignAsPackage);
