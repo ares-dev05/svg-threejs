@@ -41,7 +41,7 @@ fps.start();
 let default_room = JSON.stringify(default_room_json);
 let startY = 0;
 let panelWidths = 200;
-let uxInterfaceHeight = 450;
+let uxInterfaceHeight = 290;
 let subPanelsHeight = 460;
 let floor_textures = floor_textures_json; //['default'];
 let floor_texture_keys = Object.keys(floor_textures);
@@ -639,7 +639,7 @@ if (!opts.widget) {
   settingsSelectedWall3D = QuickSettings.create(0, 0, "Wall", app_parent);
   settingsSelectedRoom3D = QuickSettings.create(0, 0, "Room", app_parent);
 
-  uxInterface.addButton("Switch Viewer", switchViewer);
+  // uxInterface.addButton("Switch Viewer", switchViewer);
   uxInterface.addHTML("Current View", "Floorplanning");
 
   uxInterface.addFileChooser(
@@ -651,20 +651,21 @@ if (!opts.widget) {
 
   uxInterface.addFileChooser("Load SVG", "Load SVG", ".svg", loadSVGDesign);
 
+  settingsViewer2d.hide();
   uxInterface.addButton("Save Design", saveBlueprint3DDesign);
-  uxInterface.addButton("Export as GLTF", saveBlueprint3D);
-  uxInterface.addButton("Export Project (blueprint-py)", exportDesignAsPackage);
+  // uxInterface.addButton("Export as GLTF", saveBlueprint3D);
+  // uxInterface.addButton("Export Project (blueprint-py)", exportDesignAsPackage);
   uxInterface.addButton(
     "Reset",
     blueprint3d.model.reset.bind(blueprint3d.model)
   );
 
-  uxInterface.addFileChooser(
-    "Load Locked Design",
-    "Load Locked Design",
-    ".blueprint3d",
-    loadLockedBlueprint3DDesign
-  );
+  // uxInterface.addFileChooser(
+  //   "Load Locked Design",
+  //   "Load Locked Design",
+  //   ".blueprint3d",
+  //   loadLockedBlueprint3DDesign
+  // );
 
   settingsViewer2d.addButton("Draw Mode", switchViewer2DToDraw);
   settingsViewer2d.addButton("Move Mode", switchViewer2DToMove);
