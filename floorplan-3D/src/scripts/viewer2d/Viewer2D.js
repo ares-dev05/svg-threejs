@@ -395,6 +395,7 @@ export class Viewer2D extends Application {
   }
 
   __drawModeMouseUp(evt) {
+    console.log("== __drawModeMouseUp ==");
     if (this.__mode === floorplannerModes.DRAW) {
       let co = evt.data.getLocalPosition(this.__floorplanContainer);
       let cmCo = new Vector2(co.x, co.y);

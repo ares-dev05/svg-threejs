@@ -51224,7 +51224,6 @@ var Model = /*#__PURE__*/function (_EventDispatcher) {
   }, {
     key: "exportSerialized",
     value: function exportSerialized() {
-      console.log('exportSerialized === === ===')
       var floorplanJSON = this.floorplan.saveFloorplan();
       var roomItemsJSON = [];
 

@@ -31,7 +31,7 @@ import * as wall_textures_json from "./wall_textures.json";
 // import * as default_room_json from './parametrics_items.json';
 // import * as default_room_json from './empty_room.json';
 // import * as default_room_json from './designWithBoundary.json';
-import * as default_room_json from "./designWithoutBoundary.json";
+import * as default_room_json from "./designSimple.json";
 // import * as default_room_json from './designWithOrphanWalls.json';
 // import * as default_room_json from './LShape.json';
 
@@ -486,10 +486,10 @@ blueprint3d.model.loadSerialized(default_room);
 if (!opts.widget) {
   uxInterface = QuickSettings.create(0, 0, "BlueprintJS", app_parent);
 
-  settingsViewer2d = QuickSettings.create(0, 0, "Viewer 2D", app_parent);
-  settingsSelectedCorner = QuickSettings.create(0, 0, "Corner", app_parent);
-  settingsSelectedWall = QuickSettings.create(0, 0, "Wall", app_parent);
-  settingsSelectedRoom = QuickSettings.create(0, 0, "Room", app_parent);
+  settingsViewer2d = QuickSettings.create(0, 1, "Viewer 2D", app_parent);
+  settingsSelectedCorner = QuickSettings.create(0, 2, "Corner", app_parent);
+  settingsSelectedWall = QuickSettings.create(0, 3, "Wall", app_parent);
+  settingsSelectedRoom = QuickSettings.create(0, 4, "Room", app_parent);
 
   settingsViewer3d = QuickSettings.create(0, 0, "Viewer 3D", app_parent);
   settingsSelectedWall3D = QuickSettings.create(0, 0, "Wall", app_parent);

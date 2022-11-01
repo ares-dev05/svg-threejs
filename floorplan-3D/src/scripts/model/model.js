@@ -30,12 +30,15 @@ export class Model extends EventDispatcher {
   }
 
   loadSerialized(json) {
+    console.log("== loadSerialized ==");
     // TODO: better documentation on serialization format.
     // TODO: a much better serialization format.
     this.dispatchEvent({ type: EVENT_LOADING, item: this });
     //      this.roomLoadingCallbacks.fire();
 
     var data = JSON.parse(json);
+
+    console.log("= data", data);
     this.newDesign(data.floorplan, data.items);
     this.dispatchEvent({ type: EVENT_LOADED, item: this });
   }
@@ -47,7 +50,7 @@ export class Model extends EventDispatcher {
   }
 
   exportSerialized() {
-    console.log("exportSerialized ==== ===== ==== =");
+    console.log("== exportSerialized ==");
     let floorplanJSON = this.floorplan.saveFloorplan();
     let roomItemsJSON = [];
     this.__roomItems.forEach((item) => {
