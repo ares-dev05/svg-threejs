@@ -41,7 +41,7 @@ fps.start();
 let default_room = JSON.stringify(default_room_json);
 let startY = 0;
 let panelWidths = 200;
-let uxInterfaceHeight = 290;
+let uxInterfaceHeight = 340;
 let subPanelsHeight = 460;
 let floor_textures = floor_textures_json; //['default'];
 let floor_texture_keys = Object.keys(floor_textures);
@@ -248,17 +248,17 @@ function loadSVGDesign(filedata) {
           Math.pow(rulerObj.getAttribute("y1") - rulerObj.getAttribute("y2"), 2)
       );
 
-    var internObj = Array.prototype.slice.call(
-      doc.querySelectorAll("#internals_x5F_sagamore line.st1")
+    var exteriorObj = Array.prototype.slice.call(
+      doc.querySelectorAll("#facade_x5F_sagamore line.st1")
     );
 
     var walls = [];
     var corners = {};
     // var room = "";
 
-    console.log("internObj", internObj.length);
+    console.log("exteriorObj", exteriorObj.length);
 
-    for (var i = 0; i < internObj.length; i++) {
+    for (var i = 0; i < exteriorObj.length; i++) {
       walls.push({
         corner1: i + "1",
         corner2: i + "2",
@@ -304,24 +304,24 @@ function loadSVGDesign(filedata) {
       });
 
       corners[i + "1"] = {
-        x: internObj[i].getAttribute("x1") * rulerVal,
-        y: internObj[i].getAttribute("y1") * rulerVal,
+        x: exteriorObj[i].getAttribute("x1") * rulerVal,
+        y: exteriorObj[i].getAttribute("y1") * rulerVal,
         elevation: 2.59,
       };
 
       corners[i + "2"] = {
-        x: internObj[i].getAttribute("x2") * rulerVal,
-        y: internObj[i].getAttribute("y2") * rulerVal,
+        x: exteriorObj[i].getAttribute("x2") * rulerVal,
+        y: exteriorObj[i].getAttribute("y2") * rulerVal,
         elevation: 2.59,
       };
 
-      // if (i != internObj.length - 1) {
+      // if (i != exteriorObj.length - 1) {
       //   room += i + "1" + "," + i + "2" + ",";
       // } else {
       //   room += i + "1" + "," + i + "2";
       // }
     }
-    console.log("internObj len", internObj.length);
+    console.log("exteriorObj len", exteriorObj.length);
 
     // room = room.toString();
 
@@ -639,7 +639,7 @@ if (!opts.widget) {
   settingsSelectedWall3D = QuickSettings.create(0, 0, "Wall", app_parent);
   settingsSelectedRoom3D = QuickSettings.create(0, 0, "Room", app_parent);
 
-  // uxInterface.addButton("Switch Viewer", switchViewer);
+  uxInterface.addButton("Switch Viewer", switchViewer);
   uxInterface.addHTML("Current View", "Floorplanning");
 
   uxInterface.addFileChooser(
@@ -649,10 +649,11 @@ if (!opts.widget) {
     loadBlueprint3DDesign
   );
 
+  uxInterface.addButton("Save Design", saveBlueprint3DDesign);
+
   uxInterface.addFileChooser("Load SVG", "Load SVG", ".svg", loadSVGDesign);
 
   settingsViewer2d.hide();
-  uxInterface.addButton("Save Design", saveBlueprint3DDesign);
   // uxInterface.addButton("Export as GLTF", saveBlueprint3D);
   // uxInterface.addButton("Export Project (blueprint-py)", exportDesignAsPackage);
   uxInterface.addButton(
