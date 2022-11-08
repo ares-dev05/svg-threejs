@@ -1,18 +1,21 @@
-import ToolbarButton from './toolbar-button';
-import ToolbarSaveButton from './toolbar-save-button';
-import ToolbarLoadButton from './toolbar-load-button';
-import Toolbar from './toolbar';
+import ToolbarButton from "./toolbar-button";
+import ToolbarSaveButton from "./toolbar-save-button";
+import ToolbarLoadButton from "./toolbar-load-button";
+import ToolbarLoadSVGButton from "./toolbar-load-svg-button";
+import Toolbar from "./toolbar";
 
 export {
   ToolbarButton,
   ToolbarSaveButton,
   ToolbarLoadButton,
-  Toolbar
+  ToolbarLoadSVGButton,
+  Toolbar,
 };
 
 export default {
   ToolbarButton,
   ToolbarSaveButton,
   ToolbarLoadButton,
-  Toolbar
+  ToolbarLoadSVGButton,
+  Toolbar,
 };

@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { FaFolderOpen as IconLoad } from "react-icons/fa";
 import ToolbarButton from "./toolbar-button";
 import { browserUpload } from "../../utils/browser";
-
 export default function ToolbarLoadButton(
   { state },
   { translator, projectActions }
@@ -11,8 +10,8 @@ export default function ToolbarLoadButton(
   let loadProjectFromFile = (event) => {
     event.preventDefault();
     browserUpload().then((data) => {
-      console.log("json object", JSON.parse(data));
-      projectActions.loadProject(JSON.parse(data));
+      let sampleJSON = JSON.parse(data);
+      projectActions.loadProject(sampleJSON);
     });
   };
 
