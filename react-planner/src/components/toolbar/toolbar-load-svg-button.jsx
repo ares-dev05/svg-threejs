@@ -83,10 +83,10 @@ export default function ToolbarLoadSVGButton(
               selected: false,
               properties: {
                 height: {
-                  length: 300,
+                  length: WALL_HEIGHT,
                 },
                 thickness: {
-                  length: 20,
+                  length: WALL_THICKNESS,
                 },
                 textureA: "bricks",
                 textureB: "bricks",
@@ -98,7 +98,6 @@ export default function ToolbarLoadSVGButton(
           }
         }
       }
-
       ////
 
       let vertices = facadeParsingData.vertices.concat(
@@ -700,7 +699,7 @@ export default function ToolbarLoadSVGButton(
             let holeID = IDBroker.acquireID();
 
             const offset =
-              ((tempLines[i].vertices2.y + tempLines[i].vertices1.y) / 2 -
+              ((tempLines[i].vertices2.y + tempLines[i + 1].vertices1.y) / 2 -
                 tempLines[i].facade1.y) /
               (tempLines[i].facade2.y - tempLines[i].facade1.y);
 
@@ -714,7 +713,9 @@ export default function ToolbarLoadSVGButton(
                 selected: false,
                 properties: {
                   width: {
-                    length: 40,
+                    length: Math.abs(
+                      tempLines[i].vertices2.y - tempLines[i + 1].vertices1.y
+                    ),
                   },
                   height: {
                     length: 100,
@@ -723,7 +724,7 @@ export default function ToolbarLoadSVGButton(
                     length: 40,
                   },
                   thickness: {
-                    length: 10,
+                    length: 5,
                   },
                   flip: "false",
                 },
@@ -738,7 +739,7 @@ export default function ToolbarLoadSVGButton(
             let holeID = IDBroker.acquireID();
 
             const offset =
-              ((tempLines[i].vertices2.x + tempLines[i].vertices1.x) / 2 -
+              ((tempLines[i].vertices2.x + tempLines[i + 1].vertices1.x) / 2 -
                 tempLines[i].facade1.x) /
               (tempLines[i].facade2.x - tempLines[i].facade1.x);
 
@@ -752,7 +753,9 @@ export default function ToolbarLoadSVGButton(
                 selected: false,
                 properties: {
                   width: {
-                    length: 40,
+                    length: Math.abs(
+                      tempLines[i].vertices2.x - tempLines[i + 1].vertices1.x
+                    ),
                   },
                   height: {
                     length: 100,
@@ -761,7 +764,7 @@ export default function ToolbarLoadSVGButton(
                     length: 40,
                   },
                   thickness: {
-                    length: 10,
+                    length: 5,
                   },
                 },
                 visible: true,
