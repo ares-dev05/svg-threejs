@@ -1,14 +1,14 @@
-const localStorage = window.hasOwnProperty('localStorage') ? window.localStorage : false;
-import { loadProject } from '../actions/project-actions';
+const localStorage = window.hasOwnProperty("localStorage")
+  ? window.localStorage
+  : false;
+import { loadProject } from "../actions/project-actions";
 
 const TIMEOUT_DELAY = 500;
 
 let timeout = null;
 
 export default function autosave(autosaveKey, delay) {
-
   return (store, stateExtractor) => {
-
     delay = delay || TIMEOUT_DELAY;
 
     if (!autosaveKey) return;
@@ -18,7 +18,7 @@ export default function autosave(autosaveKey, delay) {
     if (localStorage.getItem(autosaveKey) !== null) {
       let data = localStorage.getItem(autosaveKey);
       let json = JSON.parse(data);
-      store.dispatch(loadProject(json));
+      // store.dispatch(loadProject(json));
     }
 
     //update

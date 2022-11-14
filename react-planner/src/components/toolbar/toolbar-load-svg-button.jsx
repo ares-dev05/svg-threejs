@@ -14,6 +14,7 @@ export default function ToolbarLoadSVGButton(
   const SCENE_HEIGHT = 2000;
   const WALL_HEIGHT = 259;
   const WALL_THICKNESS = 10;
+  const WINDOWS_HEIGHT = 150;
 
   let loadProjectFromFile = (event) => {
     event.preventDefault();
@@ -44,12 +45,21 @@ export default function ToolbarLoadSVGButton(
         doc.querySelectorAll("#internals_x5F_sagamore line.st11")
       );
 
+      var internalYellowDomObj = Array.prototype.slice.call(
+        doc.querySelectorAll("#internals_x5F_sagamore line.st15")
+      );
+
       let facadeParsingData = getParsingData(rulerPixel, facadeDomObj);
       let internalParsingData = getParsingData(rulerPixel, internalDomObj);
+      let internalYellowParsingData = getParsingData(
+        rulerPixel,
+        internalYellowDomObj
+      );
 
       // Remove the break lines
       facadeParsingData = combineBreakLines(facadeParsingData);
       internalParsingData = combineBreakLines(internalParsingData);
+      internalYellowParsingData = combineBreakLines(internalYellowParsingData);
       // //
 
       // Move facade to internal walls
@@ -60,8 +70,11 @@ export default function ToolbarLoadSVGButton(
       // // // //
 
       // Get the windows and doors position and remove the intern unnessary walls.
-      const windowsPos = getWindowsPos(facadeParsingData, internalParsingData);
-      console.log("windowsPos", windowsPos);
+      const windowsPos = getWindowsPos(
+        facadeParsingData,
+        internalParsingData,
+        internalYellowParsingData
+      );
       // //
 
       //// Add the hole data to facade.
@@ -69,8 +82,6 @@ export default function ToolbarLoadSVGButton(
 
       for (let i = 0; i < facadeLines.length; i++) {
         for (let j = 0; j < windowsPos.holesArr.length; j++) {
-          console.log("windowsPos.holes[j].line", windowsPos.holesArr[j].line);
-          console.log("facadeLines[i].id", facadeLines[i].id);
           if (windowsPos.holesArr[j].line == facadeLines[i].id) {
             let holes = facadeLines[i].holes;
             holes.push(windowsPos.holesArr[j].id);
@@ -103,7 +114,6 @@ export default function ToolbarLoadSVGButton(
       let vertices = facadeParsingData.vertices.concat(
         internalParsingData.vertices
       );
-      // console.log("vertices", vertices);
       let lines = facadeLines.concat(windowsPos.internalLines);
 
       let verticesJson = {};
@@ -165,10 +175,47 @@ export default function ToolbarLoadSVGButton(
         guides: { horizontal: {}, vertical: {}, circular: {} },
       };
 
-      console.log("jsonData", jsonData);
-
       projectActions.loadProject(jsonData);
     });
+  };
+
+  const checkDoor = (vertise1, vertise2, parsingData) => {
+    let verticesJson = [];
+    for (let i = 0; i < parsingData.vertices.length; i++) {
+      verticesJson[parsingData.vertices[i].id] = parsingData.vertices[i];
+    }
+
+    for (let i = 0; i < parsingData.lines.length; i++) {
+      const parseVer1 = verticesJson[parsingData.lines[i].vertices[0]];
+      const parseVer2 = verticesJson[parsingData.lines[i].vertices[1]];
+      const distance11 = Math.sqrt(
+        Math.pow(parseVer1.x - vertise1.x, 2) +
+          Math.pow(parseVer1.y - vertise1.y, 2)
+      );
+      const distance12 = Math.sqrt(
+        Math.pow(parseVer1.x - vertise2.x, 2) +
+          Math.pow(parseVer1.y - vertise2.y, 2)
+      );
+      const distance21 = Math.sqrt(
+        Math.pow(parseVer2.x - vertise1.x, 2) +
+          Math.pow(parseVer2.y - vertise1.y, 2)
+      );
+      const distance22 = Math.sqrt(
+        Math.pow(parseVer2.x - vertise2.x, 2) +
+          Math.pow(parseVer2.y - vertise2.y, 2)
+      );
+
+      if (
+        distance11 <= 15 ||
+        distance12 <= 15 ||
+        distance21 <= 15 ||
+        distance22 <= 15
+      ) {
+        return 1;
+      }
+    }
+
+    return 0;
   };
 
   const checkDupliVertices = (vertices, x, y) => {
@@ -462,10 +509,6 @@ export default function ToolbarLoadSVGButton(
     let facadeVertices = parsingData.vertices;
     let facadeLines = parsingData.lines;
 
-    console.log("data", {
-      facadeVertices: facadeVertices,
-      facadeLines: facadeLines,
-    });
     let tempLines = [];
 
     for (let i = 0; i < facadeLines.length; i++) {
@@ -601,7 +644,12 @@ export default function ToolbarLoadSVGButton(
     }
   };
 
-  const getWindowsPos = (facadeParsingData, internalParsingData) => {
+  const getWindowsPos = (
+    facadeParsingData,
+    internalParsingData,
+    internalYellowParsingData
+  ) => {
+    internalYellowParsingData;
     let verticesfacaceTempJson = {};
     for (let i = 0; i < facadeParsingData.vertices.length; i++) {
       verticesfacaceTempJson[facadeParsingData.vertices[i].id] =
@@ -619,12 +667,14 @@ export default function ToolbarLoadSVGButton(
 
     for (let i = 0; i < facadeParsingData.lines.length; i++) {
       let tempLines = [];
+      let direction = 0; // X axio
       for (let j = 0; j < internTempLines.length; j++) {
         if (
           verticesfacaceTempJson[facadeParsingData.lines[i].vertices[0]].x ==
           verticesfacaceTempJson[facadeParsingData.lines[i].vertices[1]].x
         ) {
           // X axio
+          direction = 0;
           if (
             verticesfacaceTempJson[facadeParsingData.lines[i].vertices[0]].x ==
               verticesInternTempJson[internTempLines[j].vertices[0]].x &&
@@ -640,7 +690,7 @@ export default function ToolbarLoadSVGButton(
               verticesInternTempJson[internTempLines[j].vertices[1]]
             );
             if (
-              intern.vertices1.y >= extern.vertices1.y &&
+              intern.vertices1.y >= extern.vertices1.y ||
               intern.vertices2.y <= extern.vertices2.y
             ) {
               tempLines.push({
@@ -650,7 +700,11 @@ export default function ToolbarLoadSVGButton(
                 facade1: extern.vertices1,
                 facade2: extern.vertices2,
               });
-              unnecessayLines.push(internTempLines[j].id);
+              if (
+                intern.vertices1.y >= extern.vertices1.y &&
+                intern.vertices2.y <= extern.vertices2.y
+              )
+                unnecessayLines.push(internTempLines[j].id);
             }
           }
         } else if (
@@ -658,6 +712,7 @@ export default function ToolbarLoadSVGButton(
           verticesfacaceTempJson[facadeParsingData.lines[i].vertices[1]].y
         ) {
           // Y axio
+          direction = 1;
           if (
             verticesfacaceTempJson[facadeParsingData.lines[i].vertices[0]].y ==
               verticesInternTempJson[internTempLines[j].vertices[0]].y &&
@@ -673,7 +728,7 @@ export default function ToolbarLoadSVGButton(
               verticesInternTempJson[internTempLines[j].vertices[1]]
             );
             if (
-              intern.vertices1.x >= extern.vertices1.x &&
+              intern.vertices1.x >= extern.vertices1.x ||
               intern.vertices2.x <= extern.vertices2.x
             ) {
               tempLines.push({
@@ -683,18 +738,29 @@ export default function ToolbarLoadSVGButton(
                 facade1: extern.vertices1,
                 facade2: extern.vertices2,
               });
-              unnecessayLines.push(internTempLines[j].id);
+              if (
+                intern.vertices1.x >= extern.vertices1.x &&
+                intern.vertices2.x <= extern.vertices2.x
+              )
+                unnecessayLines.push(internTempLines[j].id);
             }
           }
         }
       }
       if (tempLines.length > 1) {
+        // sort tempLines
+        tempLines = tempLines.sort((a, b) => {
+          if (direction == 0) {
+            // X axios
+            return a.vertices1.y - b.vertices1.y;
+          } else if (direction == 1) {
+            // Y axios
+            return a.vertices1.x - b.vertices1.x;
+          }
+        });
         // extract the windows or doors position
         for (let i = 0; i < tempLines.length - 1; i++) {
-          if (
-            verticesfacaceTempJson[facadeParsingData.lines[i].vertices[0]].x ==
-            verticesfacaceTempJson[facadeParsingData.lines[i].vertices[1]].x
-          ) {
+          if (tempLines[i].facade1.x == tempLines[i].facade2.x) {
             // X Axios
             let holeID = IDBroker.acquireID();
 
@@ -703,39 +769,80 @@ export default function ToolbarLoadSVGButton(
                 tempLines[i].facade1.y) /
               (tempLines[i].facade2.y - tempLines[i].facade1.y);
 
-            if (!Number.isNaN(offset)) {
-              result.push({
-                id: holeID,
-                type: "window",
-                prototype: "holes",
-                name: "Window",
-                misc: {},
-                selected: false,
-                properties: {
-                  width: {
-                    length: Math.abs(
-                      tempLines[i].vertices2.y - tempLines[i + 1].vertices1.y
-                    ),
+            if (
+              !Number.isNaN(offset) &&
+              Math.abs(
+                tempLines[i].vertices2.y - tempLines[i + 1].vertices1.y
+              ) <= Math.abs(tempLines[i].facade2.y - tempLines[i + 1].facade1.y)
+            ) {
+              const isDoor = checkDoor(
+                tempLines[i].vertices2,
+                tempLines[i + 1].vertices1,
+                internalYellowParsingData
+              );
+
+              if (isDoor == 0) {
+                result.push({
+                  id: holeID,
+                  type: "window",
+                  prototype: "holes",
+                  name: "Window",
+                  misc: {},
+                  selected: false,
+                  properties: {
+                    width: {
+                      length: Math.abs(
+                        tempLines[i].vertices2.y - tempLines[i + 1].vertices1.y
+                      ),
+                    },
+                    height: {
+                      length: WINDOWS_HEIGHT,
+                    },
+                    altitude: {
+                      length: 40,
+                    },
+                    thickness: {
+                      length: 5,
+                    },
+                    flip: "false",
                   },
-                  height: {
-                    length: 100,
+                  visible: true,
+                  offset: offset,
+                  line: tempLines[i].id,
+                });
+              } else if (isDoor == 1) {
+                result.push({
+                  id: holeID,
+                  type: "door",
+                  prototype: "holes",
+                  name: "Door",
+                  misc: {},
+                  selected: false,
+                  properties: {
+                    width: {
+                      length: Math.abs(
+                        tempLines[i].vertices2.y - tempLines[i + 1].vertices1.y
+                      ),
+                    },
+                    height: {
+                      length: WINDOWS_HEIGHT,
+                    },
+                    altitude: {
+                      length: 40,
+                    },
+                    thickness: {
+                      length: 5,
+                    },
+                    flip: "false",
                   },
-                  altitude: {
-                    length: 40,
-                  },
-                  thickness: {
-                    length: 5,
-                  },
-                  flip: "false",
-                },
-                visible: true,
-                offset: offset,
-                line: tempLines[i].id,
-              });
+                  visible: true,
+                  offset: offset,
+                  line: tempLines[i].id,
+                });
+              }
             }
           } else {
             // Y Axios
-
             let holeID = IDBroker.acquireID();
 
             const offset =
@@ -743,41 +850,80 @@ export default function ToolbarLoadSVGButton(
                 tempLines[i].facade1.x) /
               (tempLines[i].facade2.x - tempLines[i].facade1.x);
 
-            if (!Number.isNaN(offset)) {
-              result.push({
-                id: holeID,
-                type: "window",
-                prototype: "holes",
-                name: "Window",
-                misc: {},
-                selected: false,
-                properties: {
-                  width: {
-                    length: Math.abs(
-                      tempLines[i].vertices2.x - tempLines[i + 1].vertices1.x
-                    ),
+            if (
+              !Number.isNaN(offset) &&
+              Math.abs(
+                tempLines[i].vertices2.x - tempLines[i + 1].vertices1.x
+              ) <= Math.abs(tempLines[i].facade2.x - tempLines[i + 1].facade1.x)
+            ) {
+              const isDoor = checkDoor(
+                tempLines[i].vertices2,
+                tempLines[i + 1].vertices1,
+                internalYellowParsingData
+              );
+
+              if (isDoor == 0) {
+                result.push({
+                  id: holeID,
+                  type: "window",
+                  prototype: "holes",
+                  name: "Window",
+                  misc: {},
+                  selected: false,
+                  properties: {
+                    width: {
+                      length: Math.abs(
+                        tempLines[i].vertices2.x - tempLines[i + 1].vertices1.x
+                      ),
+                    },
+                    height: {
+                      length: WINDOWS_HEIGHT,
+                    },
+                    altitude: {
+                      length: 40,
+                    },
+                    thickness: {
+                      length: 5,
+                    },
                   },
-                  height: {
-                    length: 100,
+                  visible: true,
+                  offset: offset,
+                  line: tempLines[i].id,
+                });
+              } else if (isDoor == 1) {
+                sult.push({
+                  id: holeID,
+                  type: "door",
+                  prototype: "holes",
+                  name: "Door",
+                  misc: {},
+                  selected: false,
+                  properties: {
+                    width: {
+                      length: Math.abs(
+                        tempLines[i].vertices2.x - tempLines[i + 1].vertices1.x
+                      ),
+                    },
+                    height: {
+                      length: WINDOWS_HEIGHT,
+                    },
+                    altitude: {
+                      length: 40,
+                    },
+                    thickness: {
+                      length: 5,
+                    },
                   },
-                  altitude: {
-                    length: 40,
-                  },
-                  thickness: {
-                    length: 5,
-                  },
-                },
-                visible: true,
-                offset: offset,
-                line: tempLines[i].id,
-              });
+                  visible: true,
+                  offset: offset,
+                  line: tempLines[i].id,
+                });
+              }
             }
           }
         }
       }
     }
-
-    console.log("result", result);
 
     let json = {};
     for (let i = 0; i < result.length; i++) {
