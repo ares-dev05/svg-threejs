@@ -120,6 +120,7 @@ export default function ToolbarLoadSVGButton(
       for (let i = 0; i < vertices.length; i++) {
         verticesJson[vertices[i].id] = vertices[i];
       }
+      lines = arrangeLines(lines, verticesJson);
       let linesJson = {};
       for (let i = 0; i < lines.length; i++) {
         linesJson[lines[i].id] = lines[i];
@@ -177,6 +178,48 @@ export default function ToolbarLoadSVGButton(
 
       projectActions.loadProject(jsonData);
     });
+  };
+
+  const arrangeLines = (lines, verticesJson) => {
+    let resLines = [];
+    for (let i = 0; i < lines.length; i++) {
+      let vertise1 = verticesJson[lines[i].vertices[0]];
+      let vertise2 = verticesJson[lines[i].vertices[1]];
+
+      if (vertise1.x == vertise2.x && vertise1.y > vertise2.y) {
+        const temp = vertise1;
+        vertise1 = vertise2;
+        vertise2 = temp;
+      } else if (vertise1.y == vertise2.y && vertise1.x > vertise2.x) {
+        const temp = vertise1;
+        vertise1 = vertise2;
+        vertise2 = temp;
+      }
+
+      resLines.push({
+        id: lines[i].id,
+        type: lines[i].type,
+        prototype: lines[i].prototype,
+        name: lines[i].name,
+        misc: {},
+        selected: false,
+        properties: {
+          height: {
+            length: WALL_HEIGHT,
+          },
+          thickness: {
+            length: WALL_THICKNESS,
+          },
+          textureA: "bricks",
+          textureB: "bricks",
+        },
+        visible: true,
+        vertices: [vertise1.id, vertise2.id],
+        holes: lines[i].holes,
+      });
+    }
+
+    return resLines;
   };
 
   const checkDoor = (vertise1, vertise2, parsingData) => {
