@@ -66,8 +66,10 @@
   "homepage": "https://github.com/cvdlab/FloorPlan-3D#readme",
   "dependencies": {
     "@mapbox/react-range": "0.0.7",
+    "@material-ui/core": "^4.12.4",
     "area-polygon": "1.0.1",
     "convert-units": "2.3.4",
+    "framer-motion": "^7.6.7",
     "html-webpack-plugin": "3.2.0",
     "immutable": "3.8.2",
     "immutablediff": "0.4.4",

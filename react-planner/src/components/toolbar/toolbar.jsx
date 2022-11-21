@@ -74,7 +74,7 @@ export default class Toolbar extends Component {
     } = this;
 
     // Load 3D model forcely
-    viewer3DActions.selectTool3DView();
+    // viewer3DActions.selectTool3DView();
 
     let mode = state.get("mode");
     let alterate = state.get("alterate");
@@ -113,19 +113,19 @@ export default class Toolbar extends Component {
         condition: allowProjectFileSupport,
         dom: <ToolbarLoadSVGButton state={state} />,
       },
-      // {
-      //   index: 4,
-      //   condition: true,
-      //   dom: (
-      //     <ToolbarButton
-      //       active={[MODE_VIEWING_CATALOG].includes(mode)}
-      //       tooltip={translator.t("Open catalog")}
-      //       onClick={(event) => projectActions.openCatalog()}
-      //     >
-      //       <FaPlus />
-      //     </ToolbarButton>
-      //   ),
-      // },
+      {
+        index: 4,
+        condition: true,
+        dom: (
+          <ToolbarButton
+            active={[MODE_VIEWING_CATALOG].includes(mode)}
+            tooltip={translator.t("Open catalog")}
+            onClick={(event) => projectActions.openCatalog()}
+          >
+            <FaPlus />
+          </ToolbarButton>
+        ),
+      },
       {
         index: 5,
         condition: true,
@@ -139,23 +139,23 @@ export default class Toolbar extends Component {
           </ToolbarButton>
         ),
       },
-      // {
-      //   index: 6,
-      //   condition: true,
-      //   dom: (
-      //     <ToolbarButton
-      //       active={[MODE_IDLE].includes(mode)}
-      //       tooltip={translator.t("2D View")}
-      //       onClick={(event) => projectActions.setMode(MODE_IDLE)}
-      //     >
-      //       {[MODE_3D_FIRST_PERSON, MODE_3D_VIEW].includes(mode) ? (
-      //         <Icon2D style={{ color: alterateColor }} />
-      //       ) : (
-      //         <FaMousePointer style={{ color: alterateColor }} />
-      //       )}
-      //     </ToolbarButton>
-      //   ),
-      // },
+      {
+        index: 6,
+        condition: true,
+        dom: (
+          <ToolbarButton
+            active={[MODE_IDLE].includes(mode)}
+            tooltip={translator.t("2D View")}
+            onClick={(event) => projectActions.setMode(MODE_IDLE)}
+          >
+            {[MODE_3D_FIRST_PERSON, MODE_3D_VIEW].includes(mode) ? (
+              <Icon2D style={{ color: alterateColor }} />
+            ) : (
+              <FaMousePointer style={{ color: alterateColor }} />
+            )}
+          </ToolbarButton>
+        ),
+      },
       {
         index: 7,
         condition: true,

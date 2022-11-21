@@ -5,10 +5,12 @@ import Immutable, { Map } from "immutable";
 import immutableDevtools from "immutable-devtools";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import MyCatalog from "./catalog/mycatalog";
 
 import ToolbarScreenshotButton from "./ui/toolbar-screenshot-button";
+// import routes, { renderRoutes } from "./../../src/routes";
 
 import {
   Models as PlannerModels,
@@ -80,18 +82,28 @@ let toolbarButtons = [ToolbarScreenshotButton];
 //render
 ReactDOM.render(
   <Provider store={store}>
-    <ContainerDimensions>
-      {({ width, height }) => (
-        <ReactPlanner
-          catalog={MyCatalog}
-          width={width}
-          height={height}
-          plugins={plugins}
-          toolbarButtons={toolbarButtons}
-          stateExtractor={(state) => state.get("react-planner")}
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Link to="/blogs">Home</Link>} />
+        <Route
+          path="/blogs"
+          element={
+            <ContainerDimensions>
+              {({ width, height }) => (
+                <ReactPlanner
+                  catalog={MyCatalog}
+                  width={width}
+                  height={height}
+                  plugins={plugins}
+                  toolbarButtons={toolbarButtons}
+                  stateExtractor={(state) => state.get("react-planner")}
+                />
+              )}
+            </ContainerDimensions>
+          }
         />
-      )}
-    </ContainerDimensions>
+      </Routes>
+    </BrowserRouter>
   </Provider>,
   document.getElementById("app")
 );

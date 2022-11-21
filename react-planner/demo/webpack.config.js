@@ -10,6 +10,7 @@ const VENDORS_LIBRARIES = [
   "react-redux",
   "redux",
   "three",
+  "react-router-dom",
 ];
 
 module.exports = (env, self) => {
