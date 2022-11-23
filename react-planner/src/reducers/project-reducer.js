@@ -1,4 +1,4 @@
-import { history } from '../utils/export';
+import { history } from "../utils/export";
 import {
   LOAD_PROJECT,
   NEW_PROJECT,
@@ -33,13 +33,12 @@ import {
   ADD_CIRCULAR_GUIDE,
   REMOVE_HORIZONTAL_GUIDE,
   REMOVE_VERTICAL_GUIDE,
-  REMOVE_CIRCULAR_GUIDE
-} from '../constants';
+  REMOVE_CIRCULAR_GUIDE,
+} from "../constants";
 
-import { Project } from '../class/export';
+import { Project } from "../class/export";
 
 export default function (state, action) {
-
   switch (action.type) {
     case NEW_PROJECT:
       return Project.newProject(state).updatedState;
@@ -51,10 +50,11 @@ export default function (state, action) {
       return Project.openCatalog(state).updatedState;
 
     case CHANGE_CATALOG_PAGE:
-      return Project.changeCatalogPage( state, action.oldPage, action.newPage ).updatedState;
+      return Project.changeCatalogPage(state, action.oldPage, action.newPage)
+        .updatedState;
 
     case GO_BACK_TO_CATALOG_PAGE:
-      return Project.goBackToCatalogPage( state, action.newPage ).updatedState;
+      return Project.goBackToCatalogPage(state, action.newPage).updatedState;
 
     case SELECT_TOOL_EDIT:
       return Project.setMode(state, MODE_IDLE).updatedState;
@@ -63,23 +63,40 @@ export default function (state, action) {
       return Project.unselectAll(state).updatedState;
 
     case SET_PROPERTIES:
-      state = state.merge({ sceneHistory: history.historyPush(state.sceneHistory, state.scene) });
-      return Project.setProperties(state, state.getIn(['scene', 'selectedLayer']), action.properties).updatedState;
+      state = state.merge({
+        sceneHistory: history.historyPush(state.sceneHistory, state.scene),
+      });
+      return Project.setProperties(
+        state,
+        state.getIn(["scene", "selectedLayer"]),
+        action.properties
+      ).updatedState;
 
     case SET_ITEMS_ATTRIBUTES:
-      state = state.merge({ sceneHistory: history.historyPush(state.sceneHistory, state.scene) });
-      return Project.setItemsAttributes(state, action.itemsAttributes).updatedState;
+      state = state.merge({
+        sceneHistory: history.historyPush(state.sceneHistory, state.scene),
+      });
+      return Project.setItemsAttributes(state, action.itemsAttributes)
+        .updatedState;
 
     case SET_LINES_ATTRIBUTES:
-      state = state.merge({ sceneHistory: history.historyPush(state.sceneHistory, state.scene) });
-      return Project.setLinesAttributes(state, action.linesAttributes).updatedState;
+      state = state.merge({
+        sceneHistory: history.historyPush(state.sceneHistory, state.scene),
+      });
+      return Project.setLinesAttributes(state, action.linesAttributes)
+        .updatedState;
 
     case SET_HOLES_ATTRIBUTES:
-      state = state.merge({ sceneHistory: history.historyPush(state.sceneHistory, state.scene) });
-      return Project.setHolesAttributes(state, action.holesAttributes).updatedState;
+      state = state.merge({
+        sceneHistory: history.historyPush(state.sceneHistory, state.scene),
+      });
+      return Project.setHolesAttributes(state, action.holesAttributes)
+        .updatedState;
 
     case REMOVE:
-      state = state.merge({ sceneHistory: history.historyPush(state.sceneHistory, state.scene) });
+      state = state.merge({
+        sceneHistory: history.historyPush(state.sceneHistory, state.scene),
+      });
       return Project.remove(state).updatedState;
 
     case UNDO:
@@ -89,11 +106,16 @@ export default function (state, action) {
       return Project.rollback(state).updatedState;
 
     case SET_PROJECT_PROPERTIES:
-      state = state.merge({ sceneHistory: history.historyPush(state.sceneHistory, state.scene) });
-      return Project.setProjectProperties(state, action.properties).updatedState;
+      state = state.merge({
+        sceneHistory: history.historyPush(state.sceneHistory, state.scene),
+      });
+      return Project.setProjectProperties(state, action.properties)
+        .updatedState;
 
     case OPEN_PROJECT_CONFIGURATOR:
-      state = state.merge({ sceneHistory: history.historyPush(state.sceneHistory, state.scene) });
+      state = state.merge({
+        sceneHistory: history.historyPush(state.sceneHistory, state.scene),
+      });
       return Project.openProjectConfigurator(state).updatedState;
 
     case INIT_CATALOG:
@@ -118,27 +140,35 @@ export default function (state, action) {
       return Project.copyProperties(state, action.properties).updatedState;
 
     case PASTE_PROPERTIES:
-      state = state.merge({ sceneHistory: history.historyPush(state.sceneHistory, state.scene) });
+      state = state.merge({
+        sceneHistory: history.historyPush(state.sceneHistory, state.scene),
+      });
       return Project.pasteProperties(state).updatedState;
 
     case PUSH_LAST_SELECTED_CATALOG_ELEMENT_TO_HISTORY:
-      return Project.pushLastSelectedCatalogElementToHistory(state, action.element).updatedState;
+      return Project.pushLastSelectedCatalogElementToHistory(
+        state,
+        action.element
+      ).updatedState;
 
     case ALTERATE_STATE:
-      return Project.setAlterate( state ).updatedState;
-    
+      return Project.setAlterate(state).updatedState;
+
     case SET_MODE:
       return Project.setMode(state, action.mode).updatedState;
-    
+
     case ADD_HORIZONTAL_GUIDE:
-      state = state.merge({ sceneHistory: history.historyPush(state.sceneHistory, state.scene) });
+      state = state.merge({
+        sceneHistory: history.historyPush(state.sceneHistory, state.scene),
+      });
       return Project.addHorizontalGuide(state, action.coordinate).updatedState;
-    
+
     case ADD_VERTICAL_GUIDE:
       return Project.addVerticalGuide(state, action.coordinate).updatedState;
-    
+
     case ADD_CIRCULAR_GUIDE:
-      return Project.addCircularGuide(state, action.x, action.y, action.radius).updatedState;
+      return Project.addCircularGuide(state, action.x, action.y, action.radius)
+        .updatedState;
 
     case REMOVE_HORIZONTAL_GUIDE:
       return Project.removeHorizontalGuide(state, action.guideID).updatedState;
@@ -151,6 +181,5 @@ export default function (state, action) {
 
     default:
       return state;
-
   }
 }

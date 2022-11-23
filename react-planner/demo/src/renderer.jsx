@@ -4,13 +4,14 @@ import ContainerDimensions from "react-container-dimensions";
 import Immutable, { Map } from "immutable";
 import immutableDevtools from "immutable-devtools";
 import { createStore } from "redux";
-import { Provider } from "react-redux";
+import { Provider as ReduxProvider } from "react-redux";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import MyCatalog from "./catalog/mycatalog";
 
 import ToolbarScreenshotButton from "./ui/toolbar-screenshot-button";
-// import routes, { renderRoutes } from "./../../src/routes";
+import NewProject from "../../src/components/NewProject";
+import LoadBluePrint from "../../src/components/LoadBluePrint";
 
 import {
   Models as PlannerModels,
@@ -71,6 +72,8 @@ let store = createStore(
     : (f) => f
 );
 
+const { dispatch, getState } = store;
+
 let plugins = [
   PlannerPlugins.Keyboard(),
   PlannerPlugins.Autosave("react-planner_v0"),
@@ -81,12 +84,11 @@ let toolbarButtons = [ToolbarScreenshotButton];
 
 //render
 ReactDOM.render(
-  <Provider store={store}>
+  <ReduxProvider store={store}>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Link to="/blogs">Home</Link>} />
         <Route
-          path="/blogs"
+          path="/"
           element={
             <ContainerDimensions>
               {({ width, height }) => (
@@ -102,8 +104,32 @@ ReactDOM.render(
             </ContainerDimensions>
           }
         />
+        <Route
+          path="/new"
+          element={
+            <NewProject
+              stateExtractor={(state) => state.get("react-planner")}
+              plugins={plugins}
+              toolbarButtons={toolbarButtons}
+              catalog={MyCatalog}
+              dispatch={dispatch}
+            />
+          }
+        />
+        <Route
+          path="/load"
+          element={
+            <LoadBluePrint
+              stateExtractor={(state) => state.get("react-planner")}
+              plugins={plugins}
+              toolbarButtons={toolbarButtons}
+              catalog={MyCatalog}
+              dispatch={dispatch}
+            />
+          }
+        />
       </Routes>
     </BrowserRouter>
-  </Provider>,
+  </ReduxProvider>,
   document.getElementById("app")
 );

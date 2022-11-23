@@ -176,6 +176,8 @@ export default function ToolbarLoadSVGButton(
         guides: { horizontal: {}, vertical: {}, circular: {} },
       };
 
+      console.log("jsonData", jsonData);
+
       projectActions.loadProject(jsonData);
     });
   };

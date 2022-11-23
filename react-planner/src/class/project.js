@@ -35,6 +35,7 @@ class Project {
 
   static loadProject(state, sceneJSON) {
     state = new State({ scene: sceneJSON, catalog: state.catalog.toJS() });
+    console.log("loadProject", state.catalog.toJS());
     // parsing svg
     state = Layer.detectAndUpdateAreas(state, "layer-1").updatedState;
     return { updatedState: state };

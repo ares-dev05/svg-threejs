@@ -850,8 +850,6 @@ function addLine(sceneData, planData, layer, lineID, catalog, linesActions) {
     vertex1 = tmp;
   }
 
-  console.log("catalog", catalog.getElement(line.type));
-
   return catalog
     .getElement(line.type)
     .render3D(line, layer, sceneData)

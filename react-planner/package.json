@@ -6,7 +6,7 @@
   "module": "es/index.js",
   "jsnext:main": "es/index.js",
   "scripts": {
-    "start": "webpack-dev-server --inline --config demo/webpack.config.js --port 9000 --mode development",
+    "start": "webpack-dev-server --inline --config demo/webpack.config.js --port 9000 --mode development --history-api-fallback",
     "build": "webpack --config demo/webpack.config.js --mode production",
     "build-commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
     "build-es": "cross-env BABEL_ENV=es babel src --copy-files --out-dir es",
@@ -75,12 +75,14 @@
     "immutablediff": "0.4.4",
     "immutablepatch": "0.5.0",
     "polylabel": "1.0.2",
-    "prop-types": "15.7.2",
+    "react-dropzone": "^14.2.3",
     "react-icons": "3.5.0",
     "react-redux": "5.0.7",
+    "react-router-dom": "^6.4.3",
     "react-svg-pan-zoom": "2.18.0",
     "react-tabs": "3.0.0",
     "redux": "4.0.1",
+    "prop-types": "15.7.2",
     "shortid": "2.2.14"
   },
   "devDependencies": {

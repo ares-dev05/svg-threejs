@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { MdSettings, MdUndo, MdDirectionsRun } from "react-icons/md";
 import { FaFile, FaMousePointer, FaPlus } from "react-icons/fa";
+import { Link } from "react-router-dom";
+
 import ToolbarButton from "./toolbar-button";
 import ToolbarSaveButton from "./toolbar-save-button";
 import ToolbarLoadButton from "./toolbar-load-button";
@@ -85,17 +87,20 @@ export default class Toolbar extends Component {
         index: 0,
         condition: allowProjectFileSupport,
         dom: (
-          <ToolbarButton
-            active={false}
-            tooltip={translator.t("New project")}
-            onClick={(event) =>
-              confirm(translator.t("Would you want to start a new Project?"))
-                ? projectActions.newProject()
-                : null
-            }
-          >
-            <FaFile />
-          </ToolbarButton>
+          <Link to="/new">
+            <ToolbarButton
+              active={false}
+              tooltip={translator.t("New project")}
+              onClick={(event) => {
+                // projectActions.newProject();
+                // confirm(translator.t("Would you want to start a new Project?"))
+                //   ? projectActions.newProject()
+                //   : null
+              }}
+            >
+              <FaFile />
+            </ToolbarButton>
+          </Link>
         ),
       },
       {

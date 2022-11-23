@@ -41,6 +41,7 @@ class ReactPlanner extends Component {
   componentWillMount() {
     let { store } = this.context;
     let { projectActions, catalog, stateExtractor, plugins } = this.props;
+
     plugins.forEach((plugin) => plugin(store, stateExtractor));
     projectActions.initCatalog(catalog);
   }

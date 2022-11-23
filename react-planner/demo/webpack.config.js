@@ -91,6 +91,9 @@ module.exports = (env, self) => {
         inject: "body",
         production: isProduction,
       }),
+      new webpack.ProvidePlugin({
+        React: "react",
+      }),
     ],
     optimization: {
       minimize: isProduction,
