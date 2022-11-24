@@ -99,6 +99,7 @@ ReactDOM.render(
                   plugins={plugins}
                   toolbarButtons={toolbarButtons}
                   stateExtractor={(state) => state.get("react-planner")}
+                  dispatch={dispatch}
                 />
               )}
             </ContainerDimensions>

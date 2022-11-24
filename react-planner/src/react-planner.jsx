@@ -15,12 +15,13 @@ import {
 } from "./components/export";
 import { VERSION } from "./version";
 import "./styles/export";
+import Topbar from "./components/Topbar";
 
 const { Toolbar } = ToolbarComponents;
 const { Sidebar } = SidebarComponents;
 const { FooterBar } = FooterBarComponents;
 
-const toolbarW = 50;
+const toolbarW = 52;
 const sidebarW = 300;
 const footerBarH = 20;
 
@@ -30,6 +31,12 @@ const wrapperStyle = {
 };
 
 class ReactPlanner extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      tab: 0,
+    };
+  }
   getChildContext() {
     return {
       ...objectsMap(actions, (actionNamespace) => this.props[actionNamespace]),
@@ -56,44 +63,62 @@ class ReactPlanner extends Component {
   }
 
   render() {
-    let { width, height, state, stateExtractor, ...props } = this.props;
+    let { width, height, state, stateExtractor, dispatch, catalog, ...props } =
+      this.props;
 
-    let contentW = width - toolbarW - sidebarW;
-    // let contentW = width - toolbarW;
-    let toolbarH = height - footerBarH;
-    let contentH = height - footerBarH;
-    let sidebarH = height - footerBarH;
+    // let contentW = width - toolbarW - sidebarW;
+    let contentW = width - toolbarW;
+    let heightTopBar = 52;
+    // let toolbarH = height - footerBarH - heightTopBar;
+    // let contentH = height - footerBarH - heightTopBar;
+    // let sidebarH = height - footerBarH - heightTopBar;
+    let toolbarH = height - heightTopBar;
+    let contentH = height - heightTopBar;
+    let sidebarH = height - heightTopBar;
+    let wrapHeight = height - heightTopBar;
 
     let extractedState = stateExtractor(state);
 
     return (
-      <div style={{ ...wrapperStyle, height }}>
-        <Toolbar
-          width={toolbarW}
-          height={toolbarH}
-          state={extractedState}
-          {...props}
+      <div>
+        <Topbar
+          dispatch={dispatch}
+          catalog={catalog}
+          tab={this.state.tab}
+          setTab={(tab) => {
+            this.setState({
+              tab: tab,
+            });
+          }}
         />
-        <Content
-          width={contentW}
-          height={contentH}
-          state={extractedState}
-          {...props}
-          onWheel={(event) => event.preventDefault()}
-        />
-        <Sidebar
-          width={sidebarW}
-          height={sidebarH}
-          state={extractedState}
-          {...props}
-          disable={true}
-        />
-        <FooterBar
-          width={width}
-          height={footerBarH}
-          state={extractedState}
-          {...props}
-        />
+        <div style={{ ...wrapperStyle, wrapHeight }}>
+          <Toolbar
+            width={toolbarW}
+            height={toolbarH}
+            state={extractedState}
+            {...props}
+          />
+          <Content
+            width={contentW}
+            height={contentH}
+            state={extractedState}
+            {...props}
+            onWheel={(event) => event.preventDefault()}
+          />
+          {/* <Sidebar
+            width={sidebarW}
+            height={sidebarH}
+            state={extractedState}
+            {...props}
+            disable={true}
+          /> */}
+          {/* <FooterBar
+            width={width}
+            height={footerBarH}
+            state={extractedState}
+            {...props}
+          /> */}
+        </div>
       </div>
     );
   }

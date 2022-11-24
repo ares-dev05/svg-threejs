@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { Box, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import actions from "./../actions/export";
 
@@ -82,6 +82,7 @@ const useStyles = makeStyles(() => ({
 
 export default function NewProject(props) {
   const classes = useStyles();
+  const navigate = useNavigate();
 
   useEffect(() => {}, []);
 
@@ -94,35 +95,29 @@ export default function NewProject(props) {
         alignItems="center"
         className={classes.container}
       >
-        <Link
-          to="/"
-          style={{
-            textDecoration: "none",
+        <Box
+          className={classes.wrap}
+          onClick={() => {
+            props.dispatch(actions.projectActions.newProject());
+            navigate("/");
           }}
         >
-          <Box className={classes.wrap}>
-            <img src="/assets/Vector.png" className={classes.icon1} />
-            <Typography className={classes.subscription}>
-              Start from scratch
-            </Typography>
-            <Typography className={classes.miniscription}>
-              Lets draw your ground. You can either trace a hand drawn plan or
-              start from scratch
-            </Typography>
-          </Box>
-        </Link>
+          <img src="/assets/Vector.png" className={classes.icon1} />
+          <Typography className={classes.subscription}>
+            Start from scratch
+          </Typography>
+          <Typography className={classes.miniscription}>
+            Lets draw your ground. You can either trace a hand drawn plan or
+            start from scratch
+          </Typography>
+        </Box>
         <Link
           to="/load"
           style={{
             textDecoration: "none",
           }}
         >
-          <Box
-            className={classes.wrap}
-            onClick={() => {
-              props.dispatch(actions.projectActions.newProject());
-            }}
-          >
+          <Box className={classes.wrap}>
             <img src="/assets/Group.png" className={classes.icon2} />
             <Typography className={classes.subscription}>
               Create from your blueprint

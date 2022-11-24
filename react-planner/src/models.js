@@ -30,7 +30,7 @@ export const DefaultGrids = new Map({
     type: "horizontal-streak",
     properties: {
       step: 20,
-      colors: ["#fff", "#fff", "#fff", "#fff", "#fff"],
+      colors: ["#F6F6F6", "#F6F6F6", "#F6F6F6", "#F6F6F6", "#F6F6F6"],
     },
   }),
   v1: new Grid({
@@ -38,7 +38,7 @@ export const DefaultGrids = new Map({
     type: "vertical-streak",
     properties: {
       step: 20,
-      colors: ["#fff", "#fff", "#fff", "#fff", "#fff"],
+      colors: ["#F6F6F6", "#F6F6F6", "#F6F6F6", "#F6F6F6", "#F6F6F6"],
     },
   }),
 });

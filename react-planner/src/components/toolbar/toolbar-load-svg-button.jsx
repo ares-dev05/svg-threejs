@@ -156,7 +156,7 @@ export default function ToolbarLoadSVGButton(
             type: "horizontal-streak",
             properties: {
               step: 20,
-              colors: ["#808080", "#ddd", "#ddd", "#ddd", "#ddd"],
+              colors: ["#F6F6F6", "#F6F6F6", "#F6F6F6", "#F6F6F6", "#F6F6F6"],
             },
           },
           v1: {
@@ -164,7 +164,7 @@ export default function ToolbarLoadSVGButton(
             type: "vertical-streak",
             properties: {
               step: 20,
-              colors: ["#808080", "#ddd", "#ddd", "#ddd", "#ddd"],
+              colors: ["#F6F6F6", "#F6F6F6", "#F6F6F6", "#F6F6F6", "#F6F6F6"],
             },
           },
         },
