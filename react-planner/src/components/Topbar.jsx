@@ -7,6 +7,13 @@ import { Link, useNavigate } from "react-router-dom";
 import UploadSingleFile from "./UploadSingleFile";
 import { loadProjectFromFile } from "./parse-svg";
 import actions from "../actions/export";
+import {
+  MODE_IDLE,
+  MODE_3D_VIEW,
+  MODE_3D_FIRST_PERSON,
+  MODE_VIEWING_CATALOG,
+  MODE_CONFIGURING_PROJECT,
+} from "../constants";
 
 const useStyles = makeStyles(() => ({
   background: {
@@ -139,6 +146,8 @@ export default function Topbar(props) {
               }
               onClick={() => {
                 props.setTab(0);
+                console.log("setTab");
+                props.dispatch(actions.projectActions.setMode(MODE_IDLE));
               }}
             >
               Drawing
@@ -159,6 +168,7 @@ export default function Topbar(props) {
               }
               onClick={() => {
                 props.setTab(2);
+                props.dispatch(actions.viewer3DActions.selectTool3DView());
               }}
             >
               3D

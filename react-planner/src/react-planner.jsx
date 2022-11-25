@@ -96,6 +96,7 @@ class ReactPlanner extends Component {
             width={toolbarW}
             height={toolbarH}
             state={extractedState}
+            dispatch={dispatch}
             {...props}
           />
           <Content

@@ -1,15 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { MdSettings, MdUndo, MdDirectionsRun } from "react-icons/md";
-import { FaFile, FaMousePointer, FaPlus } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
-import { Box, Typography, Grid } from "@material-ui/core";
+import { Box } from "@material-ui/core";
+import ItemsBox from "./ItemsBox";
 
-import ToolbarButton from "./toolbar-button";
-import ToolbarSaveButton from "./toolbar-save-button";
-import ToolbarLoadButton from "./toolbar-load-button";
-import ToolbarLoadSVGButton from "./toolbar-load-svg-button";
 import If from "../../utils/react-if";
 import {
   MODE_IDLE,
@@ -34,6 +28,7 @@ const Icon3D = ({ style }) => <p style={{ ...iconTextStyle, ...style }}>3D</p>;
 const ASIDE_STYLE = {
   backgroundColor: SharedStyle.PRIMARY_COLOR.main,
   borderRight: SharedStyle.PRIMARY_COLOR.border,
+  position: "relative",
 };
 
 const sortButtonsCb = (a, b) => {
@@ -82,20 +77,46 @@ const styles = (theme) => ({
     right: "50%",
     transform: "translate(50%,-50%)",
   },
+  snap: {
+    position: "absolute",
+    top: "50%",
+    right: "20%",
+    transform: "translate(50%,-50%)",
+  },
+  btmbox: {
+    width: "52px",
+    height: "52px",
+    position: "relative",
+    background: "#FFFFFF",
+    borderTop: "1px solid #E4E8EE",
+    cursor: "pointer",
+    borderRight: "1px solid #E4E8EE",
+    "&:active": {
+      background: "#407AEC",
+    },
+  },
 });
 class Toolbar extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = { cursor: 0, hover: 0, selectedCursor: 0 };
+    this.state = { cursor: 0, hover: 0, selectedCursor: 0, click: false };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return true;
+    return (
+      this.props.state.mode !== nextProps.state.mode ||
+      this.props.height !== nextProps.height ||
+      this.props.width !== nextProps.width ||
+      this.props.state.alterate !== nextProps.state.alterate ||
+      nextState.cursor != this.state.cursor ||
+      nextState.selectedCursor != this.state.selectedCursor ||
+      nextState.click != this.state.click
+    );
   }
 
   render() {
     let {
-      props: { state, width, height, toolbarButtons, allowProjectFileSupport },
+      props: { state, width, height, dispatch },
       context: { projectActions, viewer3DActions, translator },
     } = this;
 
@@ -104,292 +125,37 @@ class Toolbar extends Component {
     // Load 3D model forcely
     // viewer3DActions.selectTool3DView();
 
-    let mode = state.get("mode");
-    let alterate = state.get("alterate");
-    let alterateColor = alterate ? SharedStyle.MATERIAL_COLORS[500].orange : "";
-
-    let sorter = [
-      {
-        index: 0,
-        condition: allowProjectFileSupport,
-        dom: (
-          <Box className={this.state.cursor == 0 ? classes.boxH : classes.box}>
-            <img
-              src={
-                this.state.cursor == 0
-                  ? "/assets/cursor-hover.png"
-                  : "/assets/cursor.png"
-              }
-              className={classes.icon}
-              onMouseOver={() => {
-                const temp = this.state.cursor;
-                this.setState({ cursor: 0, hover: temp });
-              }}
-              onMouseLeave={() => {
-                this.setState({ cursor: this.state.hover, hover: -1 });
-              }}
-            />
-          </Box>
-        ),
-      },
-      {
-        index: 1,
-        condition: allowProjectFileSupport,
-        dom: (
-          <Box className={this.state.cursor == 1 ? classes.boxH : classes.box}>
-            <img
-              src={
-                this.state.cursor == 1
-                  ? "/assets/line-hover.png"
-                  : "/assets/line.png"
-              }
-              className={classes.icon}
-              onMouseOver={() => {
-                const temp = this.state.cursor;
-                this.setState({ cursor: 1, hover: temp });
-              }}
-              onMouseLeave={() => {
-                this.setState({ cursor: this.state.hover, hover: -1 });
-              }}
-            />
-          </Box>
-        ),
-      },
-      {
-        index: 2,
-        condition: allowProjectFileSupport,
-        dom: (
-          <Box className={this.state.cursor == 2 ? classes.boxH : classes.box}>
-            <img
-              src={
-                this.state.cursor == 2
-                  ? "/assets/rectangle-hover.png"
-                  : "/assets/rectangle.png"
-              }
-              className={classes.icon}
-              onMouseOver={() => {
-                const temp = this.state.cursor;
-                this.setState({ cursor: 2, hover: temp });
-              }}
-              onMouseLeave={() => {
-                this.setState({ cursor: this.state.hover, hover: -1 });
-              }}
-            />
-          </Box>
-        ),
-      },
-      {
-        index: 3,
-        condition: allowProjectFileSupport,
-        dom: (
-          <Box className={this.state.cursor == 3 ? classes.boxH : classes.box}>
-            <img
-              src={
-                this.state.cursor == 3
-                  ? "/assets/grid-hover.png"
-                  : "/assets/grid.png"
-              }
-              className={classes.icon}
-              onMouseOver={() => {
-                const temp = this.state.cursor;
-                this.setState({ cursor: 3, hover: temp });
-              }}
-              onMouseLeave={() => {
-                this.setState({ cursor: this.state.hover, hover: -1 });
-              }}
-            />
-          </Box>
-        ),
-      },
-      {
-        index: 4,
-        condition: allowProjectFileSupport,
-        dom: (
-          <Box className={this.state.cursor == 4 ? classes.boxH : classes.box}>
-            <img
-              src={
-                this.state.cursor == 4
-                  ? "/assets/items-hover.png"
-                  : "/assets/items.png"
-              }
-              className={classes.icon}
-              onMouseOver={() => {
-                const temp = this.state.cursor;
-                this.setState({ cursor: 4, hover: temp });
-              }}
-              onMouseLeave={() => {
-                this.setState({ cursor: this.state.hover, hover: -1 });
-              }}
-            />
-          </Box>
-        ),
-      },
-      {
-        index: 5,
-        condition: allowProjectFileSupport,
-        dom: (
-          <Box
-            className={this.state.cursor == 5 ? classes.boxH : classes.box}
-            onMouseOver={() => {
-              console.log("--", this.state.cursor);
-              const temp = this.state.cursor;
-              this.setState({ cursor: 5, hover: temp });
-            }}
-            onMouseLeave={() => {
-              this.setState({ cursor: this.state.hover, hover: -1 });
-            }}
-          >
-            <img
-              src={
-                this.state.cursor == 5
-                  ? "/assets/comb-hover.png"
-                  : "/assets/comb.png"
-              }
-              className={classes.icon}
-            />
-          </Box>
-        ),
-      },
-      // {
-      //   index: 1,
-      //   condition: allowProjectFileSupport,
-      //   dom: <ToolbarSaveButton state={state} />,
-      // },
-      // {
-      //   index: 2,
-      //   condition: allowProjectFileSupport,
-      //   dom: <ToolbarLoadButton state={state} />,
-      // },
-      // {
-      //   index: 3,
-      //   condition: allowProjectFileSupport,
-      //   dom: <ToolbarLoadSVGButton state={state} />,
-      // },
-      // {
-      //   index: 4,
-      //   condition: true,
-      //   dom: (
-      //     <ToolbarButton
-      //       active={[MODE_VIEWING_CATALOG].includes(mode)}
-      //       tooltip={translator.t("Open catalog")}
-      //       onClick={(event) => projectActions.openCatalog()}
-      //     >
-      //       <FaPlus />
-      //     </ToolbarButton>
-      //   ),
-      // },
-      // {
-      //   index: 5,
-      //   condition: true,
-      //   dom: (
-      //     <ToolbarButton
-      //       active={[MODE_3D_VIEW].includes(mode)}
-      //       tooltip={translator.t("3D View")}
-      //       onClick={(event) => viewer3DActions.selectTool3DView()}
-      //     >
-      //       <Icon3D />
-      //     </ToolbarButton>
-      //   ),
-      // },
-      // {
-      //   index: 6,
-      //   condition: true,
-      //   dom: (
-      //     <ToolbarButton
-      //       active={[MODE_IDLE].includes(mode)}
-      //       tooltip={translator.t("2D View")}
-      //       onClick={(event) => projectActions.setMode(MODE_IDLE)}
-      //     >
-      //       {[MODE_3D_FIRST_PERSON, MODE_3D_VIEW].includes(mode) ? (
-      //         <Icon2D style={{ color: alterateColor }} />
-      //       ) : (
-      //         <FaMousePointer style={{ color: alterateColor }} />
-      //       )}
-      //     </ToolbarButton>
-      //   ),
-      // },
-      // {
-      //   index: 7,
-      //   condition: true,
-      //   dom: (
-      //     <ToolbarButton
-      //       active={[MODE_3D_FIRST_PERSON].includes(mode)}
-      //       tooltip={translator.t("3D First Person")}
-      //       onClick={(event) => viewer3DActions.selectTool3DFirstPerson()}
-      //     >
-      //       <MdDirectionsRun />
-      //     </ToolbarButton>
-      //   ),
-      // },
-      // {
-      //   index: 8,
-      //   condition: true,
-      //   dom: (
-      //     <ToolbarButton
-      //       active={false}
-      //       tooltip={translator.t("Undo (CTRL-Z)")}
-      //       onClick={(event) => projectActions.undo()}
-      //     >
-      //       <MdUndo />
-      //     </ToolbarButton>
-      //   ),
-      // },
-      // {
-      //   index: 9,
-      //   condition: true,
-      //   dom: (
-      //     <ToolbarButton
-      //       active={[MODE_CONFIGURING_PROJECT].includes(mode)}
-      //       tooltip={translator.t("Configure project")}
-      //       onClick={(event) => projectActions.openProjectConfigurator()}
-      //     >
-      //       <MdSettings />
-      //     </ToolbarButton>
-      //   ),
-      // },
-    ];
-
-    // sorter = sorter.concat(
-    //   toolbarButtons.map((Component, key) => {
-    //     return Component.prototype //if is a react component
-    //       ? {
-    //           condition: true,
-    //           dom: React.createElement(Component, { mode, state, key }),
-    //         }
-    //       : {
-    //           //else is a sortable toolbar button
-    //           index: Component.index,
-    //           condition: Component.condition,
-    //           dom: React.createElement(Component.dom, { mode, state, key }),
-    //         };
-    //   })
-    // );
-
     return (
       <aside
         style={{ ...ASIDE_STYLE, width: width, maxHeight: height }}
         className="toolbar"
       >
         <Box
-          className={this.state.cursor == 0 ? classes.boxH : classes.box}
+          className={
+            this.state.selectedCursor == 0
+              ? classes.boxH
+              : this.state.cursor == 0
+              ? classes.boxH
+              : classes.box
+          }
           onMouseOver={() => {
-            const temp = this.state.cursor;
             this.setState({
               cursor: 0,
-              hover: temp,
               selectedCursor: this.state.selectedCursor,
             });
           }}
           onMouseLeave={() => {
-            this.setState({ cursor: this.state.selectedCursor, hover: -1 });
+            this.setState({ cursor: -1, hover: -1 });
           }}
           onClick={() => {
-            this.setState({ cursor: 0, selectedCursor: 0 });
+            this.setState({ cursor: 0, selectedCursor: 0, click: 1 });
           }}
         >
           <img
             src={
-              this.state.cursor == 0
+              this.state.selectedCursor == 0
+                ? "/assets/cursor-hover.png"
+                : this.state.cursor == 0
                 ? "/assets/cursor-hover.png"
                 : "/assets/cursor.png"
             }
@@ -397,135 +163,297 @@ class Toolbar extends Component {
           />
         </Box>
         <Box
-          className={this.state.cursor == 1 ? classes.boxH : classes.box}
+          className={
+            this.state.selectedCursor == 1
+              ? classes.boxH
+              : this.state.cursor == 1
+              ? classes.boxH
+              : classes.box
+          }
           onMouseOver={() => {
-            const temp = this.state.cursor;
             this.setState({
               cursor: 1,
-              hover: temp,
               selectedCursor: this.state.selectedCursor,
             });
           }}
           onMouseLeave={() => {
-            this.setState({ cursor: this.state.selectedCursor, hover: -1 });
+            this.setState({ cursor: -1, hover: -1 });
           }}
           onClick={() => {
-            this.setState({ cursor: 1, selectedCursor: 1 });
+            if (this.state.selectedCursor == 1)
+              this.setState({
+                cursor: 1,
+                selectedCursor: 1,
+                click: !this.state.click,
+              });
+            else
+              this.setState({
+                cursor: 1,
+                selectedCursor: 1,
+                click: true,
+              });
           }}
         >
           <img
             src={
-              this.state.cursor == 1
+              this.state.selectedCursor == 1
+                ? "/assets/line-hover.png"
+                : this.state.cursor == 1
                 ? "/assets/line-hover.png"
                 : "/assets/line.png"
             }
             className={classes.icon}
           />
+          {this.state.selectedCursor == 1 && this.state.click == true && (
+            <img src="/assets/right.png" className={classes.snap} />
+          )}
+          {this.state.selectedCursor == 1 && this.state.click == false && (
+            <img src="/assets/down-hover.png" className={classes.snap} />
+          )}
+          {this.state.selectedCursor != 1 && this.state.cursor == 1 && (
+            <img src="/assets/down-hover.png" className={classes.snap} />
+          )}
+          {this.state.selectedCursor != 1 && this.state.cursor != 1 && (
+            <img src="/assets/down.png" className={classes.snap} />
+          )}
         </Box>
         <Box
-          className={this.state.cursor == 2 ? classes.boxH : classes.box}
+          className={
+            this.state.selectedCursor == 2
+              ? classes.boxH
+              : this.state.cursor == 2
+              ? classes.boxH
+              : classes.box
+          }
           onMouseOver={() => {
-            const temp = this.state.cursor;
             this.setState({
               cursor: 2,
-              hover: temp,
+
               selectedCursor: this.state.selectedCursor,
             });
           }}
           onMouseLeave={() => {
-            this.setState({ cursor: this.state.selectedCursor, hover: -1 });
+            this.setState({ cursor: -1, hover: -1 });
           }}
           onClick={() => {
-            this.setState({ cursor: 2, selectedCursor: 2 });
+            if (this.state.selectedCursor == 2)
+              this.setState({
+                cursor: 2,
+                selectedCursor: 2,
+                click: !this.state.click,
+              });
+            else
+              this.setState({
+                cursor: 2,
+                selectedCursor: 2,
+                click: true,
+              });
           }}
         >
           <img
             src={
-              this.state.cursor == 2
+              this.state.selectedCursor == 2
+                ? "/assets/rectangle-hover.png"
+                : this.state.cursor == 2
                 ? "/assets/rectangle-hover.png"
                 : "/assets/rectangle.png"
             }
             className={classes.icon}
           />
+          {this.state.selectedCursor == 2 && this.state.click == true && (
+            <img src="/assets/right.png" className={classes.snap} />
+          )}
+          {this.state.selectedCursor == 2 && this.state.click == false && (
+            <img src="/assets/down-hover.png" className={classes.snap} />
+          )}
+          {this.state.selectedCursor != 2 && this.state.cursor == 2 && (
+            <img src="/assets/down-hover.png" className={classes.snap} />
+          )}
+          {this.state.selectedCursor != 2 && this.state.cursor != 2 && (
+            <img src="/assets/down.png" className={classes.snap} />
+          )}
         </Box>
         <Box
-          className={this.state.cursor == 3 ? classes.boxH : classes.box}
+          className={
+            this.state.selectedCursor == 3
+              ? classes.boxH
+              : this.state.cursor == 3
+              ? classes.boxH
+              : classes.box
+          }
           onMouseOver={() => {
-            const temp = this.state.cursor;
             this.setState({
               cursor: 3,
-              hover: temp,
+
               selectedCursor: this.state.selectedCursor,
             });
           }}
           onMouseLeave={() => {
-            this.setState({ cursor: this.state.selectedCursor, hover: -1 });
+            this.setState({ cursor: -1, hover: -1 });
           }}
           onClick={() => {
-            this.setState({ cursor: 3, selectedCursor: 3 });
+            if (this.state.selectedCursor == 3)
+              this.setState({
+                cursor: 3,
+                selectedCursor: 3,
+                click: !this.state.click,
+              });
+            else
+              this.setState({
+                cursor: 3,
+                selectedCursor: 3,
+                click: true,
+              });
           }}
         >
           <img
             src={
-              this.state.cursor == 3
+              this.state.selectedCursor == 3
+                ? "/assets/grid-hover.png"
+                : this.state.cursor == 3
                 ? "/assets/grid-hover.png"
                 : "/assets/grid.png"
             }
             className={classes.icon}
           />
+          {this.state.selectedCursor == 3 && this.state.click == true && (
+            <img src="/assets/right.png" className={classes.snap} />
+          )}
+          {this.state.selectedCursor == 3 && this.state.click == false && (
+            <img src="/assets/down-hover.png" className={classes.snap} />
+          )}
+          {this.state.selectedCursor != 3 && this.state.cursor == 3 && (
+            <img src="/assets/down-hover.png" className={classes.snap} />
+          )}
+          {this.state.selectedCursor != 3 && this.state.cursor != 3 && (
+            <img src="/assets/down.png" className={classes.snap} />
+          )}
         </Box>
         <Box
-          className={this.state.cursor == 4 ? classes.boxH : classes.box}
+          className={
+            this.state.selectedCursor == 4
+              ? classes.boxH
+              : this.state.cursor == 4
+              ? classes.boxH
+              : classes.box
+          }
           onMouseOver={() => {
-            const temp = this.state.cursor;
             this.setState({
               cursor: 4,
-              hover: temp,
+
               selectedCursor: this.state.selectedCursor,
             });
           }}
           onMouseLeave={() => {
-            this.setState({ cursor: this.state.selectedCursor, hover: -1 });
+            this.setState({ cursor: -1, hover: -1 });
           }}
           onClick={() => {
-            this.setState({ cursor: 4, selectedCursor: 4 });
+            if (this.state.selectedCursor == 4)
+              this.setState({
+                cursor: 4,
+                selectedCursor: 4,
+                click: !this.state.click,
+              });
+            else
+              this.setState({
+                cursor: 4,
+                selectedCursor: 4,
+                click: true,
+              });
           }}
         >
           <img
             src={
-              this.state.cursor == 4
+              this.state.selectedCursor == 4
+                ? "/assets/items-hover.png"
+                : this.state.cursor == 4
                 ? "/assets/items-hover.png"
                 : "/assets/items.png"
             }
             className={classes.icon}
           />
+          {this.state.selectedCursor == 4 && this.state.click == true && (
+            <img src="/assets/right.png" className={classes.snap} />
+          )}
+          {this.state.selectedCursor == 4 && this.state.click == false && (
+            <img src="/assets/down-hover.png" className={classes.snap} />
+          )}
+          {this.state.selectedCursor != 4 && this.state.cursor == 4 && (
+            <img src="/assets/down-hover.png" className={classes.snap} />
+          )}
+          {this.state.selectedCursor != 4 && this.state.cursor != 4 && (
+            <img src="/assets/down.png" className={classes.snap} />
+          )}
         </Box>
         <Box
-          className={this.state.cursor == 5 ? classes.boxH : classes.box}
+          className={
+            this.state.selectedCursor == 5
+              ? classes.boxH
+              : this.state.cursor == 5
+              ? classes.boxH
+              : classes.box
+          }
           onMouseOver={() => {
-            const temp = this.state.cursor;
             this.setState({
               cursor: 5,
-              hover: temp,
               selectedCursor: this.state.selectedCursor,
             });
           }}
           onMouseLeave={() => {
-            this.setState({ cursor: this.state.selectedCursor, hover: -1 });
+            this.setState({ cursor: -1, hover: -1 });
           }}
           onClick={() => {
-            this.setState({ cursor: 5, selectedCursor: 5 });
+            if (this.state.selectedCursor == 1)
+              this.setState({
+                cursor: 5,
+                selectedCursor: 5,
+                click: !this.state.click,
+              });
+            else
+              this.setState({
+                cursor: 5,
+                selectedCursor: 5,
+                click: true,
+              });
           }}
         >
           <img
             src={
-              this.state.cursor == 5
+              this.state.selectedCursor == 5
+                ? "/assets/comb-hover.png"
+                : this.state.cursor == 5
                 ? "/assets/comb-hover.png"
                 : "/assets/comb.png"
             }
             className={classes.icon}
           />
+          {this.state.selectedCursor == 5 && this.state.click == true && (
+            <img src="/assets/right.png" className={classes.snap} />
+          )}
+          {this.state.selectedCursor == 5 && this.state.click == false && (
+            <img src="/assets/down-hover.png" className={classes.snap} />
+          )}
+          {this.state.selectedCursor != 5 && this.state.cursor == 5 && (
+            <img src="/assets/down-hover.png" className={classes.snap} />
+          )}
+          {this.state.selectedCursor != 5 && this.state.cursor != 5 && (
+            <img src="/assets/down.png" className={classes.snap} />
+          )}
         </Box>
+        <Box sx={{ position: "absolute", bottom: 0 }}>
+          <Box className={classes.btmbox} onClick={() => {}}>
+            <img src="/assets/plus.png" className={classes.icon} />
+          </Box>
+          <Box className={classes.btmbox} onClick={() => {}}>
+            <img src="/assets/minus.png" className={classes.icon} />
+          </Box>
+          <Box className={classes.btmbox} onClick={() => {}}>
+            <img src="/assets/refresh.png" className={classes.icon} />
+          </Box>
+        </Box>
+        {this.state.selectedCursor == 4 && this.state.click == true && (
+          <ItemsBox dispatch={dispatch} />
+        )}
       </aside>
     );
   }
@@ -539,6 +467,7 @@ Toolbar.propTypes = {
   height: PropTypes.number.isRequired,
   allowProjectFileSupport: PropTypes.bool.isRequired,
   toolbarButtons: PropTypes.array,
+  dispatch: PropTypes.func,
 };
 
 Toolbar.contextTypes = {
