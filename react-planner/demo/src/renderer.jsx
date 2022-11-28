@@ -88,7 +88,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route
-          path="/"
+          path="/main"
           element={
             <ContainerDimensions>
               {({ width, height }) => (
@@ -106,7 +106,7 @@ ReactDOM.render(
           }
         />
         <Route
-          path="/new"
+          path="/"
           element={
             <NewProject
               stateExtractor={(state) => state.get("react-planner")}

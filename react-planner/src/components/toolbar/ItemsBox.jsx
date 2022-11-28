@@ -280,7 +280,7 @@ export default function ItemsBox(props) {
         if (menu.type == "title") {
           return (
             <Typography key={idx} className={classes.sub}>
-              menu.name
+              {menu.name}
             </Typography>
           );
         } else if (menu.type == "menu") {

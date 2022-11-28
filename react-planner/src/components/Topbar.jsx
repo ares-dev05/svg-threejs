@@ -124,7 +124,7 @@ export default function Topbar(props) {
   return (
     <Box className={classes.background}>
       <Box className={classes.menubar}>
-        <Link to="/new" className={classes.backbarWrap}>
+        <Link to="/" className={classes.backbarWrap}>
           <img src="/assets/back1.png" className={classes.backbar} />
         </Link>
         <Box

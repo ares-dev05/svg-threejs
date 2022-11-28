@@ -95,6 +95,40 @@ const styles = (theme) => ({
       background: "#407AEC",
     },
   },
+  sub: {
+    fontFamily: "DM Sans",
+    fontStyle: "normal",
+    fontWeight: 500,
+    fontSize: "12px",
+    lineHeight: "16px",
+    letterSpacing: "2px",
+    textTransform: "uppercase",
+    color: "#9199A7",
+    marginTop: "24px",
+  },
+  subtype: {
+    fontFamily: "DM Sans",
+    fontStyle: "normal",
+    fontWeight: 400,
+    fontSize: "14px",
+    lineHeight: "20px",
+    color: "#1F2735",
+    marginLeft: "15.15px",
+  },
+  wrap: {
+    marginTop: "24px",
+    cursor: "pointer",
+    paddingBottom: "5px",
+    display: "flex",
+    alignItems: "center",
+    "&:hover": {
+      // borderBottom: "1px solid #407AEC33",
+      "& $subtype": {
+        color: "#4e83e1",
+        // fontSize: "15px",
+      },
+    },
+  },
 });
 class Toolbar extends Component {
   constructor(props, context) {
@@ -110,17 +144,19 @@ class Toolbar extends Component {
       this.props.state.alterate !== nextProps.state.alterate ||
       nextState.cursor != this.state.cursor ||
       nextState.selectedCursor != this.state.selectedCursor ||
-      nextState.click != this.state.click
+      nextState.click != this.state.click ||
+      this.props.state.viewer2D != nextProps.state.viewer2D
     );
   }
 
   render() {
     let {
       props: { state, width, height, dispatch },
-      context: { projectActions, viewer3DActions, translator },
+      context: { viewer2DActions, projectActions, viewer3DActions, translator },
     } = this;
 
     const { classes } = this.props;
+    let { viewer2D, mode, scene } = state;
 
     // Load 3D model forcely
     // viewer3DActions.selectTool3DView();
@@ -441,16 +477,128 @@ class Toolbar extends Component {
           )}
         </Box>
         <Box sx={{ position: "absolute", bottom: 0 }}>
-          <Box className={classes.btmbox} onClick={() => {}}>
+          <Box
+            className={classes.btmbox}
+            onClick={() => {
+              const scenseValue = viewer2D.toJS();
+              const newVal = {
+                a: scenseValue.a * 1.06,
+                b: 0,
+                SVGWidth: scenseValue.SVGWidth,
+                c: 0,
+                mode: "idle",
+                d: scenseValue.d * 1.06,
+                e: scenseValue.e - scenseValue.SVGWidth * scenseValue.a * 0.03,
+                f: scenseValue.f - scenseValue.SVGHeight * scenseValue.d * 0.03,
+                miniatureOpen: true,
+                SVGHeight: scenseValue.SVGHeight,
+                pinchPointDistance: null,
+                lastAction: null,
+                viewerWidth: scenseValue.viewerWidth,
+                startX: null,
+                startY: null,
+                version: 2,
+                focus: false,
+                viewerHeight: scenseValue.viewerHeight,
+                prePinchMode: null,
+                endX: null,
+                endY: null,
+              };
+              viewer2DActions.updateCameraView(newVal);
+            }}
+          >
             <img src="/assets/plus.png" className={classes.icon} />
           </Box>
-          <Box className={classes.btmbox} onClick={() => {}}>
+          <Box
+            className={classes.btmbox}
+            onClick={() => {
+              const scenseValue = viewer2D.toJS();
+              const newVal = {
+                a: scenseValue.a / 1.06,
+                b: 0,
+                SVGWidth: scenseValue.SVGWidth,
+                c: 0,
+                mode: "idle",
+                d: scenseValue.d / 1.06,
+                e:
+                  scenseValue.e +
+                  (scenseValue.SVGWidth * scenseValue.a * 0.03) / 1.06,
+                f:
+                  scenseValue.f +
+                  (scenseValue.SVGHeight * scenseValue.d * 0.03) / 1.06,
+                miniatureOpen: true,
+                SVGHeight: scenseValue.SVGHeight,
+                pinchPointDistance: null,
+                lastAction: null,
+                viewerWidth: scenseValue.viewerWidth,
+                startX: null,
+                startY: null,
+                version: 2,
+                focus: false,
+                viewerHeight: scenseValue.viewerHeight,
+                prePinchMode: null,
+                endX: null,
+                endY: null,
+              };
+              viewer2DActions.updateCameraView(newVal);
+            }}
+          >
             <img src="/assets/minus.png" className={classes.icon} />
           </Box>
-          <Box className={classes.btmbox} onClick={() => {}}>
+          <Box
+            className={classes.btmbox}
+            onClick={() => {
+              const scenseValue = viewer2D.toJS();
+              const newVal = {
+                a: 1,
+                b: 0,
+                SVGWidth: scenseValue.SVGWidth,
+                c: 0,
+                mode: "idle",
+                d: 1,
+                e: 0,
+                f: 0,
+                miniatureOpen: true,
+                SVGHeight: scenseValue.SVGHeight,
+                pinchPointDistance: null,
+                lastAction: null,
+                viewerWidth: scenseValue.viewerWidth,
+                startX: null,
+                startY: null,
+                version: 2,
+                focus: false,
+                viewerHeight: scenseValue.viewerHeight,
+                prePinchMode: null,
+                endX: null,
+                endY: null,
+              };
+              viewer2DActions.updateCameraView(newVal);
+            }}
+          >
             <img src="/assets/refresh.png" className={classes.icon} />
           </Box>
         </Box>
+        {this.state.selectedCursor == 1 && this.state.click == true && (
+          <Box
+            sx={{
+              background: "#020916",
+              borderRadius: "4px",
+            }}
+          >
+            <Box key={idx} className={classes.wrap}>
+              <img src={menu.icon} />
+              <Typography className={classes.subtype}>{menu.name}</Typography>
+            </Box>
+            <Box key={idx} className={classes.wrap}>
+              <img src={menu.icon} />
+              <Typography className={classes.subtype}>{menu.name}</Typography>
+            </Box>
+            <Box key={idx} className={classes.wrap}>
+              <img src={menu.icon} />
+              <Typography className={classes.subtype}>{menu.name}</Typography>
+            </Box>
+          </Box>
+        )}
         {this.state.selectedCursor == 4 && this.state.click == true && (
           <ItemsBox dispatch={dispatch} />
         )}

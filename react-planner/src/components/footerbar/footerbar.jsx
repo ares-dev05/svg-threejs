@@ -16,8 +16,6 @@ import { MdAddCircle, MdWarning } from "react-icons/md";
 import { VERSION } from "../../version";
 
 const footerBarStyle = {
-  position: "absolute",
-  bottom: 0,
   lineHeight: "14px",
   fontSize: "12px",
   color: SharedStyle.COLORS.white,
@@ -64,6 +62,7 @@ export default class FooterBar extends Component {
   render() {
     let { state: globalState, width, height } = this.props;
     let { translator, projectActions } = this.context;
+
     let { x, y } = globalState.get("mouse").toJS();
     let zoom = globalState.get("zoom");
     let mode = globalState.get("mode");

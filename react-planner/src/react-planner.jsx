@@ -16,10 +16,11 @@ import {
 import { VERSION } from "./version";
 import "./styles/export";
 import Topbar from "./components/Topbar";
+import FooterBar from "./components/Footerbar";
 
 const { Toolbar } = ToolbarComponents;
 const { Sidebar } = SidebarComponents;
-const { FooterBar } = FooterBarComponents;
+// const { FooterBar } = FooterBarComponents;
 
 const toolbarW = 52;
 const sidebarW = 300;
@@ -66,6 +67,8 @@ class ReactPlanner extends Component {
     let { width, height, state, stateExtractor, dispatch, catalog, ...props } =
       this.props;
 
+    let { viewer2D, mode, scene } = state;
+
     // let contentW = width - toolbarW - sidebarW;
     let contentW = width - toolbarW;
     let heightTopBar = 52;
@@ -80,7 +83,7 @@ class ReactPlanner extends Component {
     let extractedState = stateExtractor(state);
 
     return (
-      <div>
+      <div style={{ position: "relative" }}>
         <Topbar
           dispatch={dispatch}
           catalog={catalog}
@@ -112,7 +115,8 @@ class ReactPlanner extends Component {
             state={extractedState}
             {...props}
             disable={true}
-          /> */}
+            />
+          */}
           {/* <FooterBar
             width={width}
             height={footerBarH}
@@ -120,6 +124,16 @@ class ReactPlanner extends Component {
             {...props}
           /> */}
         </div>
+        <FooterBar
+          dispatch={dispatch}
+          catalog={catalog}
+          tab={this.state.tab}
+          setTab={(tab) => {
+            this.setState({
+              tab: tab,
+            });
+          }}
+        />
       </div>
     );
   }

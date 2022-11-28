@@ -99,7 +99,7 @@ export default function NewProject(props) {
           className={classes.wrap}
           onClick={() => {
             props.dispatch(actions.projectActions.newProject());
-            navigate("/");
+            navigate("/main");
           }}
         >
           <img src="/assets/Vector.png" className={classes.icon1} />

@@ -150,7 +150,7 @@ export default function LoadBluePrint(props) {
     <Box className={classes.background}>
       <Box className={classes.menubar}>
         <Link
-          to="/new"
+          to="/"
           style={{
             textDecoration: "none",
             display: "flex",
@@ -160,7 +160,7 @@ export default function LoadBluePrint(props) {
           <img src="/assets/backbar.png" className={classes.backbar} />
         </Link>
         <Link
-          to="/new"
+          to="/"
           style={{
             textDecoration: "none",
             display: "flex",
@@ -246,7 +246,7 @@ export default function LoadBluePrint(props) {
                     const res = loadProjectFromFile(data);
                     // props.dispatch(actions.projectActions.newProject());
                     props.dispatch(actions.projectActions.loadProject(res));
-                    navigate("/", { replace: true });
+                    navigate("/main", { replace: true });
                   };
                   reader.readAsText(file);
                 }}
