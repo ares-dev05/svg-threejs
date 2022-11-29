@@ -65,12 +65,6 @@ export default function WallFactory(name, info, textures) {
             height={thickness}
             style={STYLE_RECT_SELECTED}
           />
-          <text x={length_5} y={textDistance + char_height} style={STYLE_TEXT}>
-            A:
-          </text>
-          <text x={length_5} y={-textDistance} style={STYLE_TEXT}>
-            B:
-          </text>
         </g>
       ) : (
         <rect
