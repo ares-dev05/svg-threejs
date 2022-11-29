@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import ItemsBox from "./ItemsBox";
+import LinesBox from "./LinesBox";
+import RectangleBox from "./RectangleBox";
+import RoomBox from "./RoomBox";
 
 import If from "../../utils/react-if";
 import {
@@ -579,25 +582,13 @@ class Toolbar extends Component {
           </Box>
         </Box>
         {this.state.selectedCursor == 1 && this.state.click == true && (
-          <Box
-            sx={{
-              background: "#020916",
-              borderRadius: "4px",
-            }}
-          >
-            <Box key={idx} className={classes.wrap}>
-              <img src={menu.icon} />
-              <Typography className={classes.subtype}>{menu.name}</Typography>
-            </Box>
-            <Box key={idx} className={classes.wrap}>
-              <img src={menu.icon} />
-              <Typography className={classes.subtype}>{menu.name}</Typography>
-            </Box>
-            <Box key={idx} className={classes.wrap}>
-              <img src={menu.icon} />
-              <Typography className={classes.subtype}>{menu.name}</Typography>
-            </Box>
-          </Box>
+          <LinesBox dispatch={dispatch} />
+        )}
+        {this.state.selectedCursor == 2 && this.state.click == true && (
+          <RoomBox dispatch={dispatch} />
+        )}
+        {this.state.selectedCursor == 3 && this.state.click == true && (
+          <RectangleBox dispatch={dispatch} />
         )}
         {this.state.selectedCursor == 4 && this.state.click == true && (
           <ItemsBox dispatch={dispatch} />
