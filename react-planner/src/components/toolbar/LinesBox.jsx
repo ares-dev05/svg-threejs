@@ -138,7 +138,18 @@ export default function LinesBox(props) {
           );
         } else if (menu.type == "menu") {
           return (
-            <Box key={idx} className={classes.wrap}>
+            <Box
+              key={idx}
+              className={classes.wrap}
+              onClick={() => {
+                console.log("menu.name", menu.name);
+                if (menu.name == "Interior walls")
+                  props.dispatch(
+                    actions.linesActions.selectToolDrawingLine("wall")
+                  );
+                else props.dispatch(actions.projectActions.openCatalog());
+              }}
+            >
               <img src={menu.icon} />
               <Typography className={classes.subtype}>{menu.name}</Typography>
             </Box>
