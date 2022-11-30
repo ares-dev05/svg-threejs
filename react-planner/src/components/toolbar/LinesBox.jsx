@@ -145,9 +145,12 @@ export default function LinesBox(props) {
                 console.log("menu.name", menu.name);
                 if (menu.name == "Interior walls")
                   props.dispatch(
-                    actions.linesActions.selectToolDrawingLine("wall")
+                    actions.linesActions.selectToolDrawingLine("internalwall")
                   );
-                else props.dispatch(actions.projectActions.openCatalog());
+                else if (menu.name == "Exterior walls")
+                  props.dispatch(
+                    actions.linesActions.selectToolDrawingLine("externalwall")
+                  );
               }}
             >
               <img src={menu.icon} />

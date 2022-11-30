@@ -37,7 +37,7 @@ export default function WallFactory(name, info, textures) {
         label: translator.t("thickness"),
         type: "length-measure",
         defaultValue: {
-          length: 20,
+          length: info.thickness,
         },
       },
     },
