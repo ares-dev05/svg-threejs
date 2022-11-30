@@ -142,7 +142,6 @@ export default function LinesBox(props) {
               key={idx}
               className={classes.wrap}
               onClick={() => {
-                console.log("menu.name", menu.name);
                 if (menu.name == "Interior walls")
                   props.dispatch(
                     actions.linesActions.selectToolDrawingLine("internalwall")
@@ -151,6 +150,11 @@ export default function LinesBox(props) {
                   props.dispatch(
                     actions.linesActions.selectToolDrawingLine("externalwall")
                   );
+                else if (menu.name == "Divider lines")
+                  props.dispatch(
+                    actions.linesActions.selectToolDrawingLine("dividerwall")
+                  );
+                // else props.dispatch(actions.projectActions.openCatalog());
               }}
             >
               <img src={menu.icon} />

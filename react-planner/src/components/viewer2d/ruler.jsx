@@ -55,7 +55,7 @@ export default function Ruler({ length, unit, half_thickness, mode = 0 }) {
           transform={`scale(1, -1)`}
           style={STYLE_TEXT}
         >
-          A: {distanceText}
+          B: {distanceText}
         </text>
         <polygon points="0,-5 0,5 4,0" style={STYLE} />
         <line x1={length} y1="-5" x2={length} y2="5" style={STYLE} />

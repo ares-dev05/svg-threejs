@@ -33,7 +33,7 @@ export default function State({ state, catalog }) {
         id="svg-drawing-paper"
       >
         <Scene scene={scene} catalog={catalog} />
-        {scene
+        {/* {scene
           .getIn(["guides", "horizontal"])
           .entrySeq()
           .map(([hgKey, hgVal]) => (
@@ -59,7 +59,7 @@ export default function State({ state, catalog }) {
               y2={height}
               style={guideStyle}
             />
-          ))}
+          ))} */}
         {activeSnapElement}
         {snapElements}
       </g>

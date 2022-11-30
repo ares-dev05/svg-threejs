@@ -43,38 +43,81 @@ export default function WallFactory(name, info, textures) {
     },
 
     render2D: function (element, layer, scene) {
-      let { x: x1, y: y1 } = layer.vertices.get(element.vertices.get(0));
-      let { x: x2, y: y2 } = layer.vertices.get(element.vertices.get(1));
+      const lineType = element.getIn(["name"]);
 
-      let length = Geometry.pointsDistance(x1, y1, x2, y2);
-      let length_5 = length / 5;
+      if (lineType == "Dividerwall") {
+        let { x: x1, y: y1 } = layer.vertices.get(element.vertices.get(0));
+        let { x: x2, y: y2 } = layer.vertices.get(element.vertices.get(1));
 
-      let thickness = element.getIn(["properties", "thickness", "length"]);
-      let half_thickness = thickness / 2;
-      let half_thickness_eps = half_thickness + epsilon;
-      let char_height = 11;
-      let extra_epsilon = 5;
-      let textDistance = half_thickness + epsilon + extra_epsilon;
+        let length = Geometry.pointsDistance(x1, y1, x2, y2);
+        let length_5 = length / 5;
 
-      return element.selected ? (
-        <g>
+        let thickness = 1;
+        let half_thickness = thickness / 2;
+        let half_thickness_eps = half_thickness + epsilon;
+        let char_height = 11;
+        let extra_epsilon = 5;
+        let textDistance = half_thickness + epsilon + extra_epsilon;
+
+        return element.selected ? (
+          <g>
+            <line
+              x1="0"
+              y1="0"
+              x2={length}
+              y2="0"
+              style={STYLE_RECT_SELECTED}
+              stroke="black"
+              strokeDasharray="4"
+            />
+          </g>
+        ) : (
+          <g>
+            <line
+              x1="0"
+              y1="0"
+              x2={length}
+              y2="0"
+              style={STYLE_RECT}
+              stroke="black"
+              strokeDasharray="4"
+            />
+          </g>
+        );
+      } else {
+        let { x: x1, y: y1 } = layer.vertices.get(element.vertices.get(0));
+        let { x: x2, y: y2 } = layer.vertices.get(element.vertices.get(1));
+
+        let length = Geometry.pointsDistance(x1, y1, x2, y2);
+        let length_5 = length / 5;
+
+        let thickness = element.getIn(["properties", "thickness", "length"]);
+        let half_thickness = thickness / 2;
+        let half_thickness_eps = half_thickness + epsilon;
+        let char_height = 11;
+        let extra_epsilon = 5;
+        let textDistance = half_thickness + epsilon + extra_epsilon;
+
+        return element.selected ? (
+          <g>
+            <rect
+              x="0"
+              y={-half_thickness}
+              width={length}
+              height={thickness}
+              style={STYLE_RECT_SELECTED}
+            />
+          </g>
+        ) : (
           <rect
             x="0"
             y={-half_thickness}
             width={length}
             height={thickness}
-            style={STYLE_RECT_SELECTED}
+            style={STYLE_RECT}
           />
-        </g>
-      ) : (
-        <rect
-          x="0"
-          y={-half_thickness}
-          width={length}
-          height={thickness}
-          style={STYLE_RECT}
-        />
-      );
+        );
+      }
     },
 
     render3D: function (element, layer, scene) {

@@ -1,8 +1,8 @@
 import { IDBroker } from "../utils/export";
 
 const RULER_LENGTH = 1000;
-const SCENE_WIDTH = 3000;
-const SCENE_HEIGHT = 2000;
+const SCENE_WIDTH = 30000;
+const SCENE_HEIGHT = 20000;
 const WALL_HEIGHT = 259;
 const WALL_THICKNESS = 10;
 const WINDOWS_HEIGHT = 150;
@@ -71,9 +71,9 @@ export function loadProjectFromFile(data) {
           holes.push(windowsPos.holesArr[j].id);
           facadeLines[i] = {
             id: facadeLines[i].id,
-            type: "wall",
+            type: "internalwall",
             prototype: "lines",
-            name: "Wall",
+            name: "internalwall",
             misc: {},
             selected: false,
             properties: {
@@ -279,8 +279,8 @@ const getParsingData = (rulerPixel, domObj) => {
     let verticesID = IDBroker.acquireID();
     let verticesIndex = checkDupliVertices(
       vertices,
-      Math.floor(domObj[i].getAttribute("x1") * rulerPixel),
-      Math.floor(SCENE_HEIGHT - domObj[i].getAttribute("y1") * rulerPixel)
+      Math.floor(SCENE_WIDTH / 2 + domObj[i].getAttribute("x1") * rulerPixel),
+      Math.floor(SCENE_HEIGHT / 2 - domObj[i].getAttribute("y1") * rulerPixel)
     );
 
     let vertice1, vertice2;
@@ -298,8 +298,12 @@ const getParsingData = (rulerPixel, domObj) => {
         selected: false,
         properties: {},
         visible: true,
-        x: Math.floor(domObj[i].getAttribute("x1") * rulerPixel),
-        y: Math.floor(SCENE_HEIGHT - domObj[i].getAttribute("y1") * rulerPixel),
+        x: Math.floor(
+          SCENE_WIDTH / 2 + domObj[i].getAttribute("x1") * rulerPixel
+        ),
+        y: Math.floor(
+          SCENE_HEIGHT / 2 - domObj[i].getAttribute("y1") * rulerPixel
+        ),
         lines: ["maIUMKnv7l", "nhQAdYl8q"],
         areas: [],
       };
@@ -309,8 +313,8 @@ const getParsingData = (rulerPixel, domObj) => {
     verticesID = IDBroker.acquireID();
     verticesIndex = checkDupliVertices(
       vertices,
-      Math.floor(domObj[i].getAttribute("x2") * rulerPixel),
-      Math.floor(SCENE_HEIGHT - domObj[i].getAttribute("y2") * rulerPixel)
+      Math.floor(SCENE_WIDTH / 2 + domObj[i].getAttribute("x2") * rulerPixel),
+      Math.floor(SCENE_HEIGHT / 2 - domObj[i].getAttribute("y2") * rulerPixel)
     );
     if (verticesIndex != -1) {
       // duplicated
@@ -325,8 +329,12 @@ const getParsingData = (rulerPixel, domObj) => {
         selected: false,
         properties: {},
         visible: true,
-        x: Math.floor(domObj[i].getAttribute("x2") * rulerPixel),
-        y: Math.floor(SCENE_HEIGHT - domObj[i].getAttribute("y2") * rulerPixel),
+        x: Math.floor(
+          SCENE_WIDTH / 2 + domObj[i].getAttribute("x2") * rulerPixel
+        ),
+        y: Math.floor(
+          SCENE_HEIGHT / 2 - domObj[i].getAttribute("y2") * rulerPixel
+        ),
         lines: ["maIUMKnv7l", "nhQAdYl8q"],
         areas: [],
       };
@@ -340,9 +348,9 @@ const getParsingData = (rulerPixel, domObj) => {
 
       lineArr.push({
         id: lineID,
-        type: "wall",
+        type: "internalwall",
         prototype: "lines",
-        name: "Wall",
+        name: "internalwall",
         misc: {},
         selected: false,
         properties: {
@@ -553,9 +561,9 @@ const combineBreakLines = (parsingData) => {
       ) {
         tempLines.push({
           id: facadeLines[i].id,
-          type: "wall",
+          type: "internalwall",
           prototype: "lines",
-          name: "Wall",
+          name: "internalwall",
           misc: {},
           selected: false,
           properties: {

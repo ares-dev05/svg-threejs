@@ -8,13 +8,6 @@ import RectangleBox from "./RectangleBox";
 import RoomBox from "./RoomBox";
 
 import If from "../../utils/react-if";
-import {
-  MODE_IDLE,
-  MODE_3D_VIEW,
-  MODE_3D_FIRST_PERSON,
-  MODE_VIEWING_CATALOG,
-  MODE_CONFIGURING_PROJECT,
-} from "../../constants";
 import * as SharedStyle from "../../shared-style";
 
 const iconTextStyle = {
@@ -24,34 +17,10 @@ const iconTextStyle = {
   margin: "0px",
   userSelect: "none",
 };
-
-const Icon2D = ({ style }) => <p style={{ ...iconTextStyle, ...style }}>2D</p>;
-const Icon3D = ({ style }) => <p style={{ ...iconTextStyle, ...style }}>3D</p>;
-
 const ASIDE_STYLE = {
   backgroundColor: SharedStyle.PRIMARY_COLOR.main,
   borderRight: SharedStyle.PRIMARY_COLOR.border,
   position: "relative",
-};
-
-const sortButtonsCb = (a, b) => {
-  if (a.index === undefined || a.index === null) {
-    a.index = Number.MAX_SAFE_INTEGER;
-  }
-
-  if (b.index === undefined || b.index === null) {
-    b.index = Number.MAX_SAFE_INTEGER;
-  }
-
-  return a.index - b.index;
-};
-
-const mapButtonsCb = (el, ind) => {
-  return (
-    <If key={ind} condition={el.condition} style={{ position: "relative" }}>
-      {el.dom}
-    </If>
-  );
 };
 
 const styles = (theme) => ({

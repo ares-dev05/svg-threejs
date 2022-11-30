@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
 import PropTypes from "prop-types";
 
 import {
@@ -114,6 +115,39 @@ export default function Viewer2D(
   }
 ) {
   let { viewer2D, mode, scene } = state;
+
+  const [load, setLoad] = useState(false);
+
+  useEffect(() => {
+    let viewerData = state.get("viewer2D").toJS();
+    if (viewerData.SVGWidth != undefined && load == false) {
+      const val = {
+        a: viewerData.a,
+        b: viewerData.b,
+        SVGWidth: viewerData.SVGWidth,
+        c: viewerData.c,
+        mode: "idle",
+        d: viewerData.d,
+        e: -viewerData.SVGWidth / 2,
+        f: -viewerData.SVGHeight / 2,
+        miniatureOpen: true,
+        SVGHeight: viewerData.SVGHeight,
+        pinchPointDistance: null,
+        lastAction: null,
+        viewerWidth: viewerData.viewerWidth,
+        startX: null,
+        startY: null,
+        version: 2,
+        focus: false,
+        viewerHeight: viewerData.viewerHeight,
+        prePinchMode: null,
+        endX: null,
+        endY: null,
+      };
+      viewer2DActions.updateCameraView(val);
+      setLoad(true);
+    }
+  }, [state]);
 
   let layerID = scene.selectedLayer;
 
@@ -316,6 +350,8 @@ export default function Viewer2D(
   };
 
   let onChangeValue = (value) => {
+    // if (value.e < 0 && value.f < 0 && value.e > -8500 && value.f > -8500) {
+    // }
     projectActions.updateZoomScale(value.a);
     return viewer2DActions.updateCameraView(value);
   };
@@ -431,6 +467,8 @@ export default function Viewer2D(
         onMouseUp={onMouseUp}
         miniaturePosition="none"
         toolbarPosition="none"
+        // detectWheel={false}
+        disableDoubleClickZoomWithToolAuto={false}
       >
         <svg width={scene.width} height={scene.height}>
           <defs>
