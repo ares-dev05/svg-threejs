@@ -17,6 +17,7 @@ export function selectHole(layerID, holeID) {
 }
 
 export function selectToolDrawingHole(sceneComponentType) {
+  
   return {
     type: SELECT_TOOL_DRAWING_HOLE,
     sceneComponentType

@@ -157,6 +157,8 @@ class Toolbar extends Component {
           }}
           onClick={() => {
             this.setState({ cursor: 0, selectedCursor: 0, click: 1 });
+            projectActions.rollback();
+            viewer2DActions.selectToolPan();
           }}
         >
           <img

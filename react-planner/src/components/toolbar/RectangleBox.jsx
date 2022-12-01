@@ -133,7 +133,23 @@ export default function RectangleBox(props) {
           );
         } else if (menu.type == "menu") {
           return (
-            <Box key={idx} className={classes.wrap}>
+            <Box
+              key={idx}
+              className={classes.wrap}
+              onClick={() => {
+                if (menu.name == "Insert window") {
+                  props.dispatch(actions.projectActions.rollback());
+                  props.dispatch(
+                    actions.holesActions.selectToolDrawingHole("window")
+                  );
+                } else if (menu.name == "Insert door") {
+                  props.dispatch(actions.projectActions.rollback());
+                  props.dispatch(
+                    actions.holesActions.selectToolDrawingHole("door")
+                  );
+                }
+              }}
+            >
               <img src={menu.icon} />
               <Typography className={classes.subtype}>{menu.name}</Typography>
             </Box>

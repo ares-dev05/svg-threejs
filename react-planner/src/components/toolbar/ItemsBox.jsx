@@ -239,7 +239,6 @@ const menus = [
 
 export default function ItemsBox(props) {
   const classes = useStyles();
-  const navigate = useNavigate();
 
   const [menuItems, setmenuItems] = useState(menus);
   const onChangeSearchInput = (e) => {

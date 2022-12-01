@@ -228,8 +228,8 @@ export class Scene extends Record(
     grids: new Map(),
     selectedLayer: null,
     groups: new Map(),
-    width: 30000,
-    height: 20000,
+    width: 10000,
+    height: 10000,
     meta: new Map(), //additional info
     guides: new Map(),
   },

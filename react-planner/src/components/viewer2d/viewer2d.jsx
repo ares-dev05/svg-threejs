@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import PropTypes from "prop-types";
 
@@ -117,6 +117,7 @@ export default function Viewer2D(
   let { viewer2D, mode, scene } = state;
 
   const [load, setLoad] = useState(false);
+  const Viewer = useRef(null);
 
   useEffect(() => {
     let viewerData = state.get("viewer2D").toJS();
@@ -148,6 +149,10 @@ export default function Viewer2D(
       setLoad(true);
     }
   }, [state]);
+
+  useEffect(() => {
+    // Viewer.current.fitToViewer();
+  }, []);
 
   let layerID = scene.selectedLayer;
 
@@ -357,6 +362,7 @@ export default function Viewer2D(
   };
 
   let onChangeTool = (tool) => {
+    console.log("onChangeTool", tool);
     switch (tool) {
       case TOOL_NONE:
         projectActions.selectToolEdit();
@@ -468,24 +474,10 @@ export default function Viewer2D(
         miniaturePosition="none"
         toolbarPosition="none"
         // detectWheel={false}
+        ref={Viewer}
         disableDoubleClickZoomWithToolAuto={false}
       >
-        <svg width={scene.width} height={scene.height}>
-          <defs>
-            <pattern
-              id="diagonalFill"
-              patternUnits="userSpaceOnUse"
-              width="4"
-              height="4"
-              fill="#FFF"
-            >
-              <rect x="0" y="0" width="4" height="4" fill="#FFF" />
-              <path
-                d="M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2"
-                style={{ stroke: "#8E9BA2", strokeWidth: 1 }}
-              />
-            </pattern>
-          </defs>
+        <svg width={scene.width} height={scene.height} fill="red">
           <g style={Object.assign(mode2Cursor(mode), mode2PointerEvents(mode))}>
             <State state={state} catalog={catalog} />
           </g>

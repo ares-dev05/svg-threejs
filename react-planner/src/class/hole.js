@@ -71,7 +71,7 @@ class Hole {
   }
 
   static selectToolDrawingHole(state, sceneComponentType) {
-
+    console.log('sceneComponentType ->', sceneComponentType)
     let snapElements = (new List()).withMutations(snapElements => {
       let {lines, vertices} = state.getIn(['scene', 'layers', state.scene.selectedLayer]);
 

@@ -133,7 +133,13 @@ export default function RoomBox(props) {
           );
         } else if (menu.type == "menu") {
           return (
-            <Box key={idx} className={classes.wrap}>
+            <Box
+              key={idx}
+              className={classes.wrap}
+              onClick={() => {
+                props.dispatch(actions.projectActions.openCatalog());
+              }}
+            >
               <img src={menu.icon} />
               <Typography className={classes.subtype}>{menu.name}</Typography>
             </Box>

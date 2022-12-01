@@ -1,8 +1,8 @@
 import { IDBroker } from "../utils/export";
 
 const RULER_LENGTH = 1000;
-const SCENE_WIDTH = 30000;
-const SCENE_HEIGHT = 20000;
+const SCENE_WIDTH = 10000;
+const SCENE_HEIGHT = 10000;
 const WALL_HEIGHT = 259;
 const WALL_THICKNESS = 10;
 const WINDOWS_HEIGHT = 150;
