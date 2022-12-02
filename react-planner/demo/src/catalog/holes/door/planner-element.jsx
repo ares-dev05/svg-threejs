@@ -5,10 +5,12 @@ import path from 'path';
 
 let cached3DDoor = null;
 
-const STYLE_HOLE_BASE = {stroke: '#000', strokeWidth: '3px', fill: '#000'};
-const STYLE_HOLE_SELECTED = {stroke: '#0096fd', strokeWidth: '4px', fill: '#0096fd', cursor: 'move'};
-const STYLE_ARC_BASE = {stroke: '#000', strokeWidth: '3px', strokeDasharray: '5,5', fill: 'none'};
-const STYLE_ARC_SELECTED = {stroke: '#0096fd', strokeWidth: '4px', strokeDasharray: '5,5', fill: 'none', cursor: 'move'};
+const STYLE_HOLE_BASE = {stroke: '#FFF', strokeWidth: '0px', fill: '#FFF'};
+const STYLE_HOLE_SELECTED = {stroke: '#0096fd', strokeWidth: '2px', fill: '#FFF', cursor: 'move'};
+const STYLE_LINE_BASE = {stroke: '#BABABA', strokeWidth: '1px', fill: '#BABABA'};
+const STYLE_LINE_SELECTED = {stroke: '#0096fd', strokeWidth: '2px', fill: '#none', cursor: 'move'};
+const STYLE_ARC_BASE = {stroke: '#BABABA', strokeWidth: '1px', fill: 'none'};
+const STYLE_ARC_SELECTED = {stroke: '#0096fd', strokeWidth: '1px', fill: 'none', cursor: 'move'};
 const EPSILON = 3;
 
 export default {
@@ -64,10 +66,13 @@ export default {
 
   render2D: function (element, layer, scene) {
     let flip = element.properties.get('flip_orizzontal');
+    let line = layer.lines.get(element.line);
+    let epsilon = (line.properties.get("thickness").get("length")) / 2;
     let holeWidth = element.properties.get('width').get('length');
-    let holePath = `M${0} ${ -EPSILON}  L${holeWidth} ${-EPSILON}  L${holeWidth} ${EPSILON}  L${0} ${EPSILON}  z`;
+    let holePath = `M${0} ${ -epsilon}  L${holeWidth} ${-epsilon}  L${holeWidth} ${epsilon}  L${0} ${epsilon}  z`;
     let arcPath = `M${0},${0}  A${holeWidth},${holeWidth} 0 0,1 ${holeWidth},${holeWidth}`;
     let holeStyle = element.selected ? STYLE_HOLE_SELECTED : STYLE_HOLE_BASE;
+    let lineStyle = element.selected ? STYLE_LINE_SELECTED : STYLE_LINE_BASE;
     let arcStyle = element.selected ? STYLE_ARC_SELECTED : STYLE_ARC_BASE;
     let length = element.properties.get('width').get('length');
 
@@ -75,7 +80,7 @@ export default {
       return (
         <g transform={`translate(${-length / 2}, 0)`}>
           <path d={arcPath} style={arcStyle} transform={`translate(${0},${holeWidth}) scale(${1},${-1}) rotate(${0})`}/>
-          <line x1={0} y1={holeWidth - EPSILON} x2={0} y2={0 - EPSILON} style={holeStyle} transform={`scale(${-1},${1})`}/>
+          <line x1={0} y1={holeWidth} x2={0} y2={0 - EPSILON} style={lineStyle} transform={`scale(${-1},${1})`}/>
           <path d={holePath} style={holeStyle}/>
         </g>
       )
@@ -84,7 +89,7 @@ export default {
       return (
         <g transform={`translate(${-length / 2}, 0)`}>
           <path d={arcPath} style={arcStyle} transform={`translate(${0},${-holeWidth}) scale(${1},${1}) rotate(${0})`}/>
-          <line x1={0} y1={-holeWidth - EPSILON} x2={0} y2={0 - EPSILON} style={holeStyle} transform={`scale(${-1},${1})`}/>
+          <line x1={0} y1={-holeWidth} x2={0} y2={0 - EPSILON} style={lineStyle} transform={`scale(${-1},${1})`}/>
           <path d={holePath} style={holeStyle}/>
         </g>
       )

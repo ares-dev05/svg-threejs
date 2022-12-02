@@ -179,13 +179,14 @@ export default function Viewer2D(
         holesActions.updateDrawingHole(layerID, x, y);
         break;
 
+      case constants.MODE_DRAGGING_HOLE:
+        holesActions.updateDraggingHole(x, y);
+        break;
+
       case constants.MODE_DRAWING_ITEM:
         itemsActions.updateDrawingItem(layerID, x, y);
         break;
 
-      case constants.MODE_DRAGGING_HOLE:
-        holesActions.updateDraggingHole(x, y);
-        break;
 
       case constants.MODE_DRAGGING_LINE:
         linesActions.updateDraggingLine(x, y, state.snapMask);
@@ -362,7 +363,6 @@ export default function Viewer2D(
   };
 
   let onChangeTool = (tool) => {
-    console.log("onChangeTool", tool);
     switch (tool) {
       case TOOL_NONE:
         projectActions.selectToolEdit();

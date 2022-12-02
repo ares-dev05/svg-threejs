@@ -96,7 +96,7 @@ class Hole {
 
   static updateDrawingHole(state, layerID, x, y) {
     let catalog = state.catalog;
-
+    
     //calculate snap and overwrite coords if needed
     //force snap to segment
     let snap = nearestSnap(state.snapElements, x, y, state.snapMask.merge({SNAP_SEGMENT: true}));
@@ -182,16 +182,22 @@ class Hole {
         if (!line_holes.contains(selectedHole)) {
           state = state.setIn(['scene', 'layers', layerID, 'lines', lineID, 'holes'], line_holes.push(selectedHole));
         }
+
       } else if (!selectedHole && snap) {
         //if hole does not exist, create
         let {updatedState: stateH, hole} = this.create(state, layerID, state.drawingSupport.get('type'), lineID, offset);
         state = Hole.select(stateH, layerID, hole.id).updatedState;
-      }
+      } 
     }
     //i've lost the snap while trying to drop the hole
-    else if (false && selectedHole)  //think if enable
+    else if (selectedHole)  //think if enable
     {
       state = Hole.remove(state, layerID, selectedHole).updatedState;
+
+    } else {
+      console.log('----')
+      let {updatedState: stateH, hole} = this.create(state, layerID, state.drawingSupport.get('type'), '', 0);
+        state = Hole.select(stateH, layerID, hole.id).updatedState;
     }
 
     return {updatedState: state};

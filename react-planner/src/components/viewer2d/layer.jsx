@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {
   Line,
@@ -12,6 +12,12 @@ export default function Layer({ layer, scene, catalog }) {
 
   let { unit, groups } = scene;
   let { lines, areas, vertices, holes, id: layerID, items, opacity } = layer;
+
+  
+  useEffect(() => {
+    console.log('holes', holes)
+
+  }, [holes]);
 
   return (
     <g opacity={opacity}>

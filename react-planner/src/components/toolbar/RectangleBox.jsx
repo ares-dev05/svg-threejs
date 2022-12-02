@@ -139,11 +139,15 @@ export default function RectangleBox(props) {
               onClick={() => {
                 if (menu.name == "Insert window") {
                   props.dispatch(actions.projectActions.rollback());
+                  props.dispatch(actions.projectActions.unselectAll());
+                  props.dispatch(actions.projectActions.selectToolEdit());
                   props.dispatch(
                     actions.holesActions.selectToolDrawingHole("window")
                   );
                 } else if (menu.name == "Insert door") {
                   props.dispatch(actions.projectActions.rollback());
+                  props.dispatch(actions.projectActions.unselectAll());
+                  props.dispatch(actions.projectActions.selectToolEdit());
                   props.dispatch(
                     actions.holesActions.selectToolDrawingHole("door")
                   );
