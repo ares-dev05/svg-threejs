@@ -474,6 +474,7 @@ class Line {
   }
 
   static selectToolDrawingLine(state, sceneComponentType) {
+    
     state = state.merge({
       mode: MODE_WAITING_DRAWING_LINE,
       drawingSupport: new Map({

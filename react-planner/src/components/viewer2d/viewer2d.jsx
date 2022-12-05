@@ -187,7 +187,6 @@ export default function Viewer2D(
         itemsActions.updateDrawingItem(layerID, x, y);
         break;
 
-
       case constants.MODE_DRAGGING_LINE:
         linesActions.updateDraggingLine(x, y, state.snapMask);
         break;

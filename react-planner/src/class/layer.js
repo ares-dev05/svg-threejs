@@ -53,7 +53,7 @@ class Layer {
   }
 
   static unselectAll(state, layerID) {
-    let { lines, holes, items, areas } = state.getIn([
+    let { lines, holes, items, areas, cursor } = state.getIn([
       "scene",
       "layers",
       layerID,

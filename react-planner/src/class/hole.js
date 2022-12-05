@@ -42,6 +42,20 @@ class Hole {
     return {updatedState: state, hole};
   }
 
+  static createCursor(state, layerID, type, x, y) {
+    let cursor = state.catalog.factoryElement(type, {
+      id: IDBroker.acquireID(),
+      name: NameGenerator.generateName('holes', state.catalog.getIn(['elements', type, 'info', 'title'])),
+      type,
+      x, y
+    }, null);
+
+    state = state.setIn(['scene', 'layers', layerID, 'holes', type], cursor);
+
+
+    return {updatedState: state, cursor};
+  }
+
   static select(state, layerID, holeID) {
     state = Layer.select(state, layerID).updatedState;
     state = Layer.selectElement(state, layerID, 'holes', holeID).updatedState;
@@ -60,6 +74,21 @@ class Hole {
     });
 
     state.getIn(['scene', 'groups']).forEach(group => state = Group.removeElement(state, group.id, layerID, 'holes', holeID).updatedState);
+
+    return {updatedState: state};
+  }
+
+  static removeCursor(state, layerID, type) {
+    console.log('type', type)
+    state = Layer.removeElement(state, layerID, 'holes', type).updatedState;
+    console.log('state', state)
+
+    // state = state.updateIn(['scene', 'layers', layerID, 'holes', type], holes => {
+    //   let index = holes.findIndex(ID => cursorID === ID);
+    //   return index !== -1 ? holes.remove(index) : holes;
+    // });
+
+    // state.getIn(['scene', 'groups']).forEach(group => state = Group.removeElement(state, group.id, layerID, 'holes', holeID).updatedState);
 
     return {updatedState: state};
   }
@@ -188,6 +217,9 @@ class Hole {
         let {updatedState: stateH, hole} = this.create(state, layerID, state.drawingSupport.get('type'), lineID, offset);
         state = Hole.select(stateH, layerID, hole.id).updatedState;
       } 
+
+      // let cursorObj = state.getIn(['scene', 'layers', layerID, 'holes', state.drawingSupport.get('type')  + '-cursor']);
+      state = Hole.removeCursor(state, layerID, state.drawingSupport.get('type')  + '-cursor').updatedState
     }
     //i've lost the snap while trying to drop the hole
     else if (selectedHole)  //think if enable
@@ -195,9 +227,11 @@ class Hole {
       state = Hole.remove(state, layerID, selectedHole).updatedState;
 
     } else {
-      console.log('----')
-      let {updatedState: stateH, hole} = this.create(state, layerID, state.drawingSupport.get('type'), '', 0);
-        state = Hole.select(stateH, layerID, hole.id).updatedState;
+
+
+      let {updatedState: stateH, cursor} = this.createCursor(state, layerID, state.drawingSupport.get('type')  + '-cursor', x, y)
+      state = stateH;
+
     }
 
     return {updatedState: state};

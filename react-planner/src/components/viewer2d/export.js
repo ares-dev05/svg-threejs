@@ -12,6 +12,8 @@ import Grids from './grids/grids';
 import Group from './group';
 import RulerX from './rulerX';
 import RulerY from './rulerY';
+import Cursor from './cursor';
+
 
 export {
   Viewer2D,
@@ -27,7 +29,8 @@ export {
   Grids,
   Group,
   RulerX,
-  RulerY
+  RulerY,
+  Cursor
 };
 
 export default {
@@ -44,5 +47,6 @@ export default {
   Grids,
   Group,
   RulerX,
-  RulerY
+  RulerY,
+  Cursor
 };

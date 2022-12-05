@@ -5,7 +5,8 @@ import {
   Area,
   Vertex,
   Item,
-  Group
+  Group,
+  Cursor
 } from './export';
 
 export default function Layer({ layer, scene, catalog }) {
@@ -15,12 +16,19 @@ export default function Layer({ layer, scene, catalog }) {
 
   
   useEffect(() => {
-    console.log('holes', holes)
+    // console.log('holes', holes)
 
   }, [holes]);
 
   return (
     <g opacity={opacity}>
+      {
+        holes.valueSeq().map(hole => {
+          if (hole.type == "window-cursor") {
+            return <Cursor key={hole.id} layer={layer} hole={hole} scene={scene} catalog={catalog} />
+          }
+        })
+      }
       {
         areas.valueSeq().map(area =>
           <Area key={area.id} layer={layer} area={area} unit={unit} catalog={catalog} />)

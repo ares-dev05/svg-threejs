@@ -131,6 +131,22 @@ export class Hole extends Record(
   }
 }
 
+export class Cursor extends Record(
+  {
+    ...sharedAttributes,
+    x: 0,
+    y: 0
+  },
+  "Hole"
+) {
+  constructor(json = {}) {
+    super({
+      ...json,
+      properties: fromJS(json.properties || {}),
+    });
+  }
+}
+
 export class Area extends Record(
   {
     ...sharedAttributes,
@@ -298,11 +314,11 @@ export class Catalog extends Record(
 
     let element = this.elements.get(type);
     let properties = element.properties.map((value, key) =>
-      initialProperties && initialProperties.has(key)
-        ? initialProperties.get(key)
-        : value.get("defaultValue")
+    initialProperties && initialProperties.has(key)
+    ? initialProperties.get(key)
+    : value.get("defaultValue")
     );
-
+    
     switch (element.prototype) {
       case "lines":
         return new Line(options).merge({ properties });
@@ -315,6 +331,9 @@ export class Catalog extends Record(
 
       case "items":
         return new Item(options).merge({ properties });
+
+      case "cursor":
+        return new Cursor(options).merge({ properties });
 
       default:
         throw new Error("prototype not valid");
