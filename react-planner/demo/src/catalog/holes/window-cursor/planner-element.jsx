@@ -64,6 +64,9 @@ export default {
       fill: "#0096fd",
       cursor: "move",
     };
+    const STYLE_PNG_BASE = {
+      transform: 'translate(50px, -5px)'
+    };
 
     let epsilon = (20 * 0.7) / 2;
 
@@ -79,6 +82,7 @@ export default {
       holeWidth * 0.05
     } ${epsilonIntern}  z`;
 
+
     let holeStyle = element.selected ? STYLE_HOLE_SELECTED : STYLE_HOLE_BASE;
     let holeInternStyle = element.selected
       ? STYLE_HOLE_INTERN_BASE
@@ -88,6 +92,7 @@ export default {
       <g transform={`translate(${-length / 2}, 0)`}>
         <path key="1" d={holePath} style={holeStyle} />
         <path key="2" d={holeInternPath} style={holeInternStyle} />
+        <image href="/assets/disable.png" style={STYLE_PNG_BASE}/>  
       </g>
     );
   },

@@ -53,7 +53,7 @@ class Layer {
   }
 
   static unselectAll(state, layerID) {
-    let { lines, holes, items, areas, cursor } = state.getIn([
+    let { lines, holes, items, areas } = state.getIn([
       "scene",
       "layers",
       layerID,
@@ -65,7 +65,8 @@ class Layer {
       });
     if (holes)
       holes.forEach((hole) => {
-        state = Hole.unselect(state, layerID, hole.id).updatedState;
+        if (hole.type.split('-')[1] != "cursor")
+          state = Hole.unselect(state, layerID, hole.id).updatedState;
       });
     if (items)
       items.forEach((item) => {

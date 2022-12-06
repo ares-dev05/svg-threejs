@@ -1,6 +1,7 @@
 import React from 'react';
 import * as Three from 'three';
 import {loadObjWithMaterial} from '../../utils/load-obj';
+import { GeometryUtils } from "../../../../../src/utils/export";
 import path from 'path';
 
 let cached3DDoor = null;
@@ -11,6 +12,7 @@ const STYLE_LINE_BASE = {stroke: '#BABABA', strokeWidth: '1px', fill: '#BABABA'}
 const STYLE_LINE_SELECTED = {stroke: '#0096fd', strokeWidth: '2px', fill: '#none', cursor: 'move'};
 const STYLE_ARC_BASE = {stroke: '#BABABA', strokeWidth: '1px', fill: 'none'};
 const STYLE_ARC_SELECTED = {stroke: '#0096fd', strokeWidth: '1px', fill: 'none', cursor: 'move'};
+const STYLE_PNG_BASE = { transform: 'translate(50px, -5px)' };
 const EPSILON = 3;
 
 export default {
@@ -76,12 +78,30 @@ export default {
     let arcStyle = element.selected ? STYLE_ARC_SELECTED : STYLE_ARC_BASE;
     let length = element.properties.get('width').get('length');
 
+    let vertex0 = layer.vertices.get(line.vertices.get(0));
+    let vertex1 = layer.vertices.get(line.vertices.get(1));
+
+    if (vertex0.id === vertex1.id || GeometryUtils.samePoints(vertex0, vertex1))
+      return null; //avoid 0-length lines
+
+    let { x: x1, y: y1 } = vertex0;
+    let { x: x2, y: y2 } = vertex1;
+
+    if (x1 > x2) {
+      ({ x: x1, y: y1 } = vertex1);
+      ({ x: x2, y: y2 } = vertex0);
+    }
+
+    let Linelength = GeometryUtils.pointsDistance(x1, y1, x2, y2);
+    let angle = GeometryUtils.angleBetweenTwoPointsAndOrigin(x1, y1, x2, y2);
+
     if(flip == false) {
       return (
         <g transform={`translate(${-length / 2}, 0)`}>
           <path d={arcPath} style={arcStyle} transform={`translate(${0},${holeWidth}) scale(${1},${-1}) rotate(${0})`}/>
           <line x1={0} y1={holeWidth} x2={0} y2={0 - EPSILON} style={lineStyle} transform={`scale(${-1},${1})`}/>
           <path d={holePath} style={holeStyle}/>
+          {element.selected && <image href="/assets/enable.png" style={STYLE_PNG_BASE}/> }
         </g>
       )
     }
@@ -91,6 +111,7 @@ export default {
           <path d={arcPath} style={arcStyle} transform={`translate(${0},${-holeWidth}) scale(${1},${1}) rotate(${0})`}/>
           <line x1={0} y1={-holeWidth} x2={0} y2={0 - EPSILON} style={lineStyle} transform={`scale(${-1},${1})`}/>
           <path d={holePath} style={holeStyle}/>
+          {element.selected && <image href="/assets/enable.png" style={STYLE_PNG_BASE}/> }
         </g>
       )
     }

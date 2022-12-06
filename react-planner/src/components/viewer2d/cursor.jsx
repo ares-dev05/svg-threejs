@@ -5,7 +5,7 @@ import Ruler from "./ruler";
 
 export default function Cursor({ layer, hole, scene, catalog }) {
   let renderedCursor = (hole) => {
-    if (hole.type == "window-cursor") {
+    console.log('hole', hole)
       let renderedCursor = catalog
         .getElement(hole.type)
         .render2D(hole, layer, scene);
@@ -29,13 +29,9 @@ export default function Cursor({ layer, hole, scene, catalog }) {
             data-layer={layer.id}
           >
             {renderedCursor}
-            <img src="/assets/cursor.png" />
           </g>
         </g>
       );
-    } else {
-      return null;
-    }
   };
 
   return renderedCursor(hole);

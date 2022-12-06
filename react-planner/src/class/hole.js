@@ -79,17 +79,8 @@ class Hole {
   }
 
   static removeCursor(state, layerID, type) {
-    console.log('type', type)
+    console.log('removeCursor')
     state = Layer.removeElement(state, layerID, 'holes', type).updatedState;
-    console.log('state', state)
-
-    // state = state.updateIn(['scene', 'layers', layerID, 'holes', type], holes => {
-    //   let index = holes.findIndex(ID => cursorID === ID);
-    //   return index !== -1 ? holes.remove(index) : holes;
-    // });
-
-    // state.getIn(['scene', 'groups']).forEach(group => state = Group.removeElement(state, group.id, layerID, 'holes', holeID).updatedState);
-
     return {updatedState: state};
   }
 
@@ -218,20 +209,18 @@ class Hole {
         state = Hole.select(stateH, layerID, hole.id).updatedState;
       } 
 
-      // let cursorObj = state.getIn(['scene', 'layers', layerID, 'holes', state.drawingSupport.get('type')  + '-cursor']);
-      state = Hole.removeCursor(state, layerID, state.drawingSupport.get('type')  + '-cursor').updatedState
+      let cursorObj = state.getIn(['scene', 'layers', layerID, 'holes', state.drawingSupport.get('type')  + '-cursor']);
+
+      if(cursorObj != undefined)
+        state = Hole.removeCursor(state, layerID, state.drawingSupport.get('type')  + '-cursor').updatedState
     }
     //i've lost the snap while trying to drop the hole
     else if (selectedHole)  //think if enable
     {
       state = Hole.remove(state, layerID, selectedHole).updatedState;
-
     } else {
-
-
-      let {updatedState: stateH, cursor} = this.createCursor(state, layerID, state.drawingSupport.get('type')  + '-cursor', x, y)
-      state = stateH;
-
+        let {updatedState: stateH, cursor} = this.createCursor(state, layerID, state.drawingSupport.get('type')  + '-cursor', x, y)
+        state = stateH;
     }
 
     return {updatedState: state};

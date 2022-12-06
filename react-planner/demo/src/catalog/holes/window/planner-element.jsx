@@ -64,6 +64,9 @@ export default {
       fill: "#0096fd",
       cursor: "move",
     };
+    const STYLE_PNG_BASE = {
+      transform: 'translate(50px, -5px)'
+    };
     let line = layer.lines.get(element.line);
     let epsilon = (line.properties.get("thickness").get("length") * 0.7) / 2;
     
@@ -84,6 +87,7 @@ export default {
       <g transform={`translate(${-length / 2}, 0)`}>
         <path key="1" d={holePath} style={holeStyle} />
         <path key="2" d={holeInternPath} style={holeInternStyle} />
+        {element.selected && <image href="/assets/enable.png" style={STYLE_PNG_BASE}/>}
       </g>
     );
   },

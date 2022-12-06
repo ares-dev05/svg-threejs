@@ -23,13 +23,6 @@ export default function Layer({ layer, scene, catalog }) {
   return (
     <g opacity={opacity}>
       {
-        holes.valueSeq().map(hole => {
-          if (hole.type == "window-cursor") {
-            return <Cursor key={hole.id} layer={layer} hole={hole} scene={scene} catalog={catalog} />
-          }
-        })
-      }
-      {
         areas.valueSeq().map(area =>
           <Area key={area.id} layer={layer} area={area} unit={unit} catalog={catalog} />)
       }
@@ -52,6 +45,13 @@ export default function Layer({ layer, scene, catalog }) {
           .valueSeq()
           .filter(g => g.hasIn(['elements', layerID]) && g.get('selected'))
           .map(group => <Group key={group.get('id')} layer={layer} group={group} scene={scene} catalog={catalog} />)
+      }
+      {
+        holes.valueSeq().map(hole => {
+          if (hole.type.split('-')[1] == "cursor") {
+            return <Cursor key={hole.id} layer={layer} hole={hole} scene={scene} catalog={catalog} />
+          }
+        })
       }
     </g>
   );
