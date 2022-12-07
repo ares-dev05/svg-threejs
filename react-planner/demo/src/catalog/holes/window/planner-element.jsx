@@ -67,6 +67,27 @@ export default {
     const STYLE_PNG_BASE = {
       transform: 'translate(50px, -5px)'
     };
+    const STYLE = {
+      stroke: "#99BCFF",
+      strokeWidth: "1px",
+    };
+    
+    const STYLE_TEXT = {
+      fontFamily: "DM Sans",
+      fontStyle: "normal",
+      fontWeight: 400,
+      fontSize: "11px",
+      lineHeight: "9px",
+      textAlign: "right",
+      fill: "#407AEC",
+    
+      //http://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting-using-css
+      WebkitTouchCallout: "none" /* iOS Safari */,
+      WebkitUserSelect: "none" /* Chrome/Safari/Opera */,
+      MozUserSelect: "none" /* Firefox */,
+      MsUserSelect: "none" /* Internet Explorer/Edge */,
+      userSelect: "none",
+    };
     let line = layer.lines.get(element.line);
     let epsilon = (line.properties.get("thickness").get("length") * 0.7) / 2;
     
@@ -83,6 +104,7 @@ export default {
       ? STYLE_HOLE_INTERN_BASE
       : STYLE_HOLE_INTERN_BASE;
     let length = element.properties.get("width").get("length");
+    
     return (
       <g transform={`translate(${-length / 2}, 0)`}>
         <path key="1" d={holePath} style={holeStyle} />

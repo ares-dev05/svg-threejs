@@ -5,7 +5,6 @@ import Ruler from "./ruler";
 
 export default function Cursor({ layer, hole, scene, catalog }) {
   let renderedCursor = (hole) => {
-    console.log('hole', hole)
       let renderedCursor = catalog
         .getElement(hole.type)
         .render2D(hole, layer, scene);
