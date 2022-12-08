@@ -31,8 +31,6 @@ export default function Line({ line, layer, scene, catalog }) {
       .render2D(hole, layer, scene);
 
     const elementWidth = hole.properties.get("width").get("length");
-    const leftlength = startAt - elementWidth / 2
-    const rightlength = length - startAt - elementWidth / 2
 
     return (
       <g
@@ -52,9 +50,6 @@ export default function Line({ line, layer, scene, catalog }) {
   let renderedHolesRuler = line.holes.map((holeID) => {
     let hole = layer.holes.get(holeID);
     let startAt = length * hole.offset;
-    let renderedHole = catalog
-      .getElement(hole.type)
-      .render2D(hole, layer, scene);
 
     const elementWidth = hole.properties.get("width").get("length");
     const leftlength = startAt - elementWidth / 2
