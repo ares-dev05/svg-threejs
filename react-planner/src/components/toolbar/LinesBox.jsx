@@ -143,23 +143,23 @@ export default function LinesBox(props) {
               className={classes.wrap}
               onClick={() => {
                 if (menu.name == "Interior walls") {
-                  props.dispatch(actions.projectActions.rollback());
                   props.dispatch(actions.projectActions.unselectAll());
                   props.dispatch(actions.projectActions.selectToolEdit());
+                  props.dispatch(actions.projectActions.rollback());
                   props.dispatch(
                     actions.linesActions.selectToolDrawingLine("internalwall")
                   );
                 } else if (menu.name == "Exterior walls") {
-                  props.dispatch(actions.projectActions.rollback());
                   props.dispatch(actions.projectActions.unselectAll());
                   props.dispatch(actions.projectActions.selectToolEdit());
+                  props.dispatch(actions.projectActions.rollback());
                   props.dispatch(
                     actions.linesActions.selectToolDrawingLine("externalwall")
                   );
                 } else if (menu.name == "Divider lines") {
-                  props.dispatch(actions.projectActions.rollback());
                   props.dispatch(actions.projectActions.unselectAll());
                   props.dispatch(actions.projectActions.selectToolEdit());
+                  props.dispatch(actions.projectActions.rollback());
                   props.dispatch(
                     actions.linesActions.selectToolDrawingLine("dividerwall")
                   );
