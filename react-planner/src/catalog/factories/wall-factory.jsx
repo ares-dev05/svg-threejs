@@ -113,99 +113,79 @@ export default function WallFactory(name, info, textures) {
           directionEle = 1; // X
         }
 
-        if(line1 != null) {
-          let { x:line1x1, y: line1y1 } = layer.vertices.get(line1.vertices.get(0));
-          let { x: line1x2, y: line1y2 } = layer.vertices.get(line1.vertices.get(1));
+        // if(line1 != null) {
+        //   let { x:line1x1, y: line1y1 } = layer.vertices.get(line1.vertices.get(0));
+        //   let { x: line1x2, y: line1y2 } = layer.vertices.get(line1.vertices.get(1));
 
-          if ((y1 <= y2 && x1 <= x2)) {
-            console.log('line1 : ', {
-              line1x1, line1y1, line1x2, line1y2, directionEle
-            })
-            const tempAngle = GeometryUtils.angleBetweenTwoPointsAndOrigin(line1x1, line1y1, line1x2, line1y2);
-            angle1 = 180 - (tempAngle - angle)
-            if(angle1 > 180) {
-              angle1 = 360 - angle1
-            }
+        //   if ((y1 >= y2 && x1 <= x2)) {
+        //     const tempAngle = GeometryUtils.angleBetweenTwoPointsAndOrigin(line1x1, line1y1, line1x2, line1y2);
+        //     angle1 = Math.abs(Math.abs(tempAngle) - Math.abs(angle)) / 2
+        //     beta1 = thickness / Math.tan(angle1);
 
-            beta1 = Math.tan((90 - angle1 / 2) * Math.PI / 180) * thickness / 2;
+        //     let endPoint = { x1:line1x1, y1: line1y1, x2: line1x2, y2: line1y2 }
+        //     if (element.vertices.get(0) == line1.vertices.get(0)) {
+        //       endPoint = { x2:line1x1, y2: line1y1, x1: line1x2, y1: line1y2 }
+        //     }
+        //     if(directionEle == 1) { // X
+        //       if(endPoint.y1 < endPoint.y2) {
+        //         // Uper line is longer than the bottom line
+        //         poly1 = `-${beta1},${half_thickness}`
+        //         poly4 = `${beta1},-${half_thickness}`
+        //       } else {
+        //         poly1 = `${beta1},${half_thickness}`
+        //         poly4 = `-${beta1},-${half_thickness}`
+        //       }
+        //     } else { // Y
+        //       if(endPoint.x1 < endPoint.x2) {
+        //         // Uper line is longer than the bottom line
+        //         poly1 = `-${beta1},${half_thickness}`
+        //         poly4 = `${beta1},-${half_thickness}`
+        //       } else {
+        //         poly1 = `${beta1},${half_thickness}`
+        //         poly4 = `-${beta1},-${half_thickness}`
+        //       }
+        //     }
+        //   }
+        // }
+        // if(line2 != null) {
+        //   let { x:line2x1, y: line2y1 } = layer.vertices.get(line2.vertices.get(0));
+        //   let { x: line2x2, y: line2y2 } = layer.vertices.get(line2.vertices.get(1));
+          
+        //   if ((y1 >= y2 && x1 <= x2)) {
+        //     const tempAngle = GeometryUtils.angleBetweenTwoPointsAndOrigin(line2x1, line2y1, line2x2, line2y2);
+        //     angle2 = Math.abs(Math.abs(tempAngle) - Math.abs(angle)) / 2
+        //     beta2 = thickness / Math.tan(angle2);
+            
+        //     console.log('param', {tempAngle, angle})
+        //     console.log('angle2', angle2)
+            
+        //     let endPoint = { x1:line2x1, y1: line2y1, x2: line2x2, y2: line2y2 }
+        //     if (element.vertices.get(1) == line2.vertices.get(1)) {
+        //       endPoint = { x2:line2x1, y2: line2y1, x1: line2x2, y1: line2y2 }
+        //     }
 
-            let endPoint = { x:line1x1, y: line1y1 }
-            if (element.vertices.get(0) == line1.vertices.get(0)) {
-              endPoint = { x: line1x2, y: line1y2 }
-            }
-            if(directionEle == 1) { // X
-              console.log('params', {y1, endPoint: endPoint.y})
-              console.log(' -- -HERE- -- X', {
-                x1, y1, x2, y2
-              })
-              if(y1 > endPoint.y) {
-                // Uper line is longer than the bottom line
-                poly1 = `-${beta1},${half_thickness}`
-                poly4 = `${beta1},-${half_thickness}`
-              } else {
-                console.log('jhey')
-                poly1 = `${beta1},${half_thickness}`
-                poly4 = `-${beta1},-${half_thickness}`
-              }
-            } else { // Y
-              console.log('params', {x1, endPoint: endPoint.x})
-              console.log(' -- -- -- Y')
-              if(x1 <= endPoint.x) {
-                // Uper line is longer than the bottom line
-                poly1 = `-${beta1},${half_thickness}`
-                poly4 = `${beta1},-${half_thickness}`
-              } else {
-                poly1 = `${beta1},${half_thickness}`
-                poly4 = `-${beta1},-${half_thickness}`
-              }
-            }
-          }
-        }
-        if(line2 != null) {
-          let { x:line2x1, y: line2y1 } = layer.vertices.get(line2.vertices.get(0));
-          let { x: line2x2, y: line2y2 } = layer.vertices.get(line2.vertices.get(1));
-          if ((y1 <= y2 && x1 <= x2)) {
-            console.log('line2 : ', {
-              line2x1, line2y1, line2x2, line2y2, directionEle
-            })
-            const tempAngle = GeometryUtils.angleBetweenTwoPointsAndOrigin(line2x1, line2y1, line2x2, line2y2);
-            angle2 = 180 - (tempAngle - angle)
-            if(angle2 > 180) {
-              angle2 = 360 - angle2
-            }
-            beta2 = Math.tan((90 - angle2 / 2) * Math.PI / 180) * thickness / 2;
+        //     if(directionEle == 1) { // X
+        //       if(endPoint.y1 > endPoint.y2) {
+        //         // Uper line is longer than the bottom line
+        //         poly2 = `${length + beta2},${half_thickness}`
+        //         poly3 = `${length - beta2},-${half_thickness}`
+        //       } else {
+        //         poly2 = `${length - beta2},${half_thickness}`
+        //         poly3 = `${length + beta2},-${half_thickness}`
+        //       }
+        //     } else { // Y
+        //       if(endPoint.x1 > endPoint.x2) {
+        //         // Uper line is longer than the bottom line
+        //         poly2 = `${length + beta2},${half_thickness}`
+        //         poly3 = `${length - beta2},-${half_thickness}`
 
-            let endPoint = { x:line2x1, y: line2y1 }
-            if (element.vertices.get(1) == line2.vertices.get(0)) {
-              endPoint = { x: line2x2, y: line2y2 }
-            }
-            if(directionEle == 1) { // X
-              console.log('params', {y2, endPoint: endPoint.y})
-
-              if(y2 >= endPoint.y) {
-                // Uper line is longer than the bottom line
-                poly2 = `${length + beta2},${half_thickness}`
-                poly3 = `${length - beta2},-${half_thickness}`
-              } else {
-                poly2 = `${length - beta2},${half_thickness}`
-                poly3 = `${length + beta2},-${half_thickness}`
-              }
-            } else { // Y
-              console.log('params', {x2, endPoint: endPoint.x})
-              console.log('-- -- -- -- -- ')
-              if(x2 <= endPoint.x) {
-                // Uper line is longer than the bottom line
-                poly2 = `${length + beta2},${half_thickness}`
-                poly3 = `${length - beta2},-${half_thickness}`
-
-                console.log('poly2, poly3', poly2, poly3)
-              } else {
-                poly2 = `${length - beta2},${half_thickness}`
-                poly3 = `${length + beta2},-${half_thickness}`
-              }
-            }
-          }
-        }
+        //       } else {
+        //         poly2 = `${length - beta2},${half_thickness}`
+        //         poly3 = `${length + beta2},-${half_thickness}`
+        //       }
+        //     }
+        //   }
+        // }
 
         return element.selected ? (
           <g>
