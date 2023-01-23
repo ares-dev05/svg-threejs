@@ -69,8 +69,8 @@ class ReactPlanner extends Component {
 
     let { viewer2D, mode, scene } = state;
 
-    let contentW = width - toolbarW - sidebarW;
-    // let contentW = width - toolbarW;
+    // let contentW = width - toolbarW - sidebarW;
+    let contentW = width - toolbarW;
     let heightTopBar = 52;
     // let toolbarH = height - footerBarH - heightTopBar;
     // let contentH = height - footerBarH - heightTopBar;
@@ -109,14 +109,13 @@ class ReactPlanner extends Component {
             {...props}
             onWheel={(event) => event.preventDefault()}
           />
-          <Sidebar
+          {/* <Sidebar
             width={sidebarW}
             height={sidebarH}
             state={extractedState}
             {...props}
             disable={true}
-            />
-          *
+            /> */}
           {/* <FooterBar
             width={width}
             height={footerBarH}
