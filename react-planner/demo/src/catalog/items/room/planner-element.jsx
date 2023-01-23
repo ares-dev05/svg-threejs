@@ -41,11 +41,49 @@ export default {
   },
 
   render2D: function (element, layer, scene) {
+    console.log('render2D', element, layer, scene)
+    const half_thickness = 10;
+    const length = WIDTH;
+    const lines = []
+    layer.lines.map(line => {
+      const vertices = layer.vertices;
+      const {x: x1, y: y1} =  vertices.get(line.vertices.get(0))
+      const {x: x2, y: y2} =  vertices.get(line.vertices.get(1))
+
+      lines.push({x1, y1, x2, y2})
+    })
+
+    console.log('lines', lines)
     const x = element.x;
     const y = element.y;
 
-    const half_thickness = 10;
-    const length = WIDTH;
+    let dis1 = 0, dis2 = 0, dis3 = 0, dis4 = 0;
+
+    lines.map(line => {
+      if(line.y1 > y + DEPTH / 2 && line.x1 <= x - WIDTH / 2 && line.x2 >= x + WIDTH / 2) {
+        if(dis1 == 0) {
+          dis1 = line.y1 - y - DEPTH / 2;
+        } else if (dis1 > line.y1 - y - DEPTH / 2) {
+          dis1 = line.y1 - y - DEPTH / 2;
+        }
+      } else if(line.y1 < y - DEPTH / 2 && line.x1 <= x - WIDTH / 2 && line.x2 >= x + WIDTH / 2) {
+        if(dis2 == 0) {
+          dis2 = line.y1 - y - DEPTH / 2;
+        } else if (dis2 > line.y1 - y - DEPTH / 2) {
+          dis2 = line.y1 - y - DEPTH / 2;
+        }
+      } else if(line.x1 < x - DEPTH / 2 && ((line.y1 <= y - DEPTH / 2 && line.y2 >= y + DEPTH / 2) || (line.y2 <= y - DEPTH / 2 && line.y1 >= y + DEPTH / 2))) {
+        if(dis3 == 0) {
+          dis3 = -line.x1 + x + DEPTH / 2;
+        } else if (dis3 > -line.x1 + x + DEPTH / 2) {
+          dis3 = -line.x1 + x + DEPTH / 2;
+        }
+      } 
+    })
+
+    console.log('dis1', dis1)
+    console.log('dis2', dis2)
+    console.log('dis3', dis3)
 
     let poly11 = `${half_thickness},${half_thickness}`, poly12 = `${length - half_thickness},${half_thickness}`, poly13 = `${length + half_thickness},${-half_thickness}`, poly14 = `-${half_thickness},-${half_thickness}`;
     let poly21 = `${-half_thickness},${DEPTH + half_thickness}`, poly22 = `${length + half_thickness},${DEPTH + half_thickness}`, poly23 = `${length - half_thickness},${DEPTH - half_thickness}`, poly24 = `${half_thickness}, ${DEPTH - half_thickness}`;

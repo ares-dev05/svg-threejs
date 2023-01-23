@@ -12,9 +12,9 @@ import {
   MODE_ROTATING_ITEM
 } from '../constants';
 
-class Item{
+class Item {
 
-  static create( state, layerID, type, x, y, width, height, rotation ) {
+  static create(state, layerID, type, x, y, width, height, rotation) {
     let itemID = IDBroker.acquireID();
 
     let item = state.catalog.factoryElement(type, {
@@ -33,24 +33,24 @@ class Item{
     return { updatedState: state, item };
   }
 
-  static select( state, layerID, itemID ){
-    state = Layer.select( state, layerID ).updatedState;
-    state = Layer.selectElement( state, layerID, 'items', itemID ).updatedState;
-
-    return {updatedState: state};
-  }
-
-  static remove( state, layerID, itemID ) {
-    state = this.unselect( state, layerID, itemID ).updatedState;
-    state = Layer.removeElement( state, layerID, 'items', itemID ).updatedState;
-
-    state.getIn(['scene', 'groups']).forEach( group => state = Group.removeElement(state, group.id, layerID, 'items', itemID).updatedState );
+  static select(state, layerID, itemID) {
+    state = Layer.select(state, layerID).updatedState;
+    state = Layer.selectElement(state, layerID, 'items', itemID).updatedState;
 
     return { updatedState: state };
   }
 
-  static unselect( state, layerID, itemID ) {
-    state = Layer.unselect( state, layerID, 'items', itemID ).updatedState;
+  static remove(state, layerID, itemID) {
+    state = this.unselect(state, layerID, itemID).updatedState;
+    state = Layer.removeElement(state, layerID, 'items', itemID).updatedState;
+
+    state.getIn(['scene', 'groups']).forEach(group => state = Group.removeElement(state, group.id, layerID, 'items', itemID).updatedState);
+
+    return { updatedState: state };
+  }
+
+  static unselect(state, layerID, itemID) {
+    state = Layer.unselect(state, layerID, 'items', itemID).updatedState;
 
     return { updatedState: state };
   }
@@ -67,13 +67,22 @@ class Item{
   }
 
   static updateDrawingItem(state, layerID, x, y) {
-    if (state.hasIn(['drawingSupport','currentID'])) {
-      state = state.updateIn(['scene', 'layers', layerID, 'items', state.getIn(['drawingSupport','currentID'])], item => item.merge({x, y}));
+    if (state.hasIn(['drawingSupport', 'currentID'])) {
+      state = state.updateIn(['scene', 'layers', layerID, 'items', state.getIn(['drawingSupport', 'currentID'])], item => item.merge({ x, y }));
     }
     else {
-      let { updatedState: stateI, item } = this.create( state, layerID, state.getIn(['drawingSupport','type']), x, y, 200, 100, 0);
-      state = Item.select( stateI, layerID, item.id ).updatedState;
-      state = state.setIn(['drawingSupport','currentID'], item.id);
+      let lines = state.getIn(['scene', 'layers', layerID, 'lines'])
+      const lineV = []
+      lines.map(line => {
+        let { x: x1, y: y1 } = state.getIn(['scene', 'layers', layerID, 'vertices', line.get('vertices').get(0)]);
+        let { x: x2, y: y2 } = state.getIn(['scene', 'layers', layerID, 'vertices', line.get('vertices').get(1)]);
+        lineV.push({ x1, y1, x2, y2 })
+      })
+
+      console.log('lineV', lineV)
+      let { updatedState: stateI, item } = this.create(state, layerID, state.getIn(['drawingSupport', 'type']), x, y, 200, 100, 0);
+      state = Item.select(stateI, layerID, item.id).updatedState;
+      state = state.setIn(['drawingSupport', 'currentID'], item.id);
     }
 
     return { updatedState: state };
@@ -82,8 +91,8 @@ class Item{
   static endDrawingItem(state, layerID, x, y) {
     let catalog = state.catalog;
     state = this.updateDrawingItem(state, layerID, x, y, catalog).updatedState;
-    state = Layer.unselectAll( state, layerID ).updatedState;
-    state =  state.merge({
+    state = Layer.unselectAll(state, layerID).updatedState;
+    state = state.merge({
       drawingSupport: Map({
         type: state.drawingSupport.get('type')
       })
@@ -112,7 +121,7 @@ class Item{
   }
 
   static updateDraggingItem(state, x, y) {
-    let {draggingSupport, scene} = state;
+    let { draggingSupport, scene } = state;
 
     let layerID = draggingSupport.get('layerID');
     let itemID = draggingSupport.get('itemID');
@@ -157,7 +166,7 @@ class Item{
   }
 
   static updateRotatingItem(state, x, y) {
-    let {rotatingSupport, scene} = state;
+    let { rotatingSupport, scene } = state;
 
     let layerID = rotatingSupport.get('layerID');
     let itemID = rotatingSupport.get('itemID');
@@ -191,35 +200,35 @@ class Item{
     return { updatedState: state };
   }
 
-  static setProperties( state, layerID, itemID, properties ) {
+  static setProperties(state, layerID, itemID, properties) {
     state = state.mergeIn(['scene', 'layers', layerID, 'items', itemID, 'properties'], properties);
 
     return { updatedState: state };
   }
 
-  static setJsProperties( state, layerID, itemID, properties ) {
-    return this.setProperties( state, layerID, itemID, fromJS(properties) );
+  static setJsProperties(state, layerID, itemID, properties) {
+    return this.setProperties(state, layerID, itemID, fromJS(properties));
   }
 
-  static updateProperties( state, layerID, itemID, properties) {
-    properties.forEach( ( v, k ) => {
-      if( state.hasIn(['scene', 'layers', layerID, 'items', itemID, 'properties', k]) )
+  static updateProperties(state, layerID, itemID, properties) {
+    properties.forEach((v, k) => {
+      if (state.hasIn(['scene', 'layers', layerID, 'items', itemID, 'properties', k]))
         state = state.mergeIn(['scene', 'layers', layerID, 'items', itemID, 'properties', k], v);
     });
 
     return { updatedState: state };
   }
 
-  static updateJsProperties( state, layerID, itemID, properties) {
-    return this.updateProperties( state, layerID, itemID, fromJS(properties) );
+  static updateJsProperties(state, layerID, itemID, properties) {
+    return this.updateProperties(state, layerID, itemID, fromJS(properties));
   }
 
-  static setAttributes( state, layerID, itemID, itemAttributes) {
+  static setAttributes(state, layerID, itemID, itemAttributes) {
     state = state.mergeIn(['scene', 'layers', layerID, 'items', itemID], itemAttributes);
     return { updatedState: state };
   }
 
-  static setJsAttributes( state, layerID, itemID, itemAttributes) {
+  static setJsAttributes(state, layerID, itemID, itemAttributes) {
     itemAttributes = fromJS(itemAttributes);
     return this.setAttributes(state, layerID, itemID, itemAttributes);
   }
