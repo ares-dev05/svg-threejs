@@ -36,7 +36,7 @@ export default function Item({layer, item, scene, catalog}) {
       transform={`translate(${x},${y}) rotate(${rotation})`}>
 
       {renderedItem}
-      <If condition={item.selected}>
+      {/* <If condition={item.selected}>
         <g data-element-root
            data-prototype={item.prototype}
            data-id={item.id}
@@ -47,7 +47,7 @@ export default function Item({layer, item, scene, catalog}) {
           <circle cx="0" cy="150" r="10" style={STYLE_CIRCLE}/>
           <circle cx="0" cy="0" r="150" style={STYLE_CIRCLE2}/>
         </g>
-      </If>
+      </If> */}
     </g>
   )
 }

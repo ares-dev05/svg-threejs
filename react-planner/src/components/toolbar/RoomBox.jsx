@@ -137,7 +137,9 @@ export default function RoomBox(props) {
               key={idx}
               className={classes.wrap}
               onClick={() => {
-                props.dispatch(actions.projectActions.openCatalog());
+                if(menu.name == "Insert room") {
+                  props.dispatch(actions.itemsActions.selectToolDrawingItem("room"));
+                }
               }}
             >
               <img src={menu.icon} />

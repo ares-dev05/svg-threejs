@@ -82,7 +82,6 @@ export default {
       holeWidth * 0.05
     } ${epsilonIntern}  z`;
 
-
     let holeStyle = element.selected ? STYLE_HOLE_SELECTED : STYLE_HOLE_BASE;
     let holeInternStyle = element.selected
       ? STYLE_HOLE_INTERN_BASE
