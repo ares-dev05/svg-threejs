@@ -71,15 +71,6 @@ class Item {
       state = state.updateIn(['scene', 'layers', layerID, 'items', state.getIn(['drawingSupport', 'currentID'])], item => item.merge({ x, y }));
     }
     else {
-      let lines = state.getIn(['scene', 'layers', layerID, 'lines'])
-      const lineV = []
-      lines.map(line => {
-        let { x: x1, y: y1 } = state.getIn(['scene', 'layers', layerID, 'vertices', line.get('vertices').get(0)]);
-        let { x: x2, y: y2 } = state.getIn(['scene', 'layers', layerID, 'vertices', line.get('vertices').get(1)]);
-        lineV.push({ x1, y1, x2, y2 })
-      })
-
-      console.log('lineV', lineV)
       let { updatedState: stateI, item } = this.create(state, layerID, state.getIn(['drawingSupport', 'type']), x, y, 200, 100, 0);
       state = Item.select(stateI, layerID, item.id).updatedState;
       state = state.setIn(['drawingSupport', 'currentID'], item.id);
@@ -90,6 +81,32 @@ class Item {
 
   static endDrawingItem(state, layerID, x, y) {
     let catalog = state.catalog;
+
+    let lines = state.getIn(['scene', 'layers', layerID, 'lines'])
+
+    let disable = false;
+    lines.map(line => {
+      let { x: x1, y: y1 } = state.getIn(['scene', 'layers', layerID, 'vertices', line.get('vertices').get(0)]);
+      let { x: x2, y: y2 } = state.getIn(['scene', 'layers', layerID, 'vertices', line.get('vertices').get(1)]);
+
+      if (((x1 <= x - 75 && x2 >= x - 75)
+        || (x1 <= x + 75 && x2 >= x + 75)
+        || (x2 <= x - 75 && x1 >= x - 75)
+        || (x2 <= x + 75 && x1 >= x + 75))
+        && ((y1 <= y - 75 && y2 >= y - 75)
+          || (y1 <= y + 75 && y2 >= y + 75)
+          || (y2 <= y - 75 && y1 >= y - 75)
+          || (y2 <= y + 75 && y1 >= y + 75))) {
+        disable = true
+      }
+    })
+
+    console.log('disable', disable)
+
+    if (disable) {
+      return { updatedState: state };
+    }
+
     state = this.updateDrawingItem(state, layerID, x, y, catalog).updatedState;
     state = Layer.unselectAll(state, layerID).updatedState;
     state = state.merge({
