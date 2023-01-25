@@ -284,7 +284,11 @@ export default function ItemsBox(props) {
           );
         } else if (menu.type == "menu") {
           return (
-            <Box key={idx} className={classes.wrap}>
+            <Box key={idx} className={classes.wrap} onClick={() => {
+              if(menu.name == "Sofa") {
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("sofa"));
+              }
+            }}>
               <img src={menu.icon} />
               <Typography className={classes.subtype}>{menu.name}</Typography>
             </Box>

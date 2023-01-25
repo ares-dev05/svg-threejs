@@ -158,16 +158,6 @@ export default function Topbar(props) {
               }
               onClick={() => {
                 props.setTab(1);
-              }}
-            >
-              Decoration
-            </Typography>
-            <Typography
-              className={
-                props.tab == 2 ? classes.barsubbarH : classes.barsubbar
-              }
-              onClick={() => {
-                props.setTab(2);
                 props.dispatch(actions.viewer3DActions.selectTool3DView());
               }}
             >

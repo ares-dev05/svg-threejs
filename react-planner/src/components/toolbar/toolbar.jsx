@@ -227,7 +227,7 @@ class Toolbar extends Component {
             <img src="/assets/down.png" className={classes.snap} />
           )}
         </Box>
-        <Box
+        {/* <Box
           className={
             this.state.selectedCursor == 2
               ? classes.boxH
@@ -282,7 +282,7 @@ class Toolbar extends Component {
           {this.state.selectedCursor != 2 && this.state.cursor != 2 && (
             <img src="/assets/down.png" className={classes.snap} />
           )}
-        </Box>
+        </Box> */}
         <Box
           className={
             this.state.selectedCursor == 3
@@ -555,9 +555,9 @@ class Toolbar extends Component {
         {this.state.selectedCursor == 1 && this.state.click == true && (
           <LinesBox dispatch={dispatch} />
         )}
-        {this.state.selectedCursor == 2 && this.state.click == true && (
+        {/* {this.state.selectedCursor == 2 && this.state.click == true && (
           <RoomBox dispatch={dispatch} />
-        )}
+        )} */}
         {this.state.selectedCursor == 3 && this.state.click == true && (
           <RectangleBox dispatch={dispatch} />
         )}
