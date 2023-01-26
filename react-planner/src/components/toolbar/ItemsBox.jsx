@@ -287,6 +287,10 @@ export default function ItemsBox(props) {
             <Box key={idx} className={classes.wrap} onClick={() => {
               if(menu.name == "Sofa") {
                 props.dispatch(actions.itemsActions.selectToolDrawingItem("sofa"));
+              } else if(menu.name == "Sofa - L shape") {
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("sofa-L"));
+              } else if(menu.name == "Sofa - U shape") {
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("sofa-U"));
               }
             }}>
               <img src={menu.icon} />

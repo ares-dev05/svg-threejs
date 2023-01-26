@@ -151,10 +151,10 @@ export default {
         <polygon points={`${poly81 + " " + poly82 + " " + poly83 + " " + poly84}`} style={STYLE_RECT_SELECTED} />
         <polygon points={`${poly91 + " " + poly92 + " " + poly93 + " " + poly94}`} style={STYLE_RECT_SELECTED} />
         <svg height={RADIUS + 3} width={RADIUS + 3} x="-3px" y="-3px">
-          <circle cx={RADIUS  + 3} cy={RADIUS  + 3} r={RADIUS} stroke="rgb(153, 195, 251)" stroke-width="3" fill="transparent" />
+          <circle cx={RADIUS  + 3} cy={RADIUS  + 3} r={RADIUS} stroke="rgb(153, 195, 251)" strokeWidth="3" fill="transparent" />
         </svg>
         <svg height={RADIUS + 3} width={RADIUS + 3} x={WIDTH - half_thickness - RADIUS} y="-3px">
-          <circle cx={0} cy={RADIUS  + 3} r={RADIUS} stroke="rgb(153, 195, 251)" stroke-width="3" fill="transparent" />
+          <circle cx={0} cy={RADIUS  + 3} r={RADIUS} stroke="rgb(153, 195, 251)" strokeWidth="3" fill="transparent" />
         </svg>
         <image href="/assets/enable.png" style={STYLE_PNG_BASE}/>
         {dis1 != 0 && <g transform={`translate(${WIDTH / 2}, ${DEPTH} )`}>
@@ -165,7 +165,7 @@ export default {
             style={STYLE_TEXT}
             filter="url(#rounded-corners)"
           >
-            {dis1}
+            {dis1.toFixed(1)}
           </text>
           <line x1="-5" y1={dis1} x2="5" y2={dis1} style={STYLE} />
           <line x1="0" y1="0" x2="0" y2={dis1} style={STYLE} />
@@ -178,7 +178,7 @@ export default {
             style={STYLE_TEXT}
             filter="url(#rounded-corners)"
           >
-            {dis2}
+            {dis2.toFixed(1)}
           </text>
           <line x1="-5" y1={-dis2} x2="5" y2={-dis2} style={STYLE} />
           <line x1="0" y1="0" x2="0" y2={-dis2} style={STYLE} />
@@ -191,7 +191,7 @@ export default {
             style={STYLE_TEXT}
             filter="url(#rounded-corners)"
           >
-            {dis3}
+            {dis3.toFixed(1)}
           </text>
           <line x1={0} y1="-5" x2={0} y2="5" style={STYLE} />
           <line x1="0" y1="0" x2={dis3} y2="0" style={STYLE} />
@@ -204,7 +204,7 @@ export default {
             style={STYLE_TEXT}
             filter="url(#rounded-corners)"
           >
-            {dis4}
+            {dis4.toFixed(1)}
           </text>
           <line x1={dis4} y1="-5" x2={dis4} y2="5" style={STYLE} />
           <line x1="0" y1="0" x2={dis4} y2="0" style={STYLE} />
@@ -222,10 +222,10 @@ export default {
         <polygon points={`${poly81 + " " + poly82 + " " + poly83 + " " + poly84}`} style={STYLE_RECT} />
         <polygon points={`${poly91 + " " + poly92 + " " + poly93 + " " + poly94}`} style={STYLE_RECT} />
         <svg height={RADIUS + 3} width={RADIUS + 3} x="-3px" y="-3px">
-          <circle cx={RADIUS  + 3} cy={RADIUS  + 3} r={RADIUS} stroke="rgb(139, 139, 139)" stroke-width="3" fill="transparent" />
+          <circle cx={RADIUS  + 3} cy={RADIUS  + 3} r={RADIUS} stroke="rgb(139, 139, 139)" strokeWidth="3" fill="transparent" />
         </svg>
         <svg height={RADIUS + 3} width={RADIUS + 3} x={WIDTH - half_thickness - RADIUS} y="-3px">
-          <circle cx={0} cy={RADIUS  + 3} r={RADIUS} stroke="rgb(139, 139, 139)" stroke-width="3" fill="transparent" />
+          <circle cx={0} cy={RADIUS  + 3} r={RADIUS} stroke="rgb(139, 139, 139)" strokeWidth="3" fill="transparent" />
         </svg>
       </g>
     );

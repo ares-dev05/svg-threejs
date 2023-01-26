@@ -82,30 +82,30 @@ class Item {
   static endDrawingItem(state, layerID, x, y) {
     let catalog = state.catalog;
 
-    let lines = state.getIn(['scene', 'layers', layerID, 'lines'])
+    // let lines = state.getIn(['scene', 'layers', layerID, 'lines'])
 
-    let disable = false;
-    lines.map(line => {
-      let { x: x1, y: y1 } = state.getIn(['scene', 'layers', layerID, 'vertices', line.get('vertices').get(0)]);
-      let { x: x2, y: y2 } = state.getIn(['scene', 'layers', layerID, 'vertices', line.get('vertices').get(1)]);
+    // let disable = false;
+    // lines.map(line => {
+    //   let { x: x1, y: y1 } = state.getIn(['scene', 'layers', layerID, 'vertices', line.get('vertices').get(0)]);
+    //   let { x: x2, y: y2 } = state.getIn(['scene', 'layers', layerID, 'vertices', line.get('vertices').get(1)]);
 
-      if (((x1 <= x - 75 && x2 >= x - 75)
-        || (x1 <= x + 75 && x2 >= x + 75)
-        || (x2 <= x - 75 && x1 >= x - 75)
-        || (x2 <= x + 75 && x1 >= x + 75))
-        && ((y1 <= y - 75 && y2 >= y - 75)
-          || (y1 <= y + 75 && y2 >= y + 75)
-          || (y2 <= y - 75 && y1 >= y - 75)
-          || (y2 <= y + 75 && y1 >= y + 75))) {
-        disable = true
-      }
-    })
+    //   if (((x1 <= x - 75 && x2 >= x - 75)
+    //     || (x1 <= x + 75 && x2 >= x + 75)
+    //     || (x2 <= x - 75 && x1 >= x - 75)
+    //     || (x2 <= x + 75 && x1 >= x + 75))
+    //     && ((y1 <= y - 75 && y2 >= y - 75)
+    //       || (y1 <= y + 75 && y2 >= y + 75)
+    //       || (y2 <= y - 75 && y1 >= y - 75)
+    //       || (y2 <= y + 75 && y1 >= y + 75))) {
+    //     disable = true
+    //   }
+    // })
 
-    console.log('disable', disable)
+    // console.log('disable', disable)
 
-    if (disable) {
-      return { updatedState: state };
-    }
+    // if (disable) {
+    //   return { updatedState: state };
+    // }
 
     state = this.updateDrawingItem(state, layerID, x, y, catalog).updatedState;
     state = Layer.unselectAll(state, layerID).updatedState;
