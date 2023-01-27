@@ -291,6 +291,12 @@ export default function ItemsBox(props) {
                 props.dispatch(actions.itemsActions.selectToolDrawingItem("sofa-L"));
               } else if(menu.name == "Sofa - U shape") {
                 props.dispatch(actions.itemsActions.selectToolDrawingItem("sofa-U"));
+              } else if(menu.name == "Bed - 1x") {
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("bed-1"));
+              } else if(menu.name == "Bed - 2x") {
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("bed-2"));
+              } else if(menu.name == "Nightstand") {
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("nightstand"));
               }
             }}>
               <img src={menu.icon} />
