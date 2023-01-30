@@ -297,6 +297,19 @@ export default function ItemsBox(props) {
                 props.dispatch(actions.itemsActions.selectToolDrawingItem("bed-2"));
               } else if(menu.name == "Nightstand") {
                 props.dispatch(actions.itemsActions.selectToolDrawingItem("nightstand"));
+              } else if(menu.name == "Round table") {
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("round-table"));
+              } else if(menu.name == "Square table") {
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("square-table"));
+              } else if(menu.name == "Rectangle table") {
+                console.log('rectangle-table')
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("rectangle-table"));
+              } else if(menu.name == "Wordrobe") {
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("wordrobe"));
+              } else if(menu.name == "Dresser") {
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("dresser"));
+              } else if(menu.name == "Bathtub") {
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("bathtub"));
               }
             }}>
               <img src={menu.icon} />
