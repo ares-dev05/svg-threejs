@@ -21,7 +21,7 @@ const STYLE_RECT = {
 const STYLE_RECT_SELECTED = {
   fill: "#407AEC",
   strokeWidth: 1,
-  stroke: "#99C3FB",
+  stroke: "#407AEC",
 };
 const STYLE_PNG_BASE = {
   transform: 'translate(-11px, 56.95px)'

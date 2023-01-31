@@ -7,7 +7,7 @@ const DEPTH = 16 * ZOOM;
 const STROKE_WIDTH = 3;
 const INNER_WIDTH = 23.95 * ZOOM;
 const INNER_HEIGHT = 11.88 * ZOOM;
-const CIRCLE_RADIUS = 2;
+const CIRCLE_RADIUS = 1 * ZOOM;
 const HEIGHT=150;
 
 const STYLE_RECT = {
@@ -18,7 +18,7 @@ const STYLE_RECT = {
 const STYLE_RECT_SELECTED = {
   fill: "#407AEC",
   strokeWidth: 1,
-  stroke: "#99C3FB",
+  stroke: "#407AEC",
 };
 const STYLE_PNG_BASE = {
   transform: 'translate(-11px, 26.95px)'
@@ -142,10 +142,10 @@ export default {
         <polygon points={`${poly31 + " " + poly32 + " " + poly33 + " " + poly34}`} style={STYLE_RECT_SELECTED} />
         <polygon points={`${poly41 + " " + poly42 + " " + poly43 + " " + poly44}`} style={STYLE_RECT_SELECTED} />
         <svg width={INNER_WIDTH + 2 * STROKE_WIDTH} height={INNER_HEIGHT + 2 * STROKE_WIDTH} x={-(INNER_WIDTH + 2 * STROKE_WIDTH) / 2} y={(DEPTH - INNER_HEIGHT) / 2 - STROKE_WIDTH}>
-          <rect x={STROKE_WIDTH} y={STROKE_WIDTH} rx={INNER_HEIGHT / 2} ry={INNER_HEIGHT / 2} width={INNER_WIDTH} height={INNER_HEIGHT} stroke="rgb(64, 122, 236)" strokeWidth={STROKE_WIDTH} fill="transparent" />
+          <rect x={STROKE_WIDTH} y={STROKE_WIDTH} rx={INNER_HEIGHT / 2} ry={INNER_HEIGHT / 2} width={INNER_WIDTH} height={INNER_HEIGHT} stroke="#407AEC" strokeWidth={STROKE_WIDTH} fill="transparent" />
         </svg>
         <svg height={CIRCLE_RADIUS * 2 + 2 * STROKE_WIDTH} width={CIRCLE_RADIUS * 2 + 2 * STROKE_WIDTH} x={-(CIRCLE_RADIUS * 2 + 2 * STROKE_WIDTH) / 2 - WIDTH * 2.5 / 7} y={(DEPTH - 2 *  CIRCLE_RADIUS) / 2 - STROKE_WIDTH}>
-          <circle cx={CIRCLE_RADIUS  + 3} cy={CIRCLE_RADIUS  + 3} r={CIRCLE_RADIUS} stroke="rgb(64, 122, 236)" strokeWidth={1} fill="transparent" />
+          <circle cx={CIRCLE_RADIUS  + 3} cy={CIRCLE_RADIUS  + 3} r={CIRCLE_RADIUS} stroke="#407AEC" strokeWidth={1} fill="transparent" />
         </svg>
 
         <image href="/assets/enable.png" style={STYLE_PNG_BASE}/>

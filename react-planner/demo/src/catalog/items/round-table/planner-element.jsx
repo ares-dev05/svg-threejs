@@ -18,7 +18,7 @@ const STYLE_RECT = {
 const STYLE_RECT_SELECTED = {
   fill: "#407AEC",
   strokeWidth: 1,
-  stroke: "#99C3FB",
+  stroke: "#407AEC",
 };
 const STYLE_PNG_BASE = {
   transform: 'translate(-11px, 41.95px)'
@@ -132,19 +132,19 @@ export default {
           </filter>
         </defs>
         <svg width={PARAM1 + 2 * STROKE_WIDTH} height={PARAM2 + 2 * STROKE_WIDTH} x={-(PARAM1 + 2 * STROKE_WIDTH) / 2} y="0px">
-          <rect x={STROKE_WIDTH} y={STROKE_WIDTH} rx={PARAM2 / 2} ry={PARAM2 / 2} width={PARAM1} height={PARAM2} stroke="rgb(64, 122, 236)" strokeWidth={STROKE_WIDTH} fill="transparent" />
+          <rect x={STROKE_WIDTH} y={STROKE_WIDTH} rx={PARAM2 / 2} ry={PARAM2 / 2} width={PARAM1} height={PARAM2} stroke="#407AEC" strokeWidth={STROKE_WIDTH} fill="transparent" />
         </svg>
         <svg width={PARAM1 + 2 * STROKE_WIDTH} height={PARAM2 + 2 * STROKE_WIDTH} x={-(PARAM1 + 2 * STROKE_WIDTH) / 2} y={DEPTH - PARAM2 - 2 * STROKE_WIDTH}>
-          <rect x={STROKE_WIDTH} y={STROKE_WIDTH} rx={PARAM2 / 2} ry={PARAM2 / 2} width={PARAM1} height={PARAM2} stroke="rgb(64, 122, 236)" strokeWidth={STROKE_WIDTH} fill="transparent" />
+          <rect x={STROKE_WIDTH} y={STROKE_WIDTH} rx={PARAM2 / 2} ry={PARAM2 / 2} width={PARAM1} height={PARAM2} stroke="#407AEC" strokeWidth={STROKE_WIDTH} fill="transparent" />
         </svg>
         <svg width={PARAM2 + 2 * STROKE_WIDTH} height={PARAM1 + 2 * STROKE_WIDTH} x={-(WIDTH) / 2} y={DEPTH / 2 - PARAM1 / 2 - 2 * STROKE_WIDTH}>
-          <rect x={STROKE_WIDTH} y={STROKE_WIDTH} rx={PARAM2 / 2} ry={PARAM2 / 2} width={PARAM2} height={PARAM1} stroke="rgb(64, 122, 236)" strokeWidth={STROKE_WIDTH} fill="transparent" />
+          <rect x={STROKE_WIDTH} y={STROKE_WIDTH} rx={PARAM2 / 2} ry={PARAM2 / 2} width={PARAM2} height={PARAM1} stroke="#407AEC" strokeWidth={STROKE_WIDTH} fill="transparent" />
         </svg>
         <svg width={PARAM2 + 2 * STROKE_WIDTH} height={PARAM1 + 2 * STROKE_WIDTH} x={(WIDTH) / 2 - PARAM2 - 2 * STROKE_WIDTH} y={DEPTH / 2 - PARAM1 / 2 - 2 * STROKE_WIDTH}>
-          <rect x={STROKE_WIDTH} y={STROKE_WIDTH} rx={PARAM2 / 2} ry={PARAM2 / 2} width={PARAM2} height={PARAM1} stroke="rgb(64, 122, 236)" strokeWidth={STROKE_WIDTH} fill="transparent" />
+          <rect x={STROKE_WIDTH} y={STROKE_WIDTH} rx={PARAM2 / 2} ry={PARAM2 / 2} width={PARAM2} height={PARAM1} stroke="#407AEC" strokeWidth={STROKE_WIDTH} fill="transparent" />
         </svg>
         <svg height={CIRCLE_RADIUS * 2 + 6} width={CIRCLE_RADIUS * 2 + 6} x={-(CIRCLE_RADIUS * 2 + 2 * STROKE_WIDTH) / 2} y={(DEPTH - 2 *  CIRCLE_RADIUS) / 2 - STROKE_WIDTH}>
-          <circle cx={CIRCLE_RADIUS  + 3} cy={CIRCLE_RADIUS  + 3} r={CIRCLE_RADIUS} stroke="rgb(64, 122, 236)" strokeWidth={STROKE_WIDTH} fill="transparent" />
+          <circle cx={CIRCLE_RADIUS  + 3} cy={CIRCLE_RADIUS  + 3} r={CIRCLE_RADIUS} stroke="#407AEC" strokeWidth={STROKE_WIDTH} fill="transparent" />
         </svg>
 
         <image href="/assets/enable.png" style={STYLE_PNG_BASE}/>

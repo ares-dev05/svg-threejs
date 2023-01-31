@@ -310,6 +310,20 @@ export default function ItemsBox(props) {
                 props.dispatch(actions.itemsActions.selectToolDrawingItem("dresser"));
               } else if(menu.name == "Bathtub") {
                 props.dispatch(actions.itemsActions.selectToolDrawingItem("bathtub"));
+              } else if(menu.name == "Shower") {
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("shower"));
+              } else if(menu.name == "Sink") {
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("sink"));
+              } else if(menu.name == "Toilet") {
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("toilet"));
+              } else if(menu.name == "Washing machine") {
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("washing-machine"));
+              } else if(menu.name == "Oven") {
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("oven"));
+              } else if(menu.name == "Cooktop - 2x") {
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("cooktop-2x"));
+              } else if(menu.name == "Cooktop - 4x") {
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("cooktop-4x"));
               }
             }}>
               <img src={menu.icon} />
