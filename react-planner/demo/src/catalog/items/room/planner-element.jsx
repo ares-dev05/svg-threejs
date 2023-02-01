@@ -5,6 +5,12 @@ const WIDTH=150;
 const DEPTH=150;
 const HEIGHT=150;
 
+const STYLE_TRANPARENT = {
+  strokeWidth: 1,
+  stroke: "transparent",
+  fill: "transparent",
+};
+
 const STYLE_RECT = {
   strokeWidth: 1,
   stroke: "#8E9BA2",
@@ -109,7 +115,7 @@ export default {
         }
       }
     })
-
+    let poly01 = `${-WIDTH / 2 - half_thickness},${DEPTH + half_thickness}`, poly02 = `${WIDTH / 2 + half_thickness},${DEPTH + half_thickness}`, poly03 = `${WIDTH / 2 + half_thickness},${0}`, poly04 = `${-WIDTH / 2 - half_thickness},${0}`;
     let poly11 = `${half_thickness},${half_thickness}`, poly12 = `${length - half_thickness},${half_thickness}`, poly13 = `${length + half_thickness},${-half_thickness}`, poly14 = `-${half_thickness},-${half_thickness}`;
     let poly21 = `${-half_thickness},${DEPTH + half_thickness}`, poly22 = `${length + half_thickness},${DEPTH + half_thickness}`, poly23 = `${length - half_thickness},${DEPTH - half_thickness}`, poly24 = `${half_thickness}, ${DEPTH - half_thickness}`;
     let poly31 = `${-half_thickness},${DEPTH + half_thickness}`, poly32 = `${half_thickness},${DEPTH - half_thickness}`, poly33 = `${half_thickness},${half_thickness}`, poly34 = `${-half_thickness}, -${half_thickness}`;
@@ -131,6 +137,7 @@ export default {
             <feComposite operator="over" in="SourceGraphic" />
           </filter>
         </defs>
+        <polygon points={`${poly01 + " " + poly02 + " " + poly03 + " " + poly04}`} style={STYLE_TRANPARENT} />
         <polygon points={`${poly11 + " " + poly12 + " " + poly13 + " " + poly14}`} style={STYLE_RECT_SELECTED} />
         <polygon points={`${poly21 + " " + poly22 + " " + poly23 + " " + poly24}`} style={STYLE_RECT_SELECTED} />
         <polygon points={`${poly31 + " " + poly32 + " " + poly33 + " " + poly34}`} style={STYLE_RECT_SELECTED} />
@@ -191,6 +198,7 @@ export default {
       </g>
     ) : (
       <g transform={`translate(${-WIDTH / 2},${-DEPTH / 2})`}>
+        <polygon points={`${poly01 + " " + poly02 + " " + poly03 + " " + poly04}`} style={STYLE_TRANPARENT} />
         <polygon points={`${poly11 + " " + poly12 + " " + poly13 + " " + poly14}`} style={STYLE_RECT} />
         <polygon points={`${poly21 + " " + poly22 + " " + poly23 + " " + poly24}`} style={STYLE_RECT} />
         <polygon points={`${poly31 + " " + poly32 + " " + poly33 + " " + poly34}`} style={STYLE_RECT} />

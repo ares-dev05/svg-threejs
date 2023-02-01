@@ -10,6 +10,12 @@ const STROKE_WIDTH = 3;
 const CIRCLE_RADIUS = 7.41 * ZOOM;
 const HEIGHT=150;
 
+const STYLE_TRANPARENT = {
+  strokeWidth: 1,
+  stroke: "transparent",
+  fill: "transparent",
+};
+
 const STYLE_RECT = {
   strokeWidth: 1,
   stroke: "#8E9BA2",
@@ -114,6 +120,8 @@ export default {
         }
       }
     })
+
+    let poly01 = `${-WIDTH / 2 - half_thickness},${DEPTH + half_thickness}`, poly02 = `${WIDTH / 2 + half_thickness},${DEPTH + half_thickness}`, poly03 = `${WIDTH / 2 + half_thickness},${0}`, poly04 = `${-WIDTH / 2 - half_thickness},${0}`;
     
     return element.selected ? (
       <g transform={`translate(${0},${-DEPTH / 2})`}>
@@ -131,6 +139,7 @@ export default {
             <feComposite operator="over" in="SourceGraphic" />
           </filter>
         </defs>
+        <polygon points={`${poly01 + " " + poly02 + " " + poly03 + " " + poly04}`} style={STYLE_TRANPARENT} />
         <svg width={PARAM1 + 2 * STROKE_WIDTH} height={PARAM2 + 2 * STROKE_WIDTH} x={-(PARAM1 + 2 * STROKE_WIDTH) / 2} y="0px">
           <rect x={STROKE_WIDTH} y={STROKE_WIDTH} rx={PARAM2 / 2} ry={PARAM2 / 2} width={PARAM1} height={PARAM2} stroke="#407AEC" strokeWidth={STROKE_WIDTH} fill="transparent" />
         </svg>
@@ -203,6 +212,7 @@ export default {
       </g>
     ) : (
       <g transform={`translate(${0},${-DEPTH / 2})`}>
+        <polygon points={`${poly01 + " " + poly02 + " " + poly03 + " " + poly04}`} style={STYLE_TRANPARENT} />
         <svg width={PARAM1 + 2 * STROKE_WIDTH} height={PARAM2 + 2 * STROKE_WIDTH} x={-(PARAM1 + 2 * STROKE_WIDTH) / 2} y="0px">
           <rect x={STROKE_WIDTH} y={STROKE_WIDTH} rx={PARAM2 / 2} ry={PARAM2 / 2} width={PARAM1} height={PARAM2} stroke="#8E9BA2" strokeWidth={STROKE_WIDTH} fill="transparent" />
         </svg>

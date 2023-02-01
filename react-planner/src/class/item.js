@@ -171,6 +171,7 @@ class Item {
   }
 
   static beginRotatingItem(state, layerID, itemID, x, y) {
+    console.log('beginRotatingItem')
     state = state.merge({
       mode: MODE_ROTATING_ITEM,
       rotatingSupport: Map({

@@ -324,6 +324,8 @@ export default function ItemsBox(props) {
                 props.dispatch(actions.itemsActions.selectToolDrawingItem("cooktop-2x"));
               } else if(menu.name == "Cooktop - 4x") {
                 props.dispatch(actions.itemsActions.selectToolDrawingItem("cooktop-4x"));
+              } else if(menu.name == "Range hood") {
+                props.dispatch(actions.itemsActions.selectToolDrawingItem("rangehood"));
               }
             }}>
               <img src={menu.icon} />
