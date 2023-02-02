@@ -169,6 +169,7 @@ class Project {
       drawingSupport: new Map(),
       draggingSupport: new Map(),
       rotatingSupport: new Map(),
+      resizeSupport: new Map(),
     });
 
     return { updatedState: state };

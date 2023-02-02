@@ -250,6 +250,13 @@ export default function Viewer2D(
               x,
               y
             );
+          else if (elementData.part === "resize-points-rb")
+            itemsActions.beginRotatingItem(
+              elementData.layer,
+              elementData.id,
+              x,
+              y
+            );
           else
             itemsActions.beginDraggingItem(
               elementData.layer,

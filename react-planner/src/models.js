@@ -172,6 +172,7 @@ export class Item extends Record(
     x: 0,
     y: 0,
     rotation: 0,
+    zoom: 1
   },
   "Item"
 ) {
@@ -220,6 +221,7 @@ export class Group extends Record(
     x: 0,
     y: 0,
     rotation: 0,
+    // zoom: 0,
     elements: new Map(),
   },
   "Group"
@@ -263,10 +265,10 @@ export class Scene extends Record(
       guides: json.guides
         ? fromJS(json.guides)
         : new Map({
-            horizontal: new Map(),
-            vertical: new Map(),
-            circular: new Map(),
-          }),
+          horizontal: new Map(),
+          vertical: new Map(),
+          circular: new Map(),
+        }),
     });
   }
 }
@@ -314,11 +316,11 @@ export class Catalog extends Record(
 
     let element = this.elements.get(type);
     let properties = element.properties.map((value, key) =>
-    initialProperties && initialProperties.has(key)
-    ? initialProperties.get(key)
-    : value.get("defaultValue")
+      initialProperties && initialProperties.has(key)
+        ? initialProperties.get(key)
+        : value.get("defaultValue")
     );
-    
+
     switch (element.prototype) {
       case "lines":
         return new Line(options).merge({ properties });
@@ -373,6 +375,7 @@ export class State extends Record(
     drawingSupport: new Map(),
     draggingSupport: new Map(),
     rotatingSupport: new Map(),
+    resizeSupport: new Map(),
     errors: new List(),
     warnings: new List(),
     clipboardProperties: new Map(),
@@ -392,6 +395,7 @@ export class State extends Record(
       drawingSupport: new Map(json.drawingSupport || {}),
       draggingSupport: new Map(json.draggingSupport || {}),
       rotatingSupport: new Map(json.rotatingSupport || {}),
+      resizeSupport: new Map(json.resizeSupport || {}),
       misc: json.misc ? fromJS(json.misc) : new Map(),
     });
   }

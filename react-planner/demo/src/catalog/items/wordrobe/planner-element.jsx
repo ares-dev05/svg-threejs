@@ -122,13 +122,11 @@ export default {
     let poly21 = `${-WIDTH / 2 - half_thickness},${DEPTH}`, poly22 = `${-WIDTH / 2 + half_thickness},${DEPTH}`, poly23 = `${-WIDTH / 2 + half_thickness},${0}`, poly24 = `${-WIDTH / 2 - half_thickness},${0}`;
     let poly31 = `${WIDTH / 2 - half_thickness},${DEPTH}`, poly32 = `${WIDTH / 2 + half_thickness},${DEPTH}`, poly33 = `${WIDTH / 2 + half_thickness},${0}`, poly34 = `${WIDTH / 2 - half_thickness},${0}`;
     let poly41 = `${-WIDTH / 2},${DEPTH + half_thickness}`, poly42 = `${WIDTH / 2},${DEPTH + half_thickness}`, poly43 = `${WIDTH / 2},${DEPTH - half_thickness}`, poly44 = `${-WIDTH / 2},${DEPTH - half_thickness}`;
-
     let poly51 = `${-WIDTH / 2},${half_thickness + PARAM}`, poly52 = `${WIDTH / 2},${half_thickness + PARAM}`, poly53 = `${WIDTH / 2},${-half_thickness +  + PARAM}`, poly54 = `${-WIDTH / 2},${-half_thickness + PARAM}`;
     let poly61 = `${- half_thickness},${0}`, poly62 = `${half_thickness},${0}`, poly63 = `${half_thickness},${PARAM}`, poly64 = `${-half_thickness},${PARAM}`;
-
    
     return element.selected ? (
-      <g transform={`translate(${0},${-DEPTH / 2})`}>
+      <g transform={`translate(${0},${-DEPTH / 2})`} width={WIDTH} height={DEPTH}>
         <defs>
           <filter id="rounded-corners" x="-25%" width="150%" y="-25%" height="150%">
             <feFlood floodColor="#407AEC" />

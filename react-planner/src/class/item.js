@@ -9,7 +9,8 @@ import {
   MODE_IDLE,
   MODE_DRAWING_ITEM,
   MODE_DRAGGING_ITEM,
-  MODE_ROTATING_ITEM
+  MODE_ROTATING_ITEM,
+  MODE_RESIZE_ITEM_RIGHT_BOTTOM
 } from '../constants';
 
 class Item {
@@ -166,6 +167,19 @@ class Item {
   static endDraggingItem(state, x, y) {
     state = this.updateDraggingItem(state, x, y).updatedState;
     state = state.merge({ mode: MODE_IDLE });
+
+    return { updatedState: state };
+  }
+
+  static beginResizeItemRB(state, layerID, itemID, x, y) {
+    console.log('beginResizeItem')
+    state = state.merge({
+      mode: MODE_RESIZE_ITEM_RIGHT_BOTTOM,
+      resizeSupport: Map({
+        layerID,
+        itemID
+      })
+    });
 
     return { updatedState: state };
   }

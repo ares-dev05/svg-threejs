@@ -68,6 +68,13 @@ export function beginRotatingItem(layerID, itemID, x, y) {
   }
 }
 
+export function beginResizingItemRB(layerID, itemID, x, y) {
+  return {
+    type: BEGIN_RESIZE_ITEM_RIGHT_BOTTOM,
+    layerID, itemID, x, y
+  }
+}
+
 export function updateRotatingItem(x, y) {
   return {
     type: UPDATE_ROTATING_ITEM,
