@@ -10,7 +10,13 @@ import {
   BEGIN_ROTATING_ITEM,
   UPDATE_ROTATING_ITEM,
   END_ROTATING_ITEM,
-  SELECT_ITEM
+  SELECT_ITEM,
+  BEGIN_RESIZE_ITEM_RIGHT_BOTTOM,
+  UPDATE_RESIZE_ITEM_RIGHT_BOTTOM,
+  END_RESIZE_ITEM_RIGHT_BOTTOM,
+  BEGIN_RESIZE_ITEM_RIGHT_TOP,
+  UPDATE_RESIZE_ITEM_RIGHT_TOP,
+  END_RESIZE_ITEM_RIGHT_TOP,
 } from '../constants';
 
 export default function (state, action) {
@@ -43,6 +49,28 @@ export default function (state, action) {
     case BEGIN_ROTATING_ITEM:
       state = state.merge({ sceneHistory: history.historyPush(state.sceneHistory, state.scene) });
       return Item.beginRotatingItem(state, action.layerID, action.itemID, action.x, action.y).updatedState;
+
+    case BEGIN_RESIZE_ITEM_RIGHT_BOTTOM:
+      state = state.merge({ sceneHistory: history.historyPush(state.sceneHistory, state.scene) });
+      return Item.beginResizingItemRB(state, action.layerID, action.itemID, action.x, action.y).updatedState;
+
+    case UPDATE_RESIZE_ITEM_RIGHT_BOTTOM:
+      return Item.updateResizingItemRB(state, action.x, action.y).updatedState;
+
+    case END_RESIZE_ITEM_RIGHT_BOTTOM:
+      state = state.merge({ sceneHistory: history.historyPush(state.sceneHistory, state.scene) });
+      return Item.endResizingItemRB(state, action.x, action.y).updatedState;
+
+    case BEGIN_RESIZE_ITEM_RIGHT_TOP:
+      state = state.merge({ sceneHistory: history.historyPush(state.sceneHistory, state.scene) });
+      return Item.beginResizingItemRT(state, action.layerID, action.itemID, action.x, action.y).updatedState;
+
+    case UPDATE_RESIZE_ITEM_RIGHT_TOP:
+      return Item.updateResizingItemRT(state, action.x, action.y).updatedState;
+
+    case END_RESIZE_ITEM_RIGHT_TOP:
+      state = state.merge({ sceneHistory: history.historyPush(state.sceneHistory, state.scene) });
+      return Item.endResizingItemRT(state, action.x, action.y).updatedState;
 
     case UPDATE_ROTATING_ITEM:
       return Item.updateRotatingItem(state, action.x, action.y).updatedState;

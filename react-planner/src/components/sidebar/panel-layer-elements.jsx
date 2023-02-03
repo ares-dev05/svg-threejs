@@ -19,6 +19,8 @@ import {
   MODE_FITTING_IMAGE,
   MODE_UPLOADING_IMAGE,
   MODE_ROTATING_ITEM,
+  MODE_RESIZE_ITEM_RIGHT_BOTTOM,
+  MODE_RESIZE_ITEM_RIGHT_TOP
 } from "../../constants";
 import * as SharedStyle from "../../shared-style";
 import { MdSearch } from "react-icons/md";
@@ -41,6 +43,8 @@ const VISIBILITY_MODE = {
   MODE_FITTING_IMAGE,
   MODE_UPLOADING_IMAGE,
   MODE_ROTATING_ITEM,
+  MODE_RESIZE_ITEM_RIGHT_BOTTOM,
+  MODE_RESIZE_ITEM_RIGHT_TOP
 };
 
 const contentArea = {

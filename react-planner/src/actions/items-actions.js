@@ -8,7 +8,13 @@ import {
   END_DRAGGING_ITEM,
   BEGIN_ROTATING_ITEM,
   UPDATE_ROTATING_ITEM,
-  END_ROTATING_ITEM
+  END_ROTATING_ITEM,
+  BEGIN_RESIZE_ITEM_RIGHT_BOTTOM,
+  UPDATE_RESIZE_ITEM_RIGHT_BOTTOM,
+  END_RESIZE_ITEM_RIGHT_BOTTOM,
+  BEGIN_RESIZE_ITEM_RIGHT_TOP,
+  UPDATE_RESIZE_ITEM_RIGHT_TOP,
+  END_RESIZE_ITEM_RIGHT_TOP,
 } from '../constants';
 
 export function selectItem(layerID, itemID) {
@@ -68,12 +74,6 @@ export function beginRotatingItem(layerID, itemID, x, y) {
   }
 }
 
-export function beginResizingItemRB(layerID, itemID, x, y) {
-  return {
-    type: BEGIN_RESIZE_ITEM_RIGHT_BOTTOM,
-    layerID, itemID, x, y
-  }
-}
 
 export function updateRotatingItem(x, y) {
   return {
@@ -85,6 +85,48 @@ export function updateRotatingItem(x, y) {
 export function endRotatingItem(x, y) {
   return {
     type: END_ROTATING_ITEM,
+    x, y
+  }
+}
+
+export function beginResizingItemRB(layerID, itemID, x, y) {
+  return {
+    type: BEGIN_RESIZE_ITEM_RIGHT_BOTTOM,
+    layerID, itemID, x, y
+  }
+}
+
+export function updateResizingItemRB(x, y) {
+  return {
+    type: UPDATE_RESIZE_ITEM_RIGHT_BOTTOM,
+    x, y
+  }
+}
+
+export function endResizingItemRB(x, y) {
+  return {
+    type: END_RESIZE_ITEM_RIGHT_BOTTOM,
+    x, y
+  }
+}
+
+export function beginResizingItemRT(layerID, itemID, x, y) {
+  return {
+    type: BEGIN_RESIZE_ITEM_RIGHT_TOP,
+    layerID, itemID, x, y
+  }
+}
+
+export function updateResizingItemRT(x, y) {
+  return {
+    type: UPDATE_RESIZE_ITEM_RIGHT_TOP,
+    x, y
+  }
+}
+
+export function endResizingItemRT(x, y) {
+  return {
+    type: END_RESIZE_ITEM_RIGHT_TOP,
     x, y
   }
 }

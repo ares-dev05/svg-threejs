@@ -56,6 +56,10 @@ function mode2Cursor(mode) {
 
     case constants.MODE_ROTATING_ITEM:
       return { cursor: "ew-resize" };
+    case constants.MODE_RESIZE_ITEM_RIGHT_BOTTOM:
+      return { cursor: "nwse-resize" };
+    case constants.MODE_RESIZE_ITEM_RIGHT_TOP:
+      return { cursor: "nesw-resize" };
 
     case constants.MODE_WAITING_DRAWING_LINE:
     case constants.MODE_DRAWING_LINE:
@@ -170,6 +174,8 @@ export default function Viewer2D(
 
     projectActions.updateMouseCoord({ x, y });
 
+    console.log('mode', mode)
+
     switch (mode) {
       case constants.MODE_DRAWING_LINE:
         linesActions.updateDrawingLine(x, y, state.snapMask);
@@ -202,6 +208,14 @@ export default function Viewer2D(
       case constants.MODE_ROTATING_ITEM:
         itemsActions.updateRotatingItem(x, y);
         break;
+
+      case constants.MODE_RESIZE_ITEM_RIGHT_BOTTOM:
+        itemsActions.updateResizingItemRB(x, y);
+        break;
+      case constants.MODE_RESIZE_ITEM_RIGHT_TOP:
+        itemsActions.updateResizingItemRT(x, y);
+        break;
+        
     }
 
     viewerEvent.originalEvent.stopPropagation();
@@ -243,21 +257,28 @@ export default function Viewer2D(
           break;
 
         case "items":
-          if (elementData.part === "rotation-anchor")
+          if (elementData.part === "rotation-anchor") {
             itemsActions.beginRotatingItem(
               elementData.layer,
               elementData.id,
               x,
               y
             );
-          else if (elementData.part === "resize-points-rb")
-            itemsActions.beginRotatingItem(
+          } else if (elementData.part === "resize-points-rb") {
+            itemsActions.beginResizingItemRB(
               elementData.layer,
               elementData.id,
               x,
               y
             );
-          else
+          } else if (elementData.part === "resize-points-rt") {
+            itemsActions.beginResizingItemRT(
+              elementData.layer,
+              elementData.id,
+              x,
+              y
+            );
+          } else
             itemsActions.beginDraggingItem(
               elementData.layer,
               elementData.id,
@@ -356,6 +377,14 @@ export default function Viewer2D(
       case constants.MODE_ROTATING_ITEM:
         itemsActions.endRotatingItem(x, y);
         break;
+
+      case constants.MODE_RESIZE_ITEM_RIGHT_BOTTOM:
+        itemsActions.endResizingItemRB(x, y);
+        break;
+      case constants.MODE_RESIZE_ITEM_RIGHT_TOP:
+        itemsActions.endResizingItemRT(x, y);
+        break;
+          
     }
 
     event.stopPropagation();
