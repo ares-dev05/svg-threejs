@@ -127,7 +127,7 @@ export default {
     let poly41 = `${-INNER_WIDTH / 2},${INNER_WIDTH + half_thickness + (DEPTH - INNER_WIDTH) / 2}`, poly42 = `${INNER_WIDTH / 2},${INNER_WIDTH + half_thickness + (DEPTH - INNER_WIDTH) / 2}`, poly43 = `${INNER_WIDTH / 2},${INNER_WIDTH - half_thickness + (DEPTH - INNER_WIDTH) / 2}`, poly44 = `${-INNER_WIDTH / 2},${INNER_WIDTH - half_thickness + (DEPTH - INNER_WIDTH) / 2}`;
 
     return element.selected ? (
-      <g transform={`translate(${0},${-DEPTH / 2})`}>
+      <g transform={`translate(${0},${-DEPTH / 2})`} width={WIDTH} height={DEPTH}>
         <defs>
           <filter id="rounded-corners" x="-25%" width="150%" y="-25%" height="150%">
             <feFlood floodColor="#407AEC" />
@@ -215,7 +215,7 @@ export default {
         </g>}
       </g>
     ) : (
-      <g transform={`translate(${0},${-DEPTH / 2})`}>
+      <g transform={`translate(${0},${-DEPTH / 2})`} width={WIDTH} height={DEPTH}>
         <polygon points={`${poly01 + " " + poly02 + " " + poly03 + " " + poly04}`} style={STYLE_TRANPARENT} />
         <polygon points={`${poly11 + " " + poly12 + " " + poly13 + " " + poly14}`} style={STYLE_RECT} />
         <polygon points={`${poly21 + " " + poly22 + " " + poly23 + " " + poly24}`} style={STYLE_RECT} />

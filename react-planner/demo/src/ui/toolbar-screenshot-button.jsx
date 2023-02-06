@@ -19,6 +19,8 @@ const {
   MODE_ROTATING_ITEM,
   MODE_RESIZE_ITEM_RIGHT_BOTTOM,
   MODE_RESIZE_ITEM_RIGHT_TOP,
+  MODE_RESIZE_ITEM_LEFT_TOP,
+  MODE_RESIZE_ITEM_LEFT_BOTTOM,
   MODE_3D_FIRST_PERSON,
   MODE_3D_VIEW,
 } = ReactPlannerConstants;
@@ -130,6 +132,8 @@ export default function ToolbarScreenshotButton({ mode }, { translator }) {
       MODE_ROTATING_ITEM,
       MODE_RESIZE_ITEM_RIGHT_BOTTOM,
       MODE_RESIZE_ITEM_RIGHT_TOP,
+      MODE_RESIZE_ITEM_LEFT_TOP,
+      MODE_RESIZE_ITEM_LEFT_BOTTOM,
     ].includes(mode)
   ) {
     return (

@@ -115,14 +115,14 @@ export default {
         }
       }
     })
-    let poly01 = `${-WIDTH / 2 - half_thickness},${DEPTH + half_thickness}`, poly02 = `${WIDTH / 2 + half_thickness},${DEPTH + half_thickness}`, poly03 = `${WIDTH / 2 + half_thickness},${0}`, poly04 = `${-WIDTH / 2 - half_thickness},${0}`;
+    let poly01 = `${-half_thickness},${DEPTH + half_thickness}`, poly02 = `${WIDTH + half_thickness},${DEPTH + half_thickness}`, poly03 = `${WIDTH + half_thickness},${0}`, poly04 = `${- half_thickness},${0}`;
     let poly11 = `${half_thickness},${half_thickness}`, poly12 = `${length - half_thickness},${half_thickness}`, poly13 = `${length + half_thickness},${-half_thickness}`, poly14 = `-${half_thickness},-${half_thickness}`;
     let poly21 = `${-half_thickness},${DEPTH + half_thickness}`, poly22 = `${length + half_thickness},${DEPTH + half_thickness}`, poly23 = `${length - half_thickness},${DEPTH - half_thickness}`, poly24 = `${half_thickness}, ${DEPTH - half_thickness}`;
     let poly31 = `${-half_thickness},${DEPTH + half_thickness}`, poly32 = `${half_thickness},${DEPTH - half_thickness}`, poly33 = `${half_thickness},${half_thickness}`, poly34 = `${-half_thickness}, -${half_thickness}`;
     let poly41 = `${WIDTH -half_thickness},${DEPTH - half_thickness}`, poly42 = `${WIDTH + half_thickness},${DEPTH + half_thickness}`, poly43 = `${WIDTH + half_thickness},-${half_thickness}`, poly44 = `${WIDTH -half_thickness}, ${half_thickness}`;
 
     return element.selected ? (
-      <g transform={`translate(${-WIDTH / 2},${-DEPTH / 2})`}>
+      <g transform={`translate(${-WIDTH / 2},${-DEPTH / 2})`} width={WIDTH} height={DEPTH}>
         <defs>
           <filter id="rounded-corners" x="-25%" width="150%" y="-25%" height="150%">
             <feFlood floodColor="#407AEC" />
@@ -197,7 +197,7 @@ export default {
         </g>}
       </g>
     ) : (
-      <g transform={`translate(${-WIDTH / 2},${-DEPTH / 2})`}>
+      <g transform={`translate(${-WIDTH / 2},${-DEPTH / 2})`} width={WIDTH} height={DEPTH}>
         <polygon points={`${poly01 + " " + poly02 + " " + poly03 + " " + poly04}`} style={STYLE_TRANPARENT} />
         <polygon points={`${poly11 + " " + poly12 + " " + poly13 + " " + poly14}`} style={STYLE_RECT} />
         <polygon points={`${poly21 + " " + poly22 + " " + poly23 + " " + poly24}`} style={STYLE_RECT} />

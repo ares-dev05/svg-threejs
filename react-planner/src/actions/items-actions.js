@@ -15,6 +15,12 @@ import {
   BEGIN_RESIZE_ITEM_RIGHT_TOP,
   UPDATE_RESIZE_ITEM_RIGHT_TOP,
   END_RESIZE_ITEM_RIGHT_TOP,
+  BEGIN_RESIZE_ITEM_LEFT_TOP,
+  UPDATE_RESIZE_ITEM_LEFT_TOP,
+  END_RESIZE_ITEM_LEFT_TOP,
+  BEGIN_RESIZE_ITEM_LEFT_BOTTOM,
+  UPDATE_RESIZE_ITEM_LEFT_BOTTOM,
+  END_RESIZE_ITEM_LEFT_BOTTOM,
 } from '../constants';
 
 export function selectItem(layerID, itemID) {
@@ -127,6 +133,48 @@ export function updateResizingItemRT(x, y) {
 export function endResizingItemRT(x, y) {
   return {
     type: END_RESIZE_ITEM_RIGHT_TOP,
+    x, y
+  }
+}
+
+export function beginResizingItemLT(layerID, itemID, x, y) {
+  return {
+    type: BEGIN_RESIZE_ITEM_LEFT_TOP,
+    layerID, itemID, x, y
+  }
+}
+
+export function updateResizingItemLT(x, y) {
+  return {
+    type: UPDATE_RESIZE_ITEM_LEFT_TOP,
+    x, y
+  }
+}
+
+export function endResizingItemLT(x, y) {
+  return {
+    type: END_RESIZE_ITEM_LEFT_TOP,
+    x, y
+  }
+}
+
+export function beginResizingItemLB(layerID, itemID, x, y) {
+  return {
+    type: BEGIN_RESIZE_ITEM_LEFT_BOTTOM,
+    layerID, itemID, x, y
+  }
+}
+
+export function updateResizingItemLB(x, y) {
+  return {
+    type: UPDATE_RESIZE_ITEM_LEFT_BOTTOM,
+    x, y
+  }
+}
+
+export function endResizingItemLB(x, y) {
+  return {
+    type: END_RESIZE_ITEM_LEFT_BOTTOM,
     x, y
   }
 }

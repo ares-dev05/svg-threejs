@@ -1,22 +1,24 @@
-import React, {useState, useEffect} from 'react';
-import PropTypes from 'prop-types';
-import If from '../../utils/react-if';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import If from "../../utils/react-if";
+import ItemDlg from "./ItemDlg";
+import { Fragment } from "react";
 
 const STYLE_LINE = {
   fill: "#0096fd",
-  stroke: "#0096fd"
+  stroke: "#0096fd",
 };
 
 const STYLE_CIRCLE = {
   fill: "#0096fd",
   stroke: "#0096fd",
-  cursor: "ew-resize"
+  cursor: "ew-resize",
 };
 
 const STYLE_CIRCLE2 = {
   fill: "none",
   stroke: "#0096fd",
-  cursor: "ew-resize"
+  cursor: "ew-resize",
 };
 const STYLE_RECT_SELECTED = {
   fill: "#A0BEF7",
@@ -24,131 +26,239 @@ const STYLE_RECT_SELECTED = {
   stroke: "#A0BEF7",
 };
 
-export default function Item({layer, item, scene, catalog}) {
-
-  let {x, y, rotation, zoom} = item;
+export default function Item({ layer, item, scene, catalog }) {
+  let { x, y, rotation, zoom } = item;
 
   const [scale, setScale] = useState(1);
-  
+
   let renderedItem = catalog.getElement(item.type).render2D(item, layer, scene);
-  
+
   const WIDTH = renderedItem.props.width;
   const DEPTH = renderedItem.props.height;
   const half_thickness = 1;
   const margin = 5;
   const CIRCLE_RADIUS = 4;
   const STROKE_WIDTH = 3;
-  
-  let poly11 = `${-WIDTH / 2 - margin},${half_thickness - DEPTH / 2- margin}`, poly12 = `${WIDTH / 2 + margin},${half_thickness - DEPTH / 2- margin}`, poly13 = `${WIDTH / 2 + margin},${-half_thickness - DEPTH / 2- margin}`, poly14 = `${-WIDTH / 2 - margin},${-half_thickness - DEPTH / 2- margin}`;
-  let poly21 = `${-WIDTH / 2 - half_thickness - margin},${DEPTH / 2+ margin}`, poly22 = `${-WIDTH / 2 + half_thickness - margin},${DEPTH / 2 + margin}`, poly23 = `${-WIDTH / 2 + half_thickness - margin},${ - DEPTH / 2 - margin}`, poly24 = `${-WIDTH / 2 - half_thickness - margin},${-DEPTH / 2 - margin}`;
-  let poly31 = `${WIDTH / 2 - half_thickness + margin},${DEPTH / 2 + margin}`, poly32 = `${WIDTH / 2 + half_thickness + margin},${DEPTH / 2 + margin}`, poly33 = `${WIDTH / 2 + half_thickness + margin},${ - DEPTH / 2 - margin}`, poly34 = `${WIDTH / 2 - half_thickness + margin},${ - DEPTH / 2 - margin}`;
-  let poly41 = `${-WIDTH / 2 - margin},${DEPTH / 2 + half_thickness + margin}`, poly42 = `${WIDTH / 2 + margin},${DEPTH / 2 + half_thickness + margin}`, poly43 = `${WIDTH / 2 + margin},${DEPTH / 2 - half_thickness + margin}`, poly44 = `${-WIDTH / 2 - margin},${DEPTH / 2 - half_thickness + margin}`;
+
+  let poly11 = `${-WIDTH / 2 - margin},${half_thickness - DEPTH / 2 - margin}`,
+    poly12 = `${WIDTH / 2 + margin},${half_thickness - DEPTH / 2 - margin}`,
+    poly13 = `${WIDTH / 2 + margin},${-half_thickness - DEPTH / 2 - margin}`,
+    poly14 = `${-WIDTH / 2 - margin},${-half_thickness - DEPTH / 2 - margin}`;
+  let poly21 = `${-WIDTH / 2 - half_thickness - margin},${DEPTH / 2 + margin}`,
+    poly22 = `${-WIDTH / 2 + half_thickness - margin},${DEPTH / 2 + margin}`,
+    poly23 = `${-WIDTH / 2 + half_thickness - margin},${-DEPTH / 2 - margin}`,
+    poly24 = `${-WIDTH / 2 - half_thickness - margin},${-DEPTH / 2 - margin}`;
+  let poly31 = `${WIDTH / 2 - half_thickness + margin},${DEPTH / 2 + margin}`,
+    poly32 = `${WIDTH / 2 + half_thickness + margin},${DEPTH / 2 + margin}`,
+    poly33 = `${WIDTH / 2 + half_thickness + margin},${-DEPTH / 2 - margin}`,
+    poly34 = `${WIDTH / 2 - half_thickness + margin},${-DEPTH / 2 - margin}`;
+  let poly41 = `${-WIDTH / 2 - margin},${DEPTH / 2 + half_thickness + margin}`,
+    poly42 = `${WIDTH / 2 + margin},${DEPTH / 2 + half_thickness + margin}`,
+    poly43 = `${WIDTH / 2 + margin},${DEPTH / 2 - half_thickness + margin}`,
+    poly44 = `${-WIDTH / 2 - margin},${DEPTH / 2 - half_thickness + margin}`;
 
   useEffect(() => {
-    if(WIDTH != undefined && zoom != 0) {
-      const delta = zoom - WIDTH * scale / 2 - margin;
-      const currentWidth = WIDTH * scale / 2 + delta;
-  
-      const nextScale = currentWidth / WIDTH * 2;
-      
-      setScale(nextScale)
+    if (WIDTH != undefined && zoom != 0) {
+      const delta = Math.abs(zoom) - (WIDTH * scale) / 2 - margin;
+      const currentWidth = (WIDTH * scale) / 2 + delta;
 
+      const nextScale = (currentWidth / WIDTH) * 2;
+
+      setScale(nextScale);
     }
-  }, [item, catalog])
+  }, [item, catalog]);
 
   return (
-    <g
-      data-element-root
-      data-prototype={item.prototype}
-      data-id={item.id}
-      data-selected={item.selected}
-      data-layer={layer.id}
-      style={item.selected ? {cursor: "move"} : {}}
-      transform={`translate(${x},${y}) rotate(${rotation}) scale(${scale})`}>
+    <Fragment>
+      <g
+        data-element-root
+        data-prototype={item.prototype}
+        data-id={item.id}
+        data-selected={item.selected}
+        data-layer={layer.id}
+        style={item.selected ? { cursor: "move" } : {}}
+        transform={`translate(${x},${y}) rotate(${rotation}) scale(${scale})`}
+      >
+        {renderedItem}
 
-      {renderedItem}
-      
-      <If condition={item.selected}>
-        <g data-element-root
-           data-prototype={item.prototype}
-           data-id={item.id}
-           data-selected={item.selected}
-           data-layer={layer.id}
-           data-part="rotation-anchor"
-        >
-          <circle cx="0" cy="150" r="10" style={STYLE_CIRCLE}/>
-          <circle cx="0" cy="0" r="150" style={STYLE_CIRCLE2}/>
-        </g>
-      </If>
-      <If condition={item.selected}>
-        <g data-element-root
-           data-prototype={item.prototype}
-           data-id={item.id}
-           data-selected={item.selected}
-           data-layer={layer.id}
-        >
-          <polygon points={`${poly11 + " " + poly12 + " " + poly13 + " " + poly14}`} style={STYLE_RECT_SELECTED} />
-          <polygon points={`${poly21 + " " + poly22 + " " + poly23 + " " + poly24}`} style={STYLE_RECT_SELECTED} />
-          <polygon points={`${poly31 + " " + poly32 + " " + poly33 + " " + poly34}`} style={STYLE_RECT_SELECTED} />
-          <polygon points={`${poly41 + " " + poly42 + " " + poly43 + " " + poly44}`} style={STYLE_RECT_SELECTED} />
-        </g>
-      </If>
-      <If condition={item.selected}>
-        <g data-element-root
-           data-prototype={item.prototype}
-           data-id={item.id}
-           data-selected={item.selected}
-           data-layer={layer.id}
-           data-part="resize-points-rb"
-        >
-          <circle cx={WIDTH / 2 + margin } cy={- DEPTH / 2 - margin} r={CIRCLE_RADIUS} stroke="#A0BEF7" strokeWidth={2} fill="#A0BEF7" style={{cursor: "nwse-resize"}}/>
-        </g>
-      </If>
-      <If condition={item.selected}>
-        <g data-element-root
-           data-prototype={item.prototype}
-           data-id={item.id}
-           data-selected={item.selected}
-           data-layer={layer.id}
-           data-part="resize-points-rt"
-        >
-           <circle cx={WIDTH / 2 + margin } cy={DEPTH / 2 + margin} r={CIRCLE_RADIUS} stroke="#A0BEF7" strokeWidth={2} fill="#A0BEF7" style={{cursor: "nesw-resize"}}/>
-        </g>
-      </If>
-      <If condition={item.selected}>
-        <g data-element-root
-           data-prototype={item.prototype}
-           data-id={item.id}
-           data-selected={item.selected}
-           data-layer={layer.id}
-           data-part="resize-points-lt"
-        >
-           <svg height={CIRCLE_RADIUS * 2 + 2 * STROKE_WIDTH} width={CIRCLE_RADIUS * 2 + 2 * STROKE_WIDTH} x={-WIDTH / 2 - margin - 2 * half_thickness - CIRCLE_RADIUS} y={DEPTH / 2 + margin - CIRCLE_RADIUS - 2 + half_thickness}>
-            <circle cx={CIRCLE_RADIUS  + 3} cy={CIRCLE_RADIUS  + 3} r={CIRCLE_RADIUS} stroke="#A0BEF7" strokeWidth={2} fill="#A0BEF7" />
+        <If condition={item.selected}>
+          <g
+            data-element-root
+            data-prototype={item.prototype}
+            data-id={item.id}
+            data-selected={item.selected}
+            data-layer={layer.id}
+            data-part="rotation-anchor"
+          >
+            <circle cx="0" cy="150" r="10" style={STYLE_CIRCLE} />
+            <circle cx="0" cy="0" r="150" style={STYLE_CIRCLE2} />
+          </g>
+        </If>
+        <If condition={item.selected}>
+          <g
+            data-element-root
+            data-prototype={item.prototype}
+            data-id={item.id}
+            data-selected={item.selected}
+            data-layer={layer.id}
+          >
+            <polygon
+              points={`${poly11 + " " + poly12 + " " + poly13 + " " + poly14}`}
+              style={STYLE_RECT_SELECTED}
+            />
+            <polygon
+              points={`${poly21 + " " + poly22 + " " + poly23 + " " + poly24}`}
+              style={STYLE_RECT_SELECTED}
+            />
+            <polygon
+              points={`${poly31 + " " + poly32 + " " + poly33 + " " + poly34}`}
+              style={STYLE_RECT_SELECTED}
+            />
+            <polygon
+              points={`${poly41 + " " + poly42 + " " + poly43 + " " + poly44}`}
+              style={STYLE_RECT_SELECTED}
+            />
+          </g>
+        </If>
+        <If condition={item.selected}>
+          <g
+            data-element-root
+            data-prototype={item.prototype}
+            data-id={item.id}
+            data-selected={item.selected}
+            data-layer={layer.id}
+            data-part="resize-points-rb"
+          >
+            <circle
+              cx={WIDTH / 2 + margin}
+              cy={-DEPTH / 2 - margin}
+              r={CIRCLE_RADIUS}
+              stroke="#A0BEF7"
+              strokeWidth={2}
+              fill="#A0BEF7"
+              style={{ cursor: "nwse-resize" }}
+            />
+          </g>
+        </If>
+        <If condition={item.selected}>
+          <g
+            data-element-root
+            data-prototype={item.prototype}
+            data-id={item.id}
+            data-selected={item.selected}
+            data-layer={layer.id}
+            data-part="resize-points-rt"
+          >
+            <circle
+              cx={WIDTH / 2 + margin}
+              cy={DEPTH / 2 + margin}
+              r={CIRCLE_RADIUS}
+              stroke="#A0BEF7"
+              strokeWidth={2}
+              fill="#A0BEF7"
+              style={{ cursor: "nesw-resize" }}
+            />
+          </g>
+        </If>
+        <If condition={item.selected}>
+          <g
+            data-element-root
+            data-prototype={item.prototype}
+            data-id={item.id}
+            data-selected={item.selected}
+            data-layer={layer.id}
+            data-part="resize-points-lt"
+          >
+            <circle
+              cx={-WIDTH / 2 - margin}
+              cy={DEPTH / 2 + margin}
+              r={CIRCLE_RADIUS}
+              stroke="#A0BEF7"
+              strokeWidth={2}
+              fill="#A0BEF7"
+              style={{ cursor: "nwse-resize" }}
+            />
+          </g>
+        </If>
+        <If condition={item.selected}>
+          <g
+            data-element-root
+            data-prototype={item.prototype}
+            data-id={item.id}
+            data-selected={item.selected}
+            data-layer={layer.id}
+            data-part="resize-points-lb"
+          >
+            <circle
+              cx={-WIDTH / 2 - margin}
+              cy={-DEPTH / 2 - margin}
+              r={CIRCLE_RADIUS}
+              stroke="#A0BEF7"
+              strokeWidth={2}
+              fill="#A0BEF7"
+              style={{ cursor: "nesw-resize" }}
+            />
+          </g>
+        </If>
+        <defs>
+          <filter id="popup-dlg" x="-25%" width="150%" y="-25%" height="150%">
+            <feFlood floodColor="#020916" />
+            <feGaussianBlur stdDeviation="2" />
+            <feComponentTransfer>
+              <feFuncA type="table" tableValues="0 0 0 1" />
+            </feComponentTransfer>
+
+            <feComponentTransfer>
+              <feFuncA type="table" tableValues="0 1 1 1 1 1 1 1" />
+            </feComponentTransfer>
+            <feComposite operator="over" in="SourceGraphic" />
+          </filter>
+        </defs>
+        <g transform={`translate(${WIDTH / 2 + margin},${0}) scale(1,-1)`} filter="url(#popup-dlg)">
+          <svg height="330" width="220">
+            <text fill="white" transform="translate(14.23, 12)" style={{
+              fontFamily: "DM Sans",
+              fontWeight: 400,
+              fontSize: '12px',
+              lineHeight: '15.62px'
+            }}>Width</text>
+            <text fill="#3D424A" transform="translate(53.23, 12)" style={{
+              fontFamily: "DM Sans",
+              fontWeight: 400,
+              fontSize: '12px',
+              lineHeight: '15.62px'
+            }}>mm</text>
+
+            <input type="text" transform="translate(53.23, 28)"  width="100px"  minlength="4" maxlength="8" size="10" style={{
+              fontFamily: "DM Sans",
+              fontWeight: 400,
+              fontSize: '12px',
+              lineHeight: '15.62px'
+            }}  value={WIDTH}/>
+
+            <text fill="white" transform="translate(14.23, 28)" style={{
+              fontFamily: "DM Sans",
+              fontWeight: 400,
+              fontSize: '12px',
+              lineHeight: '15.62px'
+            }}>Height</text>
+            <text fill="#3D424A" transform="translate(53.23, 28)" style={{
+              fontFamily: "DM Sans",
+              fontWeight: 400,
+              fontSize: '12px',
+              lineHeight: '15.62px'
+            }}>mm</text>
+            
           </svg>
         </g>
-      </If>
-      <If condition={item.selected}>
-        <g data-element-root
-           data-prototype={item.prototype}
-           data-id={item.id}
-           data-selected={item.selected}
-           data-layer={layer.id}
-           data-part="resize-points-lb"
-        >
-           <svg height={CIRCLE_RADIUS * 2 + 2 * STROKE_WIDTH} width={CIRCLE_RADIUS * 2 + 2 * STROKE_WIDTH} x={-WIDTH / 2 - margin - 2 * half_thickness - CIRCLE_RADIUS} y={- 2 * half_thickness - DEPTH / 2 - margin - CIRCLE_RADIUS -2}>
-            <circle cx={CIRCLE_RADIUS  + 3} cy={CIRCLE_RADIUS  + 3} r={CIRCLE_RADIUS} stroke="#A0BEF7" strokeWidth={2} fill="#A0BEF7" />
-          </svg>
-        </g>
-      </If>
-    </g>
-  )
+      </g>
+    </Fragment>
+  );
 }
 
 Item.propTypes = {
   item: PropTypes.object.isRequired,
   layer: PropTypes.object.isRequired,
   scene: PropTypes.object.isRequired,
-  catalog: PropTypes.object.isRequired
+  catalog: PropTypes.object.isRequired,
 };
-

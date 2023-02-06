@@ -11,7 +11,9 @@ import {
   MODE_DRAGGING_ITEM,
   MODE_ROTATING_ITEM,
   MODE_RESIZE_ITEM_RIGHT_BOTTOM,
-  MODE_RESIZE_ITEM_RIGHT_TOP
+  MODE_RESIZE_ITEM_RIGHT_TOP,
+  MODE_RESIZE_ITEM_LEFT_TOP,
+  MODE_RESIZE_ITEM_LEFT_BOTTOM,
 } from '../constants';
 
 class Item {
@@ -251,6 +253,91 @@ class Item {
   }
 
   static endResizingItemRT(state, x, y) {
+    state = this.updateResizingItemRT(state, x, y).updatedState;
+    state = state.merge({ mode: MODE_IDLE });
+
+    return { updatedState: state };
+  }
+
+  static beginResizingItemLT(state, layerID, itemID, x, y) {
+    console.log('beginResizingItemLT', y)
+    state = state.merge({
+      mode: MODE_RESIZE_ITEM_LEFT_TOP,
+      resizeSupport: Map({
+        layerID,
+        itemID
+      })
+    });
+
+    return { updatedState: state };
+  }
+
+  static updateResizingItemLT(state, x, y) {
+
+    let { resizeSupport, scene } = state;
+
+    let layerID = resizeSupport.get('layerID');
+    let itemID = resizeSupport.get('itemID');
+    let item = state.getIn(['scene', 'layers', layerID, 'items', itemID]);
+
+    let deltaX = x - item.x;
+
+    console.log('deltaX', deltaX)
+
+    item = item.merge({
+      zoom: deltaX,
+    });
+
+    state = state.merge({
+      scene: scene.mergeIn(['layers', layerID, 'items', itemID], item)
+    });
+
+    return { updatedState: state };
+  }
+
+  static endResizingItemLT(state, x, y) {
+    state = this.updateResizingItemRT(state, x, y).updatedState;
+    state = state.merge({ mode: MODE_IDLE });
+
+    return { updatedState: state };
+  }
+
+  static beginResizingItemLB(state, layerID, itemID, x, y) {
+    state = state.merge({
+      mode: MODE_RESIZE_ITEM_LEFT_BOTTOM,
+      resizeSupport: Map({
+        layerID,
+        itemID
+      })
+    });
+
+    return { updatedState: state };
+  }
+
+  static updateResizingItemLB(state, x, y) {
+
+    let { resizeSupport, scene } = state;
+
+    let layerID = resizeSupport.get('layerID');
+    let itemID = resizeSupport.get('itemID');
+    let item = state.getIn(['scene', 'layers', layerID, 'items', itemID]);
+
+    let deltaX = x - item.x;
+
+    console.log('deltaX', deltaX)
+
+    item = item.merge({
+      zoom: deltaX,
+    });
+
+    state = state.merge({
+      scene: scene.mergeIn(['layers', layerID, 'items', itemID], item)
+    });
+
+    return { updatedState: state };
+  }
+
+  static endResizingItemLB(state, x, y) {
     state = this.updateResizingItemRT(state, x, y).updatedState;
     state = state.merge({ mode: MODE_IDLE });
 

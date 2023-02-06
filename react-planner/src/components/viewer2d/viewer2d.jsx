@@ -60,6 +60,10 @@ function mode2Cursor(mode) {
       return { cursor: "nwse-resize" };
     case constants.MODE_RESIZE_ITEM_RIGHT_TOP:
       return { cursor: "nesw-resize" };
+    case constants.MODE_RESIZE_ITEM_LEFT_BOTTOM:
+      return { cursor: "nesw-resize" };
+    case constants.MODE_RESIZE_ITEM_LEFT_TOP:
+      return { cursor: "nwse-resize" };
 
     case constants.MODE_WAITING_DRAWING_LINE:
     case constants.MODE_DRAWING_LINE:
@@ -215,6 +219,14 @@ export default function Viewer2D(
       case constants.MODE_RESIZE_ITEM_RIGHT_TOP:
         itemsActions.updateResizingItemRT(x, y);
         break;
+
+      case constants.MODE_RESIZE_ITEM_LEFT_BOTTOM:
+        itemsActions.updateResizingItemLB(x, y);
+        break;
+
+      case constants.MODE_RESIZE_ITEM_LEFT_TOP:
+        itemsActions.updateResizingItemLT(x, y);
+        break;
         
     }
 
@@ -273,6 +285,20 @@ export default function Viewer2D(
             );
           } else if (elementData.part === "resize-points-rt") {
             itemsActions.beginResizingItemRT(
+              elementData.layer,
+              elementData.id,
+              x,
+              y
+            );
+          } else if (elementData.part === "resize-points-lb") {
+            itemsActions.beginResizingItemLB(
+              elementData.layer,
+              elementData.id,
+              x,
+              y
+            );
+          } else if (elementData.part === "resize-points-lt") {
+            itemsActions.beginResizingItemLT(
               elementData.layer,
               elementData.id,
               x,
@@ -384,7 +410,12 @@ export default function Viewer2D(
       case constants.MODE_RESIZE_ITEM_RIGHT_TOP:
         itemsActions.endResizingItemRT(x, y);
         break;
-          
+      case constants.MODE_RESIZE_ITEM_LEFT_BOTTOM:
+        itemsActions.endResizingItemLB(x, y);
+        break;
+      case constants.MODE_RESIZE_ITEM_LEFT_TOP:
+        itemsActions.endResizingItemLT(x, y);
+        break;
     }
 
     event.stopPropagation();
