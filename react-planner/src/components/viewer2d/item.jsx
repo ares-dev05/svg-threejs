@@ -101,6 +101,7 @@ export default function Item({ layer, item, scene, catalog }) {
             data-id={item.id}
             data-selected={item.selected}
             data-layer={layer.id}
+            data-part="outline-item"
           >
             <polygon
               points={`${poly11 + " " + poly12 + " " + poly13 + " " + poly14}`}
@@ -200,57 +201,6 @@ export default function Item({ layer, item, scene, catalog }) {
             />
           </g>
         </If>
-        <defs>
-          <filter id="popup-dlg" x="-25%" width="150%" y="-25%" height="150%">
-            <feFlood floodColor="#020916" />
-            <feGaussianBlur stdDeviation="2" />
-            <feComponentTransfer>
-              <feFuncA type="table" tableValues="0 0 0 1" />
-            </feComponentTransfer>
-
-            <feComponentTransfer>
-              <feFuncA type="table" tableValues="0 1 1 1 1 1 1 1" />
-            </feComponentTransfer>
-            <feComposite operator="over" in="SourceGraphic" />
-          </filter>
-        </defs>
-        <g transform={`translate(${WIDTH / 2 + margin},${0}) scale(1,-1)`} filter="url(#popup-dlg)">
-          <svg height="330" width="220">
-            <text fill="white" transform="translate(14.23, 12)" style={{
-              fontFamily: "DM Sans",
-              fontWeight: 400,
-              fontSize: '12px',
-              lineHeight: '15.62px'
-            }}>Width</text>
-            <text fill="#3D424A" transform="translate(53.23, 12)" style={{
-              fontFamily: "DM Sans",
-              fontWeight: 400,
-              fontSize: '12px',
-              lineHeight: '15.62px'
-            }}>mm</text>
-
-            <input type="text" transform="translate(53.23, 28)"  width="100px"  minlength="4" maxlength="8" size="10" style={{
-              fontFamily: "DM Sans",
-              fontWeight: 400,
-              fontSize: '12px',
-              lineHeight: '15.62px'
-            }}  value={WIDTH}/>
-
-            <text fill="white" transform="translate(14.23, 28)" style={{
-              fontFamily: "DM Sans",
-              fontWeight: 400,
-              fontSize: '12px',
-              lineHeight: '15.62px'
-            }}>Height</text>
-            <text fill="#3D424A" transform="translate(53.23, 28)" style={{
-              fontFamily: "DM Sans",
-              fontWeight: 400,
-              fontSize: '12px',
-              lineHeight: '15.62px'
-            }}>mm</text>
-            
-          </svg>
-        </g>
       </g>
     </Fragment>
   );

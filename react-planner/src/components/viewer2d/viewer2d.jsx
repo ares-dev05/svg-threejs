@@ -10,6 +10,11 @@ import {
   TOOL_ZOOM_OUT,
   TOOL_AUTO,
 } from "react-svg-pan-zoom";
+
+import { makeStyles } from "@material-ui/core/styles";
+
+import { Box, Typography, TextField } from "@material-ui/core";
+
 import * as constants from "../../constants";
 import State from "./state";
 import * as SharedStyle from "../../shared-style";
@@ -109,6 +114,42 @@ function extractElementData(node) {
   };
 }
 
+const useStyles = makeStyles(() => ({
+  inputText: {
+    "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#5B5F66",
+    },
+    "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      borderColor: "#5B5F66",
+    },
+    "& .MuiOutlinedInput-input": {
+      color: "#fff",
+      textAlign: "right",
+      padding: "5px",
+    },
+    "& .Mui-focused": {
+      borderColor: "white",
+    },
+    "& .MuiInputLabel-outlined.Mui-focused": {
+      color: "#fff",
+    },
+    "& .MuiOutlinedInput-root": {
+      backgroundColor: "transparent",
+      borderRadius: "7px",
+      padding: "offset",
+    },
+    "& .MuiInputBase-root": {
+      color: "white",
+      fontSize: "12px",
+      lineHeight: "24px",
+      width: "64px",
+    },
+    "& .MuiInputBase-input": {
+      textAlign: "right",
+    },
+  },
+}));
+
 export default function Viewer2D(
   { state, width, height },
   {
@@ -125,7 +166,14 @@ export default function Viewer2D(
   let { viewer2D, mode, scene } = state;
 
   const [load, setLoad] = useState(false);
+  const [popup, setPopup] = useState(false);
+  const [widthV, setWidth] = useState(0);
+  const [heightV, setHeight] = useState(0);
+  const [cordinate, setCordinate] = useState({x: 0, y: 0});
+
   const Viewer = useRef(null);
+
+  const classes = useStyles();
 
   useEffect(() => {
     let viewerData = state.get("viewer2D").toJS();
@@ -158,10 +206,6 @@ export default function Viewer2D(
     }
   }, [state]);
 
-  useEffect(() => {
-    // Viewer.current.fitToViewer();
-  }, []);
-
   let layerID = scene.selectedLayer;
 
   let mapCursorPosition = ({ x, y }) => {
@@ -177,8 +221,6 @@ export default function Viewer2D(
     let { x, y } = mapCursorPosition(viewerEvent);
 
     projectActions.updateMouseCoord({ x, y });
-
-    console.log('mode', mode)
 
     switch (mode) {
       case constants.MODE_DRAWING_LINE:
@@ -227,11 +269,11 @@ export default function Viewer2D(
       case constants.MODE_RESIZE_ITEM_LEFT_TOP:
         itemsActions.updateResizingItemLT(x, y);
         break;
-        
     }
 
     viewerEvent.originalEvent.stopPropagation();
   };
+
 
   let onMouseDown = (viewerEvent) => {
     let event = viewerEvent.originalEvent;
@@ -244,6 +286,7 @@ export default function Viewer2D(
     let { x, y } = mapCursorPosition(viewerEvent);
 
     if (mode === constants.MODE_IDLE) {
+      
       let elementData = extractElementData(event.target);
       if (!elementData || !elementData.selected) return;
 
@@ -304,6 +347,17 @@ export default function Viewer2D(
               x,
               y
             );
+          } else if (elementData.part === "outline-item") {
+            console.log("elementData", elementData);
+            setPopup(true);
+
+            var e = window.event;
+
+            var posX = e.clientX;
+            var posY = e.clientY;
+
+            console.log('pos', {posX,posY})
+            setCordinate({x: posX - 20, y: posY - 80});
           } else
             itemsActions.beginDraggingItem(
               elementData.layer,
@@ -461,6 +515,21 @@ export default function Viewer2D(
   let rulerXElements = Math.ceil(sceneWidth / rulerUnitPixelSize) + 1;
   let rulerYElements = Math.ceil(sceneHeight / rulerUnitPixelSize) + 1;
 
+  // const handleDocumentMouseUp = (event) => {
+  //   console.log('popup', popup)
+  //   setCordinate({x: event.clientX, y: event.clientY});
+  // };
+
+  // useEffect(() => {
+  //   document.addEventListener("mouseup", handleDocumentMouseUp);
+  //   return () => {
+  //     document.removeEventListener('mouseup', handleDocumentMouseUp);
+  //   };
+
+  // }, []);
+
+  // console.log('debug', {popup, cordinate})
+
   return (
     <div
       style={{
@@ -549,6 +618,191 @@ export default function Viewer2D(
           </g>
         </svg>
       </ReactSVGPanZoom>
+      <Box
+        style={{
+          flexGrow: 1,
+          position: "absolute",
+          width: "195px",
+          height: "154px",
+          left: cordinate.x,
+          top: cordinate.y,
+          background: "#020916",
+          borderRadius: "4px",
+          zIndex: 2,
+          padding: "16.04px 14.23px",
+          display: popup? 'block': 'none',
+        }}
+      >
+        <img
+          src="/assets/arrow.png"
+          style={{
+            position: "absolute",
+            left: "-6px",
+            top: "21px",
+            zIndex: "33",
+          }}
+        />
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Box
+            display="flex"
+            justifyContent="flex-start"
+            alignItems="center"
+            style={{ gap: "5px" }}
+          >
+            <Typography
+              style={{
+                fontFamily: "DM Sans",
+                fontStyle: "normal",
+                fontWeight: 400,
+                fontSize: "12px",
+                lineHeight: "16px",
+                color: "#FFFFFF",
+              }}
+            >
+              Width
+            </Typography>
+            <Typography
+              style={{
+                fontFamily: "DM Sans",
+                fontStyle: "normal",
+                fontWeight: 400,
+                fontSize: "12px",
+                lineHeight: "16px",
+                color: "#3D424A",
+              }}
+            >
+              mm
+            </Typography>
+          </Box>
+          <TextField
+            className={classes.inputText}
+            type="text"
+            placeholder=""
+            label=""
+            sx={{ mb: 1 }}
+            value={widthV}
+            variant="outlined"
+          />
+        </Box>
+
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          marginTop="7px"
+        >
+          <Box
+            display="flex"
+            justifyContent="flex-start"
+            alignItems="center"
+            style={{ gap: "5px" }}
+          >
+            <Typography
+              style={{
+                fontFamily: "DM Sans",
+                fontStyle: "normal",
+                fontWeight: 400,
+                fontSize: "12px",
+                lineHeight: "16px",
+                color: "#FFFFFF",
+              }}
+            >
+              Height
+            </Typography>
+            <Typography
+              style={{
+                fontFamily: "DM Sans",
+                fontStyle: "normal",
+                fontWeight: 400,
+                fontSize: "12px",
+                lineHeight: "16px",
+                color: "#3D424A",
+              }}
+            >
+              mm
+            </Typography>
+          </Box>
+          <TextField
+            className={classes.inputText}
+            type="text"
+            placeholder=""
+            label=""
+            value={heightV}
+            sx={{ mb: 1 }}
+            variant="outlined"
+          />
+        </Box>
+
+        <hr style={{
+          borderColor: "#252A32",
+          marginLeft: "-12px",
+          marginRight: "-12px"
+        }}/>
+
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          marginTop="15px"
+        >
+          <Typography
+            style={{
+              fontFamily: "DM Sans",
+              fontStyle: "normal",
+              fontWeight: 400,
+              fontSize: "12px",
+              lineHeight: "16px",
+              color: "#FFFFFF",
+            }}
+          >
+            Flip horizontaly
+          </Typography>
+          <Typography
+            style={{
+              fontFamily: "DM Sans",
+              fontStyle: "normal",
+              fontWeight: 400,
+              fontSize: "12px",
+              lineHeight: "16px",
+              color: "#FFFFFF",
+            }}
+          >
+            H
+          </Typography>
+        </Box>
+
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          marginTop="15px"
+        >
+          <Typography
+            style={{
+              fontFamily: "DM Sans",
+              fontStyle: "normal",
+              fontWeight: 400,
+              fontSize: "12px",
+              lineHeight: "16px",
+              color: "#FFFFFF",
+            }}
+          >
+            Flip verticaly
+          </Typography>
+          <Typography
+            style={{
+              fontFamily: "DM Sans",
+              fontStyle: "normal",
+              fontWeight: 400,
+              fontSize: "12px",
+              lineHeight: "16px",
+              color: "#FFFFFF",
+            }}
+          >
+            V
+          </Typography>
+        </Box>
+      </Box>
     </div>
   );
 }
