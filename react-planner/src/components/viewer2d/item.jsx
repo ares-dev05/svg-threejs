@@ -31,6 +31,8 @@ export default function Item({ layer, item, scene, catalog }) {
 
   const [scale, setScale] = useState(1);
 
+  console.log('zoom', zoom)
+
   let renderedItem = catalog.getElement(item.type).render2D(item, layer, scene);
 
   const WIDTH = renderedItem.props.width;
@@ -64,10 +66,14 @@ export default function Item({ layer, item, scene, catalog }) {
 
       const nextScale = (currentWidth / WIDTH) * 2;
 
-      setScale(nextScale);
+      if(nextScale != NaN) {
+        setScale(nextScale);
+      }
+
     }
   }, [item, catalog]);
 
+  console.log('scale', scale)
   return (
     <Fragment>
       <g
@@ -102,6 +108,9 @@ export default function Item({ layer, item, scene, catalog }) {
             data-selected={item.selected}
             data-layer={layer.id}
             data-part="outline-item"
+            data-width={WIDTH}
+            data-height={DEPTH}
+            data-scale={scale}
           >
             <polygon
               points={`${poly11 + " " + poly12 + " " + poly13 + " " + poly14}`}

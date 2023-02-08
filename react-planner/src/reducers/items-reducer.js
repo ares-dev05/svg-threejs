@@ -23,6 +23,7 @@ import {
   BEGIN_RESIZE_ITEM_LEFT_TOP,
   UPDATE_RESIZE_ITEM_LEFT_TOP,
   END_RESIZE_ITEM_LEFT_TOP,
+  RESIZE_ITEM
 } from '../constants';
 
 export default function (state, action) {
@@ -81,6 +82,10 @@ export default function (state, action) {
     case BEGIN_RESIZE_ITEM_LEFT_TOP:
       state = state.merge({ sceneHistory: history.historyPush(state.sceneHistory, state.scene) });
       return Item.beginResizingItemLT(state, action.layerID, action.itemID, action.x, action.y).updatedState;
+
+    case RESIZE_ITEM:
+      state = state.merge({ sceneHistory: history.historyPush(state.sceneHistory, state.scene) });
+      return Item.resizingItem(state, action.layerID, action.itemID, action.deltaX).updatedState;
 
     case UPDATE_RESIZE_ITEM_LEFT_TOP:
       return Item.updateResizingItemLT(state, action.x, action.y).updatedState;

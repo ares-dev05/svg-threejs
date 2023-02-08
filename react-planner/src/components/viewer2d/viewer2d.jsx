@@ -103,15 +103,33 @@ function extractElementData(node) {
   }
   if (node.tagName === "svg") return null;
 
-  return {
-    part: node.attributes.getNamedItem("data-part")
-      ? node.attributes.getNamedItem("data-part").value
-      : undefined,
-    layer: node.attributes.getNamedItem("data-layer").value,
-    prototype: node.attributes.getNamedItem("data-prototype").value,
-    selected: node.attributes.getNamedItem("data-selected").value === "true",
-    id: node.attributes.getNamedItem("data-id").value,
-  };
+  try {
+    return {
+      part: node.attributes.getNamedItem("data-part")
+        ? node.attributes.getNamedItem("data-part").value
+        : undefined,
+      layer: node.attributes.getNamedItem("data-layer").value,
+      prototype: node.attributes.getNamedItem("data-prototype").value,
+      width: node.attributes.getNamedItem("data-width").value,
+      height: node.attributes.getNamedItem("data-height").value,
+      scale: node.attributes.getNamedItem("data-scale").value,
+      selected: node.attributes.getNamedItem("data-selected").value === "true",
+      id: node.attributes.getNamedItem("data-id").value,
+    };
+  } catch(e) {
+    return {
+      part: node.attributes.getNamedItem("data-part")
+        ? node.attributes.getNamedItem("data-part").value
+        : undefined,
+      layer: node.attributes.getNamedItem("data-layer").value,
+      prototype: node.attributes.getNamedItem("data-prototype").value,
+      width: 0,
+      height: 0,
+      scale: 1,
+      selected: node.attributes.getNamedItem("data-selected").value === "true",
+      id: node.attributes.getNamedItem("data-id").value,
+    };
+  }
 }
 
 const useStyles = makeStyles(() => ({
@@ -169,6 +187,7 @@ export default function Viewer2D(
   const [popup, setPopup] = useState(false);
   const [widthV, setWidth] = useState(0);
   const [heightV, setHeight] = useState(0);
+  const [elementData, setElementData] = useState({layer: '', id: ''});
   const [cordinate, setCordinate] = useState({x: 0, y: 0});
 
   const Viewer = useRef(null);
@@ -288,7 +307,10 @@ export default function Viewer2D(
     if (mode === constants.MODE_IDLE) {
       
       let elementData = extractElementData(event.target);
-      if (!elementData || !elementData.selected) return;
+      if (!elementData || !elementData.selected) {
+        setPopup(false);
+        return;
+      };
 
       switch (elementData.prototype) {
         case "lines":
@@ -348,7 +370,7 @@ export default function Viewer2D(
               y
             );
           } else if (elementData.part === "outline-item") {
-            console.log("elementData", elementData);
+            setElementData({layer: elementData.layer, id: elementData.id})
             setPopup(true);
 
             var e = window.event;
@@ -356,8 +378,9 @@ export default function Viewer2D(
             var posX = e.clientX;
             var posY = e.clientY;
 
-            console.log('pos', {posX,posY})
             setCordinate({x: posX - 20, y: posY - 80});
+            setWidth(parseFloat(elementData.width) * parseFloat(elementData.scale));
+            setHeight(parseFloat(elementData.height) * parseFloat(elementData.scale));
           } else
             itemsActions.beginDraggingItem(
               elementData.layer,
@@ -377,6 +400,7 @@ export default function Viewer2D(
           break;
 
         default:
+          setPopup(false);
           break;
       }
     }
@@ -682,6 +706,15 @@ export default function Viewer2D(
             sx={{ mb: 1 }}
             value={widthV}
             variant="outlined"
+            onChange={(e) => {
+              const deltaX = parseFloat(e.target.value) / 2 + 5;
+              itemsActions.resizingItem(
+                elementData.layer,
+                elementData.id,
+                deltaX.toFixed(4)
+              );
+              setWidth(e.target.value)
+            }}
           />
         </Box>
 
@@ -730,6 +763,15 @@ export default function Viewer2D(
             value={heightV}
             sx={{ mb: 1 }}
             variant="outlined"
+            onChange={(e) => {
+              const deltaX = widthV * parseFloat(e.target.value) / heightV / 2 + 5;
+              itemsActions.resizingItem(
+                elementData.layer,
+                elementData.id,
+                deltaX.toFixed(4)
+              );
+              setHeight(e.target.value)
+            }}
           />
         </Box>
 

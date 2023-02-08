@@ -25,7 +25,7 @@ export default function keyboard() {
       let mode = state.get("mode");
 
       switch (event.keyCode) {
-        case KEYBOARD_BUTTON_CODE.BACKSPACE:
+        // case KEYBOARD_BUTTON_CODE.BACKSPACE:
         case KEYBOARD_BUTTON_CODE.DELETE: {
           if ([MODE_IDLE, MODE_3D_FIRST_PERSON, MODE_3D_VIEW].includes(mode))
             store.dispatch(remove());
