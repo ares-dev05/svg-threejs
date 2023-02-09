@@ -395,6 +395,36 @@ class Item {
     return { updatedState: state };
   }
 
+  static updateVerticalItem(state, layerID, itemID) {
+    let { scene } = state;
+    let item = state.getIn(["scene", "layers", layerID, "items", itemID]);
+    item = item.merge({
+      verticalFlip: !item.verticalFlip,
+    });
+
+    state = state.merge({
+      scene: scene.mergeIn(["layers", layerID, "items", itemID], item),
+    });
+
+    return { updatedState: state };
+  }
+
+
+  static updateHorizontalItem(state, layerID, itemID) {
+    let { scene } = state;
+    let item = state.getIn(["scene", "layers", layerID, "items", itemID]);
+
+    item = item.merge({
+      horizontalFlip: !item.horizontalFlip,
+    });
+
+    state = state.merge({
+      scene: scene.mergeIn(["layers", layerID, "items", itemID], item),
+    });
+
+    return { updatedState: state };
+  }
+
   static updateRotatingItem(state, x, y) {
     let { rotatingSupport, scene } = state;
 

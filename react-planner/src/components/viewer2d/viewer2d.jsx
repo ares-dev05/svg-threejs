@@ -116,7 +116,7 @@ function extractElementData(node) {
       selected: node.attributes.getNamedItem("data-selected").value === "true",
       id: node.attributes.getNamedItem("data-id").value,
     };
-  } catch(e) {
+  } catch (e) {
     return {
       part: node.attributes.getNamedItem("data-part")
         ? node.attributes.getNamedItem("data-part").value
@@ -187,8 +187,8 @@ export default function Viewer2D(
   const [popup, setPopup] = useState(false);
   const [widthV, setWidth] = useState(0);
   const [heightV, setHeight] = useState(0);
-  const [elementData, setElementData] = useState({layer: '', id: ''});
-  const [cordinate, setCordinate] = useState({x: 0, y: 0});
+  const [elementData, setElementData] = useState({ layer: "", id: "" });
+  const [cordinate, setCordinate] = useState({ x: 0, y: 0 });
 
   const Viewer = useRef(null);
 
@@ -293,7 +293,6 @@ export default function Viewer2D(
     viewerEvent.originalEvent.stopPropagation();
   };
 
-
   let onMouseDown = (viewerEvent) => {
     let event = viewerEvent.originalEvent;
 
@@ -305,12 +304,11 @@ export default function Viewer2D(
     let { x, y } = mapCursorPosition(viewerEvent);
 
     if (mode === constants.MODE_IDLE) {
-      
       let elementData = extractElementData(event.target);
       if (!elementData || !elementData.selected) {
         setPopup(false);
         return;
-      };
+      }
 
       switch (elementData.prototype) {
         case "lines":
@@ -370,7 +368,7 @@ export default function Viewer2D(
               y
             );
           } else if (elementData.part === "outline-item") {
-            setElementData({layer: elementData.layer, id: elementData.id})
+            setElementData({ layer: elementData.layer, id: elementData.id });
             setPopup(true);
 
             var e = window.event;
@@ -378,9 +376,13 @@ export default function Viewer2D(
             var posX = e.clientX;
             var posY = e.clientY;
 
-            setCordinate({x: posX - 20, y: posY - 80});
-            setWidth(parseFloat(elementData.width) * parseFloat(elementData.scale));
-            setHeight(parseFloat(elementData.height) * parseFloat(elementData.scale));
+            setCordinate({ x: posX - 20, y: posY - 80 });
+            setWidth(
+              parseFloat(elementData.width) * parseFloat(elementData.scale)
+            );
+            setHeight(
+              parseFloat(elementData.height) * parseFloat(elementData.scale)
+            );
           } else
             itemsActions.beginDraggingItem(
               elementData.layer,
@@ -552,8 +554,6 @@ export default function Viewer2D(
 
   // }, []);
 
-  // console.log('debug', {popup, cordinate})
-
   return (
     <div
       style={{
@@ -654,7 +654,7 @@ export default function Viewer2D(
           borderRadius: "4px",
           zIndex: 2,
           padding: "16.04px 14.23px",
-          display: popup? 'block': 'none',
+          display: popup ? "block" : "none",
         }}
       >
         <img
@@ -713,7 +713,7 @@ export default function Viewer2D(
                 elementData.id,
                 deltaX.toFixed(4)
               );
-              setWidth(e.target.value)
+              setWidth(e.target.value);
             }}
           />
         </Box>
@@ -764,22 +764,25 @@ export default function Viewer2D(
             sx={{ mb: 1 }}
             variant="outlined"
             onChange={(e) => {
-              const deltaX = widthV * parseFloat(e.target.value) / heightV / 2 + 5;
+              const deltaX =
+                (widthV * parseFloat(e.target.value)) / heightV / 2 + 5;
               itemsActions.resizingItem(
                 elementData.layer,
                 elementData.id,
                 deltaX.toFixed(4)
               );
-              setHeight(e.target.value)
+              setHeight(e.target.value);
             }}
           />
         </Box>
 
-        <hr style={{
-          borderColor: "#252A32",
-          marginLeft: "-12px",
-          marginRight: "-12px"
-        }}/>
+        <hr
+          style={{
+            borderColor: "#252A32",
+            marginLeft: "-12px",
+            marginRight: "-12px",
+          }}
+        />
 
         <Box
           display="flex"
@@ -807,6 +810,13 @@ export default function Viewer2D(
               fontSize: "12px",
               lineHeight: "16px",
               color: "#FFFFFF",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              itemsActions.updateHorizontalItem(
+                elementData.layer,
+                elementData.id
+              );
             }}
           >
             H
@@ -839,6 +849,13 @@ export default function Viewer2D(
               fontSize: "12px",
               lineHeight: "16px",
               color: "#FFFFFF",
+              cursor: "pointer"
+            }}
+            onClick={() => {
+              itemsActions.updateVerticalItem(
+                elementData.layer,
+                elementData.id
+              );
             }}
           >
             V

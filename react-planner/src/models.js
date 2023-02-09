@@ -172,6 +172,8 @@ export class Item extends Record(
     x: 0,
     y: 0,
     rotation: 0,
+    horizontalFlip: false,
+    verticalFlip: false,
     zoom: 0
   },
   "Item"
@@ -221,7 +223,6 @@ export class Group extends Record(
     x: 0,
     y: 0,
     rotation: 0,
-    // zoom: 0,
     elements: new Map(),
   },
   "Group"

@@ -22,6 +22,8 @@ import {
   UPDATE_RESIZE_ITEM_LEFT_BOTTOM,
   END_RESIZE_ITEM_LEFT_BOTTOM,
   RESIZE_ITEM,
+  UPDATE_HORIZONTAL_FLIP_ITEM,
+  UPDATE_VERTICAL_FLIP_ITEM
 } from "../constants";
 
 export function selectItem(layerID, itemID) {
@@ -101,6 +103,22 @@ export function updateRotatingItem(x, y) {
   };
 }
 
+export function updateHorizontalItem(layerID, itemID) {
+  return {
+    type: UPDATE_HORIZONTAL_FLIP_ITEM,
+    layerID,
+    itemID
+  };
+}
+
+export function updateVerticalItem(layerID, itemID) {
+  return {
+    type: UPDATE_VERTICAL_FLIP_ITEM,
+    layerID,
+    itemID
+  };
+}
+
 export function endRotatingItem(x, y) {
   return {
     type: END_ROTATING_ITEM,
@@ -162,7 +180,6 @@ export function endResizingItemRT(x, y) {
 }
 
 export function resizingItem(layerID, itemID, deltaX) {
-  console.log('resizingItem action')
   return {
     type: RESIZE_ITEM,
     layerID,

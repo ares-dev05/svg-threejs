@@ -23,7 +23,9 @@ import {
   BEGIN_RESIZE_ITEM_LEFT_TOP,
   UPDATE_RESIZE_ITEM_LEFT_TOP,
   END_RESIZE_ITEM_LEFT_TOP,
-  RESIZE_ITEM
+  RESIZE_ITEM,
+  UPDATE_HORIZONTAL_FLIP_ITEM,
+  UPDATE_VERTICAL_FLIP_ITEM
 } from '../constants';
 
 export default function (state, action) {
@@ -107,6 +109,12 @@ export default function (state, action) {
 
     case UPDATE_ROTATING_ITEM:
       return Item.updateRotatingItem(state, action.x, action.y).updatedState;
+
+    case UPDATE_VERTICAL_FLIP_ITEM:
+      return Item.updateVerticalItem(state, action.layerID, action.itemID).updatedState;
+
+    case UPDATE_HORIZONTAL_FLIP_ITEM:
+      return Item.updateHorizontalItem(state, action.layerID, action.itemID).updatedState;
 
     case END_ROTATING_ITEM:
       state = state.merge({ sceneHistory: history.historyPush(state.sceneHistory, state.scene) });

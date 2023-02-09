@@ -27,7 +27,9 @@ const STYLE_RECT_SELECTED = {
 };
 
 export default function Item({ layer, item, scene, catalog }) {
-  let { x, y, rotation, zoom } = item;
+  let { x, y, rotation, zoom, horizontalFlip, verticalFlip } = item;
+
+  console.log('Item', {horizontalFlip, verticalFlip })
 
   const [scale, setScale] = useState(1);
 
@@ -69,7 +71,6 @@ export default function Item({ layer, item, scene, catalog }) {
       if(nextScale != NaN) {
         setScale(nextScale);
       }
-
     }
   }, [item, catalog]);
 
@@ -83,7 +84,7 @@ export default function Item({ layer, item, scene, catalog }) {
         data-selected={item.selected}
         data-layer={layer.id}
         style={item.selected ? { cursor: "move" } : {}}
-        transform={`translate(${x},${y}) rotate(${rotation}) scale(${scale})`}
+        transform={`translate(${x},${y}) rotate(${rotation}) scale(${scale * verticalFlip? -1: 1}, ${scale * horizontalFlip? -1: 1})`}
       >
         {renderedItem}
 
