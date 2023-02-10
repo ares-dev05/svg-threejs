@@ -29,11 +29,7 @@ const STYLE_RECT_SELECTED = {
 export default function Item({ layer, item, scene, catalog }) {
   let { x, y, rotation, zoom, horizontalFlip, verticalFlip } = item;
 
-  console.log('Item', {horizontalFlip, verticalFlip })
-
   const [scale, setScale] = useState(1);
-
-  console.log('zoom', zoom)
 
   let renderedItem = catalog.getElement(item.type).render2D(item, layer, scene);
 
@@ -62,9 +58,10 @@ export default function Item({ layer, item, scene, catalog }) {
     poly44 = `${-WIDTH / 2 - margin},${DEPTH / 2 - half_thickness + margin}`;
 
   useEffect(() => {
-    if (WIDTH != undefined && zoom != 0) {
-      const delta = Math.abs(zoom) - (WIDTH * scale) / 2 - margin;
-      const currentWidth = (WIDTH * scale) / 2 + delta;
+    if (WIDTH != undefined && zoom != 0 && zoom != 'NaN') {
+      const currentWidth = Math.abs(zoom) - margin;
+
+      console.log('item', {zoom, WIDTH})
 
       const nextScale = (currentWidth / WIDTH) * 2;
 
@@ -84,7 +81,7 @@ export default function Item({ layer, item, scene, catalog }) {
         data-selected={item.selected}
         data-layer={layer.id}
         style={item.selected ? { cursor: "move" } : {}}
-        transform={`translate(${x},${y}) rotate(${rotation}) scale(${scale * verticalFlip? -1: 1}, ${scale * horizontalFlip? -1: 1})`}
+        transform={`translate(${x},${y}) rotate(${rotation}) scale(${scale * (verticalFlip? -1: 1)}, ${scale * (horizontalFlip? -1: 1)})`}
       >
         {renderedItem}
 

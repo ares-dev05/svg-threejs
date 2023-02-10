@@ -707,13 +707,16 @@ export default function Viewer2D(
             value={widthV}
             variant="outlined"
             onChange={(e) => {
-              const deltaX = parseFloat(e.target.value) / 2 + 5;
-              itemsActions.resizingItem(
-                elementData.layer,
-                elementData.id,
-                deltaX.toFixed(4)
-              );
-              setWidth(e.target.value);
+              if(e.target.value != '') {
+                const deltaX = parseFloat(e.target.value) / 2 + 5;
+                itemsActions.resizingItem(
+                  elementData.layer,
+                  elementData.id,
+                  deltaX.toFixed(4)
+                );
+                setWidth(e.target.value);
+                setHeight(heightV * parseFloat(e.target.value) / widthV)
+              }
             }}
           />
         </Box>
@@ -764,14 +767,17 @@ export default function Viewer2D(
             sx={{ mb: 1 }}
             variant="outlined"
             onChange={(e) => {
-              const deltaX =
-                (widthV * parseFloat(e.target.value)) / heightV / 2 + 5;
-              itemsActions.resizingItem(
-                elementData.layer,
-                elementData.id,
-                deltaX.toFixed(4)
-              );
-              setHeight(e.target.value);
+              if(e.target.value != '') {
+                const deltaX =
+                  (widthV * parseFloat(e.target.value)) / heightV / 2 + 5;
+                itemsActions.resizingItem(
+                  elementData.layer,
+                  elementData.id,
+                  deltaX.toFixed(4)
+                );
+                setHeight(e.target.value);
+                setWidth(widthV * parseFloat(e.target.value) / heightV);
+              }
             }}
           />
         </Box>
