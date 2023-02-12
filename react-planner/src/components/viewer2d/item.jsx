@@ -26,15 +26,46 @@ const STYLE_RECT_SELECTED = {
   stroke: "#A0BEF7",
 };
 
+const STYLE = {
+  stroke: "#4F8BFF",
+  strokeWidth: "1px",
+};
+
+const STYLE_TEXT = {
+  fontFamily: "DM Sans",
+  fontStyle: "normal",
+  fontWeight: 400,
+  fontSize: "11px",
+  lineHeight: "12px",
+  textAlign: "right",
+  fill: "#F6F6F6",
+  flex: "none",
+  order: 0,
+  flexGrow: 0,
+
+  //http://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting-using-css
+  WebkitTouchCallout: "none" /* iOS Safari */,
+  WebkitUserSelect: "none" /* Chrome/Safari/Opera */,
+  MozUserSelect: "none" /* Firefox */,
+  MsUserSelect: "none" /* Internet Explorer/Edge */,
+  userSelect: "none",
+};
+
+
 export default function Item({ layer, item, scene, catalog }) {
   let { x, y, rotation, zoom, horizontalFlip, verticalFlip } = item;
 
   const [scale, setScale] = useState(1);
+  const [params, setParam] = useState({dis1: 0, dis2: 0, dis3: 0, dis4: 0});
 
   let renderedItem = catalog.getElement(item.type).render2D(item, layer, scene);
 
   const WIDTH = renderedItem.props.width;
   const DEPTH = renderedItem.props.height;
+  const lines = renderedItem.props.lines;
+  const xRuler = renderedItem.props.x;
+  const yRuler = renderedItem.props.y;
+
   const half_thickness = 1;
   const margin = 5;
   const CIRCLE_RADIUS = 4;
@@ -71,7 +102,43 @@ export default function Item({ layer, item, scene, catalog }) {
     }
   }, [item, catalog]);
 
-  console.log('scale', scale)
+  useEffect(() => {
+    try {
+      let dis1 = 0, dis2 = 0, dis3 = 0, dis4 = 0;
+      lines.map(line => {
+        if(line.y1 > yRuler +  DEPTH * scale / 2 && ((line.x1 <= xRuler && line.x2 >= x) || (line.x2 <= xRuler && line.x1 >= x))) {
+          if(dis1 == 0) {
+            dis1 = line.y1 - yRuler -  DEPTH * scale / 2;
+          } else if (dis1 > line.y1 - yRuler -  DEPTH * scale / 2) {
+            dis1 = line.y1 - yRuler -  DEPTH * scale;
+          }
+        } else if(line.y1 < yRuler -  DEPTH * scale / 2 && ((line.x1 <= xRuler && line.x2 >= x) || (line.x2 <= xRuler && line.x1 >= x))) {
+          if(dis2 == 0) {
+            dis2 = yRuler -  DEPTH * scale / 2 - line.y1;
+          } else if (dis2 > yRuler -  DEPTH * scale / 2 - line.y1) {
+            dis2 = yRuler -  DEPTH * scale - line.y1;
+          }
+        } else if(line.x1 < xRuler -  WIDTH* scale / 2 && ((line.y1 <= yRuler && line.y2 >= y) || (line.y2 <= yRuler && line.y1 >= y))) {
+          if(dis3 == 0) {
+            dis3 = -line.x1 + xRuler -  WIDTH* scale / 2;
+          } else if (dis3 > -line.x1 + xRuler -  WIDTH* scale / 2) {
+            dis3 = -line.x1 + xRuler -  WIDTH* scale / 2;
+          }
+        } else if(line.x1 > xRuler +  WIDTH* scale / 2 && ((line.y1 <= yRuler && line.y2 >= y) || (line.y2 <= yRuler && line.y1 >= y))) {
+          if(dis4 == 0) {
+            dis4 = line.x1 - xRuler -  WIDTH* scale / 2;
+          } else if (dis4 > line.x1 - xRuler -  WIDTH* scale / 2) {
+            dis4 = line.x1 - xRuler -  WIDTH* scale / 2;
+          }
+        }
+      })
+      setParam({dis1: dis1, dis2: dis2, dis3: dis3, dis4: dis4})
+    } catch(e) {
+console.log('e', e)
+    }
+  }, [lines, xRuler, yRuler])
+
+  console.log('param', params)
   return (
     <Fragment>
       <g
@@ -81,10 +148,18 @@ export default function Item({ layer, item, scene, catalog }) {
         data-selected={item.selected}
         data-layer={layer.id}
         style={item.selected ? { cursor: "move" } : {}}
-        transform={`translate(${x},${y}) rotate(${rotation}) scale(${scale * (verticalFlip? -1: 1)}, ${scale * (horizontalFlip? -1: 1)})`}
+        transform={`translate(${x},${y})`}
+      >
+         <g
+        data-element-root
+        data-prototype={item.prototype}
+        data-id={item.id}
+        data-selected={item.selected}
+        data-layer={layer.id}
+        style={item.selected ? { cursor: "move" } : {}}
+        transform={`rotate(${rotation}) scale(${scale * (verticalFlip? -1: 1)}, ${scale * (horizontalFlip? -1: 1)})`}
       >
         {renderedItem}
-
         <If condition={item.selected}>
           <g
             data-element-root
@@ -208,6 +283,59 @@ export default function Item({ layer, item, scene, catalog }) {
             />
           </g>
         </If>
+        </g>
+        {params.dis1 != 0 && item.selected && <g transform={`translate(${0}, ${ DEPTH * scale / 2} )`}>
+          <text
+            x="20"
+            y={-params.dis1 / 2}
+            transform={`scale(1, -1)`}
+            style={STYLE_TEXT}
+            filter="url(#rounded-corners)"
+          >
+            {params.dis1.toFixed(1)}
+          </text>
+          <line x1="-5" y1={params.dis1} x2="5" y2={params.dis1} style={STYLE} />
+          <line x1="0" y1="0" x2="0" y2={params.dis1} style={STYLE} />
+        </g>}
+        {params.dis2 != 0 && item.selected && <g transform={`translate(${0}, ${-  DEPTH * scale / 2} )`}>
+          <text
+            x="20"
+            y={params.dis2 / 2}
+            transform={`scale(1, -1)`}
+            style={STYLE_TEXT}
+            filter="url(#rounded-corners)"
+          >
+            {params.dis2.toFixed(1)}
+          </text>
+          <line x1="-5" y1={-params.dis2} x2="5" y2={-params.dis2} style={STYLE} />
+          <line x1="0" y1="0" x2="0" y2={-params.dis2} style={STYLE} />
+        </g>}
+        {params.dis3 != 0 && item.selected && <g transform={`translate(-${params.dis3 +  WIDTH* scale / 2}, ${0} )`}>
+          <text
+            x={params.dis3 / 2}
+            y="-10"
+            transform={`scale(1, -1)`}
+            style={STYLE_TEXT}
+            filter="url(#rounded-corners)"
+          >
+            {params.dis3.toFixed(1)}
+          </text>
+          <line x1={0} y1="-5" x2={0} y2="5" style={STYLE} />
+          <line x1="0" y1="0" x2={params.dis3} y2="0" style={STYLE} />
+        </g>}
+        {params.dis4 != 0 && item.selected && <g transform={`translate(${ WIDTH* scale / 2}, ${0} )`}>
+          <text
+            x={params.dis4 / 2}
+            y="-10"
+            transform={`scale(1, -1)`}
+            style={STYLE_TEXT}
+            filter="url(#rounded-corners)"
+          >
+            {params.dis4.toFixed(1)}
+          </text>
+          <line x1={params.dis4} y1="-5" x2={params.dis4} y2="5" style={STYLE} />
+          <line x1="0" y1="0" x2={params.dis4} y2="0" style={STYLE} />
+        </g>}
       </g>
     </Fragment>
   );

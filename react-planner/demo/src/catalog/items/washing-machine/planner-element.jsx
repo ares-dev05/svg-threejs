@@ -91,35 +91,6 @@ export default {
     const x = element.x;
     const y = element.y;
 
-    let dis1 = 0, dis2 = 0, dis3 = 0, dis4 = 0;
-
-    lines.map(line => {
-      if(line.y1 > y + DEPTH / 2 && ((line.x1 <= x && line.x2 >= x) || (line.x2 <= x && line.x1 >= x))) {
-        if(dis1 == 0) {
-          dis1 = line.y1 - y - DEPTH / 2;
-        } else if (dis1 > line.y1 - y - DEPTH / 2) {
-          dis1 = line.y1 - y - DEPTH / 2;
-        }
-      } else if(line.y1 < y - DEPTH / 2 && ((line.x1 <= x && line.x2 >= x) || (line.x2 <= x && line.x1 >= x))) {
-        if(dis2 == 0) {
-          dis2 = y - DEPTH / 2 - line.y1;
-        } else if (dis2 > y - DEPTH / 2 - line.y1) {
-          dis2 = y - DEPTH / 2 - line.y1;
-        }
-      } else if(line.x1 < x - WIDTH / 2 && ((line.y1 <= y && line.y2 >= y) || (line.y2 <= y && line.y1 >= y))) {
-        if(dis3 == 0) {
-          dis3 = -line.x1 + x - WIDTH / 2;
-        } else if (dis3 > -line.x1 + x - WIDTH / 2) {
-          dis3 = -line.x1 + x - WIDTH / 2;
-        }
-      } else if(line.x1 > x + WIDTH / 2 && ((line.y1 <= y && line.y2 >= y) || (line.y2 <= y && line.y1 >= y))) {
-        if(dis4 == 0) {
-          dis4 = line.x1 - x - WIDTH / 2;
-        } else if (dis4 > line.x1 - x - WIDTH / 2) {
-          dis4 = line.x1 - x - WIDTH / 2;
-        }
-      }
-    })
     let poly01 = `${-WIDTH / 2 - half_thickness},${DEPTH + half_thickness}`, poly02 = `${WIDTH / 2 + half_thickness},${DEPTH + half_thickness}`, poly03 = `${WIDTH / 2 + half_thickness},${0}`, poly04 = `${-WIDTH / 2 - half_thickness},${0}`;
     let poly11 = `${-WIDTH / 2},${half_thickness}`, poly12 = `${WIDTH / 2},${half_thickness}`, poly13 = `${WIDTH / 2},-${half_thickness}`, poly14 = `${-WIDTH / 2},-${half_thickness}`;
     let poly21 = `${-WIDTH / 2 - half_thickness},${DEPTH}`, poly22 = `${-WIDTH / 2 + half_thickness},${DEPTH}`, poly23 = `${-WIDTH / 2 + half_thickness},${0}`, poly24 = `${-WIDTH / 2 - half_thickness},${0}`;
@@ -128,7 +99,7 @@ export default {
     let poly51 = `${-WIDTH / 2},${half_thickness + PARAM}`, poly52 = `${WIDTH / 2},${half_thickness + PARAM}`, poly53 = `${WIDTH / 2},${-half_thickness + PARAM}`, poly54 = `${-WIDTH / 2},${-half_thickness + PARAM}`;
    
     return element.selected ? (
-      <g transform={`translate(${0},${-DEPTH / 2})`} width={WIDTH} height={DEPTH}>
+      <g transform={`translate(${0},${-DEPTH / 2})`} width={WIDTH} height={DEPTH} lines={lines} x={x} y={y}>
         <defs>
           <filter id="rounded-corners" x="-25%" width="150%" y="-25%" height="150%">
             <feFlood floodColor="#407AEC" />
@@ -155,58 +126,7 @@ export default {
    
 
         <image href="/assets/enable.png" style={STYLE_PNG_BASE}/>
-        {dis1 != 0 && <g transform={`translate(${0}, ${DEPTH} )`}>
-          <text
-            x="20"
-            y={-dis1 / 2}
-            transform={`scale(1, -1)`}
-            style={STYLE_TEXT}
-            filter="url(#rounded-corners)"
-          >
-            {dis1.toFixed(1)}
-          </text>
-          <line x1="-5" y1={dis1} x2="5" y2={dis1} style={STYLE} />
-          <line x1="0" y1="0" x2="0" y2={dis1} style={STYLE} />
-        </g>}
-        {dis2 != 0 && <g transform={`translate(${0}, ${0} )`}>
-          <text
-            x="20"
-            y={dis2 / 2}
-            transform={`scale(1, -1)`}
-            style={STYLE_TEXT}
-            filter="url(#rounded-corners)"
-          >
-            {dis2.toFixed(1)}
-          </text>
-          <line x1="-5" y1={-dis2} x2="5" y2={-dis2} style={STYLE} />
-          <line x1="0" y1="0" x2="0" y2={-dis2} style={STYLE} />
-        </g>}
-        {dis3 != 0 && <g transform={`translate(-${dis3 + WIDTH / 2}, ${DEPTH / 2} )`}>
-          <text
-            x={dis3 / 2}
-            y="-10"
-            transform={`scale(1, -1)`}
-            style={STYLE_TEXT}
-            filter="url(#rounded-corners)"
-          >
-            {dis3.toFixed(1)}
-          </text>
-          <line x1={0} y1="-5" x2={0} y2="5" style={STYLE} />
-          <line x1="0" y1="0" x2={dis3} y2="0" style={STYLE} />
-        </g>}
-        {dis4 != 0 && <g transform={`translate(${WIDTH / 2}, ${DEPTH / 2} )`}>
-          <text
-            x={dis4 / 2}
-            y="-10"
-            transform={`scale(1, -1)`}
-            style={STYLE_TEXT}
-            filter="url(#rounded-corners)"
-          >
-            {dis4.toFixed(1)}
-          </text>
-          <line x1={dis4} y1="-5" x2={dis4} y2="5" style={STYLE} />
-          <line x1="0" y1="0" x2={dis4} y2="0" style={STYLE} />
-        </g>}
+       
       </g>
     ) : (
       <g transform={`translate(${0},${-DEPTH / 2})`} width={WIDTH} height={DEPTH}>
